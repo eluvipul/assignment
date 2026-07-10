@@ -1,0 +1,15 @@
+MySQL and PostgreSQL are two popular open-source relational database management systems (RDBMS). Both use SQL to store, manage and retrieve data, but they differ in features, performance and use cases.
+
+MySQL is known for its simplicity, speed and ease of use.
+PostgreSQL is known for its advanced features, extensibility and standards compliance.
+The table below shows the major differences between MySQL and PostgreSQL:
+
+MySQL	PostgreSQL
+MySQL is an open-source relational database developed by Oracle.	PostgreSQL is an open-source relational database developed by the PostgreSQL community.
+Focuses on speed and simplicity.	Focuses on advanced features and extensibility.
+Easier for beginners to learn and manage.	Offers more advanced functionality and customization.
+Better suited for simple web applications.	Better suited for complex and large-scale applications.
+Provides limited support for advanced SQL features.	Supports many advanced SQL features and standards.
+Supports JSON data, but with fewer advanced features.	Provides powerful JSON and JSONB support.
+Commonly used in websites, blogs and e-commerce applications.	Commonly used in analytics, enterprise systems and geospatial applications.
+Examples: WordPress, Joomla, Drupal.	Examples: Data warehouses, GIS applications, financial systems.
