@@ -1,0 +1,20 @@
+1.
+Write an SQL query to select all restaurants from a table named 'restaurants' where the rating is greater than or equal to 4.5.
+2.
+In a table called 'movies', filter and display only the movies released after 2020 and with genre 'Action' using the WHERE clause and AND operator.
+3.
+Given a table 'products' with columns (id, name, price, category), write a query to find all products not in the 'Electronics' category or with a price less than 500.
+4.
+Write an SQL query for a table 'users' to show all users who are NOT from 'Ahmedabad' and have more than 1000 followers.<br><br><em><strong>Hint:</strong> Use the NOT operator combined with AND.</em>
+
+
+Queries:
+
+1)select names from restaurants where rating>=4.5;
+
+2)select names from movies where released_date>'2020' and genre='action';
+
+3)select id,name,price,category where category not in ('Electronics') or price<500;
+
+4)select * from users where city not in ('Ahmedabad') and followers>1000;
+
