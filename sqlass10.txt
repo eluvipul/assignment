@@ -1,0 +1,72 @@
+Create two tables: AppOrders (for orders placed via a food delivery app like Zomato) and InStoreOrders (for direct restaurant orders), each with columns: order_id, customer_name, amount, and order_date. Insert at least 3 sample records into each table.
+2.
+Write a SQL query using UNION to combine all unique customer names from both AppOrders and InStoreOrders tables into a single list.
+3.
+Write a SQL query using UNION ALL to display every order (including duplicates if any) from both AppOrders and InStoreOrders, showing order_id, customer_name, amount, and order_date.
+4.
+Demonstrate the difference between UNION and UNION ALL by adding a duplicate customer_name in both tables, then running both queries and noting the difference in the result count
+
+Queries:
+
+1.-- Create AppOrders table
+CREATE TABLE AppOrders (
+    order_id INT PRIMARY KEY,
+    customer_name VARCHAR(50),
+    amount DECIMAL(10,2),
+    order_date DATE
+);
+
+-- Insert sample records into AppOrders
+INSERT INTO AppOrders (order_id, customer_name, amount, order_date)
+VALUES
+(1, 'Alice', 450.00, '2026-07-01'),
+(2, 'Bob', 299.99, '2026-07-02'),
+(3, 'Charlie', 150.50, '2026-07-03');
+
+-- Create InStoreOrders table
+CREATE TABLE InStoreOrders (
+    order_id INT PRIMARY KEY,
+    customer_name VARCHAR(50),
+    amount DECIMAL(10,2),
+    order_date DATE
+);
+
+-- Insert sample records into InStoreOrders
+INSERT INTO InStoreOrders (order_id, customer_name, amount, order_date)
+VALUES
+(101, 'Diana', 500.00, '2026-07-01'),
+(102, 'Ethan', 220.75, '2026-07-02'),
+(103, 'Frank', 310.00, '2026-07-04');
+
+2.SELECT customer_name
+FROM AppOrders
+UNION
+SELECT customer_name
+FROM InStoreOrders
+ORDER BY customer_name;
+
+3.SELECT 
+    order_id,
+    customer_name,
+    amount,
+    order_date
+FROM AppOrders
+
+UNION ALL
+
+SELECT 
+    order_id,
+    customer_name,
+    amount,
+    order_date
+FROM InStoreOrders
+ORDER BY order_date, customer_name;
+
+4.-- Add duplicate customer 'Alice' in AppOrders
+INSERT INTO AppOrders (order_id, customer_name, amount, order_date)
+VALUES (4, 'Alice', 200.00, '2026-07-05');
+
+-- Add duplicate customer 'Alice' in InStoreOrders
+INSERT INTO InStoreOrders (order_id, customer_name, amount, order_date)
+VALUES (104, 'Alice', 180.00, '2026-07-05');
+
