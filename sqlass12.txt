@@ -1,0 +1,91 @@
+1.
+Write an SQL query using the WITH clause to create a temporary result set called TopArtists that selects the top 3 most-followed artists from a table SpotifyArtists (columns: artist_id, name, followers), then select all rows from TopArtists.
+2.
+Using a table named FlipkartOrders (columns: order_id, user_id, order_date, total_amount), write a query with a CTE called MonthlyTotals that calculates the total sales amount for each month in 2023, then select the month with the highest total sales from MonthlyTotals.<br><br><em><strong>Hint:</strong> Use EXTRACT(MONTH FROM order_date) or DATE_FORMAT(order_date, '%m') depending on your SQL dialect.</em>
+3.
+Create a recursive CTE to generate a list of dates for the next 7 days starting from today in a table called CalendarDays (columns: day_date).<br><br><em><strong>Hint:</strong> Use UNION ALL inside your CTE and limit recursion to 7 levels.</em>
+4.
+Given a table called ZomatoRestaurants (columns: id, name, city, rating), use a CTE to find the average rating for each city, then select all restaurants in cities where the average rating is above 4.0.
+5.
+Use ChatGPT or Copilot to help you write an SQL query with a CTE that, given a table IPLMatches (columns: match_id, team, runs, match_year), calculates the total runs scored by each team in 2023 and lists only teams with more than 2000 runs.
+
+Queries:
+
+1.WITH TopArtists AS (
+    SELECT 
+        artist_id,
+        name,
+        followers
+    FROM SpotifyArtists
+    ORDER BY followers DESC
+    LIMIT 3
+)
+SELECT *
+FROM TopArtists;
+
+2.WITH MonthlyTotals AS (
+    SELECT 
+        DATEPART(MONTH, order_date) AS month,
+        SUM(total_amount) AS total_sales
+    FROM FlipkartOrders
+    WHERE YEAR(order_date) = 2023
+    GROUP BY DATEPART(MONTH, order_date)
+)
+SELECT month, total_sales
+FROM MonthlyTotals
+WHERE total_sales = (
+    SELECT MAX(total_sales)
+    FROM MonthlyTotals
+);
+
+3.-- Recursive CTE to generate next 7 days
+WITH RECURSIVE Next7Days AS (
+    -- Anchor member: today
+    SELECT CURRENT_DATE AS day_date, 1 AS day_num
+    
+    UNION ALL
+    
+    -- Recursive member: add one day at a time
+    SELECT day_date + INTERVAL '1 day', day_num + 1
+    FROM Next7Days
+    WHERE day_num < 7
+)
+-- Select results into CalendarDays
+INSERT INTO CalendarDays (day_date)
+SELECT day_date
+FROM Next7Days;
+
+4.WITH CityAverages AS (
+    SELECT 
+        city,
+        AVG(rating) AS avg_city_rating
+    FROM ZomatoRestaurants
+    GROUP BY city
+)
+SELECT 
+    r.id,
+    r.name AS restaurant_name,
+    r.city,
+    r.rating,
+    ca.avg_city_rating
+FROM ZomatoRestaurants r
+INNER JOIN CityAverages ca
+    ON r.city = ca.city
+WHERE ca.avg_city_rating > 4.0
+ORDER BY r.city, r.rating DESC;
+
+5.WITH TeamRuns2023 AS (
+    SELECT 
+        team,
+        SUM(runs) AS total_runs
+    FROM IPLMatches
+    WHERE match_year = 2023
+    GROUP BY team
+)
+SELECT team, total_runs
+FROM TeamRuns2023
+WHERE total_runs > 2000
+ORDER BY total_runs DESC;
+
+
+
