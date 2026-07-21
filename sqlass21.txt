@@ -1,0 +1,64 @@
+1.
+Connect an Excel workbook to a SQL Server database using Power Query and load the 'Restaurants' table (assume it contains columns like name, cuisine, rating) into a new worksheet.
+2.
+Set up a parameterized query in Power Query that allows you to filter the 'Restaurants' data by cuisine type (e.g., only show 'Chinese' or 'South Indian') based on a value entered in an Excel cell.<br><br><em><strong>Hint:</strong> Use Power Query's 'Manage Parameters' feature and reference the cell value in your SQL query.</em>
+3.
+Enable dynamic data refresh in your Excel sheet so that when new records are added to the 'Restaurants' table in SQL Server, you can update the Excel data with a single click.
+4.
+Modify your Power Query connection to include only restaurants with a rating above 4.0, and display the filtered results in a dashboard-style Excel sheet with a table and a bar chart.
+5.
+Use ChatGPT or Copilot to help you write a parameterized SQL query for Power Query that fetches all restaurants within a certain rating range (e.g., between 3.5 and 5.0), then implement and test it in your Excel workbook.
+
+Queries:
+
+1.Example Result in Excel
+
+name		cuisine	rating
+Spice Villa	Indian	4.5
+Ocean Dine	Seafood	3.8
+Curry House	Indian	4.2
+
+2.
+SELECT name, cuisine, rating
+FROM Restaurants
+WHERE cuisine = @CuisineParam
+
+3.
+Step 1: Connect via Power Query
+Use Data → Get Data → From SQL Server Database to connect and load the Restaurants table into Excel (as you already did earlier).
+
+This connection is now a live link between Excel and SQL Server.
+
+🛠 Step 2: Configure Refresh Settings
+Go to the Data tab in Excel.
+
+Click the dropdown under Refresh All → Connection Properties.
+
+In the Usage tab, enable:
+
+Refresh data when opening the file → ensures the latest records load each time you open Excel.
+
+Refresh every X minutes → set an interval (e.g., 10 minutes) for automatic refresh.
+
+Or leave it manual if you prefer one-click refresh.
+
+🛠 Step 3: One-Click Refresh
+Once configured, you can simply click Refresh All in the Data tab whenever new records are added in SQL Server.
+
+Excel will query the database again and update the worksheet with the latest rows.
+
+4.
+Dashboard Layout
+
+name		cuisine	rating
+Spice Villa	Indian	4.5
+Curry House	Indian	4.3
+Tandoori Hub	South Indian	4.2
+
+5.
+let
+    Source = Sql.Database("YourServerName", "YourDatabaseName"),
+    Restaurants = Source{[Schema="dbo",Item="Restaurants"]}[Data],
+    Filtered = Table.SelectRows(Restaurants, each [rating] >= MinRating and [rating] <= MaxRating)
+in
+    Filtered
