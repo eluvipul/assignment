@@ -1,0 +1,83 @@
+1.
+Download a sample IPL match data CSV file and load it into a new SQL table called ipl_matches using your preferred SQL tool (MySQL Workbench, DBeaver, or Azure Data Studio).
+2.
+Write a SQL query to select all matches where the team 'Mumbai Indians' played, then export the query results as a CSV file named mi_matches.csv.
+3.Connect Microsoft Excel to your SQL database and import the ipl_matches table. Create a simple table in Excel that shows the total matches played by each team.
+4.
+Connect Power BI Desktop to your SQL database, import the ipl_matches table, and create a pivot chart showing the number of wins for each team.
+5.
+Use Python (with pandas and sqlalchemy) to read the mi_matches.csv file, filter matches where 'Mumbai Indians' won, and insert those rows into a new SQL table called mi_wins.<br><br><em><strong>Hint:</strong> Use pandas.read_csv(), DataFrame filtering, and to_sql() for this task.</em>
+
+
+Queries:
+
+1.
+CREATE TABLE ipl_matches (
+    match_id INT,
+    team VARCHAR(100),
+    runs INT,
+    match_year INT
+);
+
+
+2.
+SELECT *
+FROM ipl_matches
+WHERE team = 'Mumbai Indians';
+
+3.
+1️⃣ Connect Excel to SQL
+Open Microsoft Excel → go to the Data tab.
+
+Select Get Data → From Database → From SQL Server Database (or MySQL/PostgreSQL depending on your setup).
+
+Enter your server name, database name, and credentials.
+
+Choose the ipl_matches table and load it into Excel.
+
+2️⃣ Create a Pivot Table
+Once the data is loaded:
+
+Go to Insert → PivotTable.
+
+Select the ipl_matches data range.
+
+Drag team into the Rows area.
+
+Drag match_id into the Values area.
+
+Change the aggregation to Count (this counts how many matches each team appears in).
+
+3️⃣ Example Output Table
+Team	Matches Played
+Mumbai Indians	210
+Chennai Super Kings	205
+Kolkata Knight Riders	198
+Royal Challengers Bangalore	202
+
+4.
+Example Output
+Team	Wins
+
+Mumbai Indians	12
+CSK		10
+RCB		8
+
+5.
+import pandas as pd
+from sqlalchemy import create_engine
+
+# Step 1: Read the CSV file
+df = pd.read_csv("mi_matches.csv")
+
+# Step 2: Filter matches where Mumbai Indians won
+mi_wins_df = df[df['winner'] == 'Mumbai Indians']
+
+# Step 3: Connect to SQL database (replace with your actual connection string)
+# Example for PostgreSQL:
+engine = create_engine("postgresql://username:password@localhost:5432/your_database")
+
+# Step 4: Insert filtered rows into a new table called mi_wins
+mi_wins_df.to_sql("mi_wins", engine, if_exists="replace", index=False)
+
+print("Inserted Mumbai Indians wins into mi_wins table successfully!")
