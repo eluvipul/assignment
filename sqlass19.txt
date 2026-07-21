@@ -1,0 +1,57 @@
+1.
+Run a SELECT query on a large 'orders' table (at least 10,000 rows) to find all orders for a specific user_id and measure the query execution time.
+2.
+Create an index on the user_id column of the 'orders' table and re-run the same SELECT query to measure the new execution time.<br><br><em><strong>Hint:</strong> Use CREATE INDEX idx_user_id ON orders(user_id); and compare the times before and after.</em>
+3.
+Use the EXPLAIN PLAN command to analyze how your SELECT query runs before and after adding the index, and write down the key differences you observe in the output.
+4.
+Write a query for a 'products' table that avoids a full table scan by using an index on the 'category' column to fetch all products in a specific category.
+5.
+Suppose your SELECT query on the 'orders' table is still slow even after adding an index. Use EXPLAIN PLAN and research at least one more optimization technique (other than indexing) using an AI tool like ChatGPT or Copilot, and describe how you would apply it.
+
+
+Queries:
+
+1.
+SELECT *
+FROM Orders
+WHERE user_id = 12345;
+
+2.
+CREATE INDEX idx_orders_user_id
+ON Orders(user_id);
+
+3.
+EXPLAIN PLAN FOR
+SELECT imdb_id, RIGHT(imdb_id, 7) AS movie_number
+FROM movies;
+
+4.
+CREATE INDEX idx_category ON products(category);
+
+5.
+
+KEY DIFFERENCES OBSERVED:
+
+Without Index
+
+Full Table Scan: The plan shows that the database reads every row in the movies table because there’s no supporting index.
+
+High Cost: The optimizer assigns a relatively high cost since it must scan all rows sequentially.
+
+Access Path: "TABLE ACCESS FULL" is the typical operation listed.
+
+With Index
+
+Index Range Scan: After creating an index on imdb_id, the plan shows "INDEX RANGE SCAN" or "INDEX FULL SCAN" depending on how the query is written.
+
+Lower Cost: The optimizer cost drops significantly because the database can jump directly to the indexed values instead of scanning the entire table.
+
+Reduced I/O: The number of blocks read decreases, improving performance especially for large tables.
+
+📊 Example Plan Comparison
+Scenario	Access Path	Cost	Notes
+Without Index	TABLE ACCESS FULL	High	Reads all rows sequentially
+With Index	INDEX RANGE SCAN	Low	Uses index on imdb_id for faster lookup
+
+
