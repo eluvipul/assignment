@@ -1,0 +1,96 @@
+1.
+Use pandas' read_sql() function to load all records from a 'restaurants' table (with columns like name, cuisine, rating) in your local SQLite database into a DataFrame, then display the first 5 rows.
+2.
+In a Jupyter Notebook, use the %sql magic command to run a SQL query that selects all movies with a rating above 8 from a 'movies' table, and display the results in the notebook.
+3.
+Combine SQL and Python to analyze Zomato-style order data: use pandas read_sql() to load the last 100 orders from an 'orders' table, then use DataFrame methods to find the top 3 most ordered food items.
+4.
+After loading IPL match data from a 'matches' table into a pandas DataFrame, create a bar chart showing the number of matches played by each team using matplotlib or seaborn.<br><br><em><strong>Hint:</strong> Use groupby() in pandas to count matches per team before plotting.</em>
+5.
+Use ChatGPT or Copilot to help you write a Jupyter Notebook cell that connects to a SQLite database, runs a SQL query to fetch all users who have placed more than 5 orders, and loads the result into a pandas DataFrame.
+
+Queries:
+
+1.import pandas as pd
+from sqlalchemy import create_engine
+
+# Step 1: Connect to your local SQLite database
+engine = create_engine("sqlite:///my_database.db")  # replace with your actual DB file
+
+# Step 2: Use pandas read_sql() to load the table
+df = pd.read_sql("SELECT * FROM restaurants", engine)
+
+# Step 3: Display the first 5 rows
+print(df.head())
+
+2.
+SELECT *
+FROM movies
+WHERE rating > 8;
+
+3.
+import pandas as pd
+from sqlalchemy import create_engine
+
+# Step 1: Connect to your local database (SQLite example)
+engine = create_engine("sqlite:///zomato_orders.db")  # replace with your DB path
+
+# Step 2: Load the last 100 orders using read_sql()
+query = """
+SELECT *
+FROM orders
+ORDER BY order_date DESC
+LIMIT 100;
+"""
+df = pd.read_sql(query, engine)
+
+# Step 3: Find the top 3 most ordered food items
+top_items = (
+    df['food_item']
+    .value_counts()
+    .head(3)
+)
+
+print("Top 3 most ordered food items:")
+print(top_items)
+
+4.
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sqlalchemy import create_engine
+
+# Step 1: Connect to your database and load matches table
+engine = create_engine("sqlite:///ipl.db")  # replace with your DB path
+df = pd.read_sql("SELECT * FROM matches", engine)
+
+# Step 2: Count matches played by each team
+# Assuming columns 'team1' and 'team2' exist
+team_counts = pd.concat([df['team1'], df['team2']]).value_counts()
+
+# Step 3: Create bar chart
+plt.figure(figsize=(10,6))
+sns.barplot(x=team_counts.index, y=team_counts.values, palette="viridis
+
+5.
+import pandas as pd
+from sqlalchemy import create_engine
+
+# Step 1: Connect to your SQLite database
+engine = create_engine("sqlite:///my_database.db")  # replace with your actual DB file path
+
+# Step 2: Define and run the SQL query
+query = """
+SELECT user_id, COUNT(order_id) AS total_orders
+FROM orders
+GROUP BY user_id
+HAVING COUNT(order_id) > 5;
+"""
+
+# Step 3: Load results into a pandas DataFrame
+df = pd.read_sql(query, engine)
+
+# Step 4: Display the DataFrame
+print(df.head())
+
+
