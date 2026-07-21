@@ -1,48 +1,58 @@
 1.
-Write an SQL query using CONCAT to combine first_name and last_name columns from a users table into a single full_name column and display the result.
+Write an SQL query using CASE WHEN to classify orders in a 'FoodOrders' table as 'Small', 'Medium', or 'Large' based on the total_amount: 'Small' for less than 300, 'Medium' for 300 to 999, and 'Large' for 1000 and above.
 2.
-Given a table called playlists with a column song_title, write a query to display all song titles in uppercase using the UPPER function.
+Given a 'Movies' table with a 'rating' column (out of 10), write an SQL query that adds a new column 'popularity' which shows 'Blockbuster' for ratings 8 and above, 'Hit' for 5 to 7.9, and 'Average' for below 5 using CASE WHEN ELSE END.
 3.
-You have a table food_items with a column item_code that sometimes contains extra spaces at the beginning or end. Write an SQL query to select item_code values after removing all leading and trailing spaces using TRIM.
+For a 'FlipkartProducts' table with a 'price' column, write an SQL query to create a 'price_category' column that bins prices as 'Budget' (below 500), 'Standard' (500 to 2000), and 'Premium' (above 2000) using CASE WHEN.
 4.
-In a table called movies, the column imdb_id contains codes like 'tt1234567'. Write a query to extract just the numeric part (the last 7 characters) using RIGHT and display it as movie_number.<br><br><em><strong>Hint:</strong> Use RIGHT(imdb_id, 7) to get the numeric part.</em>
-5.
-A products table has a column sku_code where some entries use dashes (e.g. 'MOB-123-XY'). Write an SQL query to replace all dashes '-' with underscores '_' in sku_code using the REPLACE function and display the updated codes.
-
-
+Write an SQL query for a 'SpotifyTracks' table that uses CASE WHEN to assign a 'duration_label' column: 'Short' for tracks under 180 seconds, 'Medium' for 180-300 seconds, and 'Long' for over 300 seconds.<br><br><em><strong>Hint:</strong> Use multiple WHEN conditions to cover all possible durations.</em>
 
 Queries:
 
 1.
 SELECT 
-    first_name,
-    last_name,
-    CONCAT(first_name, ' ', last_name) AS full_name
-FROM users
-ORDER BY full_name;
+    order_id,
+    total_amount,
+    CASE 
+        WHEN total_amount < 300 THEN 'Small'
+        WHEN total_amount BETWEEN 300 AND 999 THEN 'Medium'
+        WHEN total_amount >= 1000 THEN 'Large'
+    END AS order_size
+FROM FoodOrders;
 
 2.
 SELECT 
-    song_title,
-    UPPER(song_title) AS uppercase_title
-FROM playlists
-ORDER BY uppercase_title;
+    movie_id,
+    rating,
+    CASE 
+        WHEN rating >= 8 THEN 'Blockbuster'
+        WHEN rating BETWEEN 5 AND 7.9 THEN 'Hit'
+        ELSE 'Average'
+    END AS popularity
+FROM Movies;
 
 3.
 SELECT 
-    item_code,
-    TRIM(item_code) AS cleaned_item_code
-FROM food_items
-ORDER BY cleaned_item_code;
+    product_id,
+    name,
+    price,
+    CASE 
+        WHEN price < 500 THEN 'Budget'
+        WHEN price BETWEEN 500 AND 2000 THEN 'Standard'
+        ELSE 'Premium'
+    END AS price_category
+FROM FlipkartProducts;
 
-4.
-SELECT 
-    imdb_id,
-    RIGHT(imdb_id, 7) AS movie_number
-FROM movies;
+4.SELECT 
+    track_id,
+    track_name,
+    duration_sec,
+    CASE 
+        WHEN duration_sec < 180 THEN 'Short'
+        WHEN duration_sec BETWEEN 180 AND 300 THEN 'Medium'
+        ELSE 'Long'
+    END AS duration_label
+FROM SpotifyTracks;
 
-5.
-SELECT 
-    sku_code,
-    REPLACE(sku_code, '-', '_') AS updated_sku_code
-FROM products;
+
+
