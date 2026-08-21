@@ -1,0 +1,106 @@
+1.
+Create a Pandas DataFrame with a column 'username' containing 5 Instagram usernames in mixed case (e.g., 'CoolDude', 'foodieQueen', etc.), then use str.lower to convert all usernames to lowercase and print the result.
+2.
+Given a Pandas Series of song titles from your Spotify playlist, use str.replace to remove all occurrences of the word 'Remix' from the titles and display the cleaned list.
+3.
+You have a DataFrame with a 'review' column containing user reviews from Zomato. Use str.contains to filter and display only the reviews that mention the word 'delivery'.<br><br><em><strong>Hint:</strong> Remember to handle case sensitivity so that 'Delivery' and 'delivery' are both matched.</em>
+4.
+Take a Pandas Series of Flipkart product categories in the format 'Electronics/Mobiles/Smartphones', 'Home/Kitchen/Appliances', etc. Use str.split to extract just the main category (the part before the first '/') and create a new column with these values.
+5.
+Given a DataFrame of YouTube video titles, use str.upper to convert all titles to uppercase, then chain str.replace to substitute every space with an underscore.<br><br><em><strong>Constraint:</strong> Do this in a single line of code for the transformation.</em>
+
+
+Solutions:
+
+1.import pandas as pd
+
+# Step 1: Create DataFrame with mixed-case usernames
+data = {
+    "username": ["CoolDude", "foodieQueen", "TravelLover", "TechGuru", "MusicFan"]
+}
+df = pd.DataFrame(data)
+
+# Step 2: Convert usernames to lowercase
+df["username"] = df["username"].str.lower()
+
+# Step 3: Print result
+print(df)
+
+2.import pandas as pd
+
+# Example Series of song titles
+songs = pd.Series([
+    "Blinding Lights Remix",
+    "Shape of You Remix",
+    "Levitating Remix",
+    "Peaches",
+    "Stay Remix"
+])
+
+# Step 1: Remove 'Remix' from titles
+cleaned_songs = songs.str.replace("Remix", "", regex=False).str.strip()
+
+# Step 2: Display cleaned list
+print(cleaned_songs)
+
+3.import pandas as pd
+
+# Example DataFrame
+data = {
+    "review": [
+        "The delivery was super fast!",
+        "Loved the food, great taste.",
+        "Poor delivery experience, very late.",
+        "Amazing ambience and service.",
+        "Delivery charges are too high."
+    ]
+}
+df = pd.DataFrame(data)
+
+# Step 1: Filter reviews mentioning 'delivery'
+delivery_reviews = df[df["review"].str.contains("delivery", case=False, na=False)]
+
+# Step 2: Display filtered reviews
+print(delivery_reviews)
+
+4.import pandas as pd
+
+# Example Series of product categories
+categories = pd.Series([
+    "Electronics/Mobiles/Smartphones",
+    "Home/Kitchen/Appliances",
+    "Fashion/Men/Shirts",
+    "Books/Novels/Fiction",
+    "Beauty/Skincare/Face"
+])
+
+# Step 1: Convert Series into DataFrame
+df = pd.DataFrame({"CategoryPath": categories})
+
+# Step 2: Extract main category (before first '/')
+df["MainCategory"] = df["CategoryPath"].str.split("/").str[0]
+
+# Step 3: Display updated DataFrame
+print(df)
+
+
+5.import pandas as pd
+
+# Example DataFrame
+data = {
+    "title": [
+        "Blinding Lights live",
+        "Shape of You acoustic",
+        "Levitating remix",
+        "Peaches official video",
+        "Stay performance"
+    ]
+}
+df = pd.DataFrame(data)
+
+# Step 1: Convert titles to uppercase and replace spaces with underscores
+df["title_cleaned"] = df["title"].str.upper().str.replace(" ", "_")
+
+# Step 2: Display updated DataFrame
+print(df)
+
