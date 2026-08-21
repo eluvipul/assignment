@@ -1,0 +1,71 @@
+1.
+Download a CSV file containing a list of movies with columns like 'title', 'genre', 'rating', and 'box_office', then use pandas to load this file and select only the 'title' and 'rating' columns using the loc method.
+2.
+Given a DataFrame of Flipkart products with columns 'product_name', 'category', and 'price', use iloc to select the first 10 rows and all columns, and print the result.
+3.
+Using a DataFrame of food orders from Zomato with columns 'restaurant', 'order_amount', and 'delivery_time', filter and display only those orders where 'order_amount' is greater than 500 using a boolean condition.
+4.
+Given a DataFrame of Spotify songs with columns 'song', 'artist', 'streams', and 'duration', use the query() method to select all songs with more than 1,000,000 streams and duration less than 180 seconds.<br><br><em><strong>Hint:</strong> Use the query syntax: query('streams > 1000000 and duration < 180')</em>
+5.
+Suppose you have a DataFrame of IPL cricket matches with columns 'team1', 'team2', 'winner', and 'total_runs'. Write code to filter and display all matches where 'total_runs' is between 180 and 220 using boolean indexing.<br><br><em><strong>Constraint:</strong> Do not use the query() method for this task.</em>
+
+
+Solution:
+
+1.import pandas as pd
+
+# Step 1: Load the CSV file
+df = pd.read_csv("movies.csv")  # replace with your actual file path
+
+# Step 2: Select only 'title' and 'rating' columns using loc
+selected = df.loc[:, ["title", "rating"]]
+
+# Step 3: Display the result
+print(selected.head())
+
+2.import pandas as pd
+
+# Assume df is your DataFrame with columns: product_name, category, price
+# Example: df = pd.read_csv("flipkart_products.csv")
+
+# Select first 10 rows and all columns using iloc
+result = df.iloc[:10, :]
+
+# Print the result
+print(result)
+
+3.import pandas as pd
+
+# Assume df is your DataFrame with columns: restaurant, order_amount, delivery_time
+# Example: df = pd.read_csv("zomato_orders.csv")
+
+# Apply boolean condition to filter orders
+filtered_orders = df[df["order_amount"] > 500]
+
+# Display the result
+print(filtered_orders)
+
+4.import pandas as pd
+
+# Assume df is your DataFrame with columns: song, artist, streams, duration
+# Example: df = pd.read_csv("spotify_songs.csv")
+
+# Use query() to filter songs
+filtered_songs = df.query("streams > 1000000 and duration < 180")
+
+# Display the result
+print(filtered_songs)
+
+5.import pandas as pd
+
+# Assume df is your DataFrame with columns: team1, team2, winner, total_runs
+# Example: df = pd.read_csv("ipl_matches.csv")
+
+# Apply boolean condition for total_runs between 180 and 220
+filtered_matches = df[(df["total_runs"] >= 180) & (df["total_runs"] <= 220)]
+
+# Display the result
+print(filtered_matches)
+
+
+
