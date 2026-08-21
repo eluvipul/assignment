@@ -1,0 +1,62 @@
+1.
+Download a CSV file of IPL match results from Kaggle or any open dataset, then use pandas read_csv() to load it into a DataFrame and display the first 10 rows using head().
+2.
+Find a small Excel file of your own mobile expenses (or create one with 5-10 rows), then use pandas read_excel() to load it and print the last 3 rows using tail().
+3.
+Use describe() and info() on a DataFrame loaded from a Zomato restaurant dataset (or any food delivery data you can find online), and write down 2 insights about the data (for example: number of restaurants, missing values, or average ratings).<br><br><em><strong>Hint:</strong> Focus on what info() and describe() reveal about columns and data types.</em>
+4.
+Export the DataFrame from your IPL or food delivery dataset to a new CSV file called 'filtered_data.csv', but only include the first 20 rows.
+5.
+Load any dataset of your choice (not the one used in the class demo), and export it to Excel format with a custom sheet name like 'Analysis2024'.<br><br><em><strong>Constraint:</strong> Use the to_excel() method and set the sheet_name parameter.</em>
+
+
+Solutions:
+
+1.import pandas as pd
+
+# Load the IPL match results CSV
+df = pd.read_csv("ipl_matches.csv")
+
+# Display the first 10 rows
+print(df.head(10))
+
+
+match_id	season	date	team1	team2	winner	venue
+1	2008	2008-04-18	Kolkata Knight Riders	Royal Challengers Bangalore	Kolkata Knight Riders	Eden Gardens
+2	2008	2008-04-19	Chennai Super Kings	Kings XI Punjab	Chennai Super Kings	PCA Stadium
+
+2.import pandas as pd
+
+# Load the Excel file
+df = pd.read_excel("mobile_expenses.xlsx")
+
+# Print the last 3 rows
+print(df.tail(3))
+
+
+3.import pandas as pd
+
+# Load a Zomato dataset (replace with your file path)
+df = pd.read_csv("zomato.csv")
+
+# Check structure and summary
+print(df.info())
+print(df.describe())
+
+
+4.import pandas as pd
+
+# Example: load IPL dataset
+df = pd.read_csv("ipl_matches.csv")
+# Export first 20 rows to a new CSV
+df.head(20).to_csv("filtered_data.csv", index=False)
+
+5.import pandas as pd
+
+# Load a dataset (example: Zomato restaurant data)
+df = pd.read_csv("zomato.csv")
+
+# Preview first few rows
+print(df.head())
+df.to_excel("analysis_output.xlsx", sheet_name="Analysis2024", index=False)
+
