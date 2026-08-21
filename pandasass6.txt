@@ -1,0 +1,112 @@
+1.
+Load a CSV file of Spotify song streams (with columns: song, artist, streams, date) into a pandas DataFrame and use drop_duplicates() to remove any duplicate song entries, keeping only the first occurrence.
+2.
+Given a pandas DataFrame of Flipkart product reviews with columns: product_id, user_id, rating, review_text, identify and print the number of duplicate reviews (where product_id and user_id are both the same) before and after using drop_duplicates().
+3.
+Use the IQR method to detect outliers in the 'order_amount' column of a Zomato orders DataFrame and print the order IDs that are considered outliers.<br><br><em><strong>Hint:</strong> Calculate Q1, Q3, and IQR, then filter orders outside the [Q1 - 1.5*IQR, Q3 + 1.5*IQR] range.</em>
+4.
+For a DataFrame containing daily IPL match ticket sales (columns: date, tickets_sold), calculate the Z-score for each day's tickets_sold, and print the dates where the absolute Z-score is greater than 2.<br><br><em><strong>Constraint:</strong> Use pandas and scipy.stats.zscore for calculations.</em>
+5.
+Use ChatGPT or Copilot to generate a pandas function that finds and returns all outlier transaction amounts in a Paytm wallet DataFrame using the Z-score method, then test the function with sample data.
+
+Solutions:
+
+1.import pandas as pd
+
+# Step 1: Load the CSV file
+df = pd.read_csv("spotify_streams.csv")  # replace with your actual file path
+
+# Step 2: Drop duplicate song entries, keeping the first occurrence
+df_cleaned = df.drop_duplicates(subset=["song"], keep="first")
+
+# Step 3: Print the cleaned DataFrame
+print(df_cleaned)
+
+2.import pandas as pd
+
+# Example DataFrame
+df = pd.DataFrame({
+    "product_id": [101, 101, 102, 103, 103, 103],
+    "user_id":    [1,   1,   2,   3,   3,   4],
+    "rating":     [5,   5,   4,   3,   3,   4],
+    "review_text": [
+        "Excellent product!",
+        "Excellent product!",   # duplicate
+        "Good value for money",
+        "Average quality",
+        "Average quality",      # duplicate
+        "Nice design"
+    ]
+})
+
+
+# Step 1: Count duplicates before removal
+duplicates_before = df.duplicated(subset=["product_id", "user_id"]).sum()
+print("Number of duplicate reviews before:", duplicates_before)
+
+# Step 2: Drop duplicates (keep first occurrence)
+df_cleaned = df.drop_duplicates(subset=["product_id", "user_id"], keep="first")
+
+# Step 3: Count duplicates after removal
+duplicates_after = df_cleaned.duplicated(subset)
+
+3.import pandas as pd
+
+
+import pandas as pd
+
+# Example Zomato orders DataFrame
+df = pd.DataFrame({
+    "order_id": [101, 102, 103, 104, 105, 106, 107],
+    "customer_name": ["Amit", "Priya", "Rahul", "Sneha", "Karan", "Neha", "Arjun"],
+    "order_amount": [250, 300, 280, 5000, 270, 260, 10000]  # notice the outliers
+})
+
+# Step 1: Calculate Q1, Q3, and IQR
+Q1 = df["order_amount"].quantile(0.25)
+Q3 = df["order_amount"].quantile(0.75)
+IQR = Q3 - Q1
+
+# Step 2: Define bounds
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+4.import pandas as pd
+
+# Example DataFrame
+# df = pd.read_csv("ipl_ticket_sales.csv") 
+# Columns: date, tickets_sold
+
+# Step 1: Calculate mean and standard deviation
+mean_sales = df["tickets_sold"].mean()
+std_sales = df["tickets_sold"].std()
+
+# Step 2: Compute Z-score for each row
+df["z_score"] = (df["tickets_sold"] - mean_sales) / std_sales
+
+# Step 3: Filter rows
+
+5.
+import pandas as pd
+
+# Example DataFrame
+# df = pd.read_csv("ipl_ticket_sales.csv") 
+# Columns: date, tickets_sold
+
+# Step 1: Calculate mean and standard deviation
+mean_sales = df["tickets_sold"].mean()
+std_sales = df["tickets_sold"].std()
+
+# Step 2: Compute Z-score for each row
+df["z_score"] = (df["tickets_sold"] - mean_sales) / std_sales
+
+# Step 3: Filter rows with |Z-score| > 2
+outliers = df[df["z_score"].abs() > 2]
+
+# Step 4: Print the dates of outliers
+print("Dates with unusual ticket sales:")
+print(outliers["date"].tolist())
+
+
+
+
