@@ -1,0 +1,137 @@
+1.
+Create two DataFrames: one called users with columns user_id, username, and city (add at least 5 rows), and another called orders with columns order_id, user_id, and order_amount (add at least 7 rows). Merge them using pd.merge() to show only users who have placed an order (inner join).
+2.
+Using the same users and orders DataFrames, perform a left join to display all users along with their orders. If a user has not placed any orders, show NaN for order_id and order_amount.<br><br><em><strong>Hint:</strong> Use the how='left' parameter in pd.merge().</em>
+3.
+Imagine you have two DataFrames: restaurants (restaurant_id, name, city) and zomato_reviews (review_id, restaurant_id, rating, reviewer_city). Merge them using an outer join on restaurant_id to show all restaurants and all reviews, even if some restaurants have no reviews or some reviews are for restaurants not in your list.
+4.
+Create two DataFrames: playlists (playlist_id, user_id, genre) and user_profiles (user_id, username, city). Merge them using pd.merge() on both user_id and city to get playlists where the playlist owner's city matches the user profile city.
+5.
+Use ChatGPT or Copilot to generate sample code that merges two DataFrames: one for Flipkart products (product_id, name, category) and one for product ratings (rating_id, product_id, rating). Copy the code, run it, and modify it so that it performs a right join instead of the default
+
+Solutions:
+
+1.import pandas as pd
+
+# Step 1: Create users DataFrame
+users = pd.DataFrame({
+    "user_id": [1, 2, 3, 4, 5],
+    "username": ["Alice", "Bob", "Charlie", "David", "Eva"],
+    "city": ["Delhi", "Mumbai", "Bangalore", "Chennai", "Kolkata"]
+})
+
+# Step 2: Create orders DataFrame
+orders = pd.DataFrame({
+    "order_id": [101, 102, 103, 104, 105, 106, 107],
+    "user_id": [1, 2, 2, 3, 5, 5, 5],
+    "order_amount": [500, 300, 450, 700, 200, 150, 600]
+})
+
+# Step 3: Merge using inner join
+merged_df = pd.merge(users, orders, on="user_id", how="inner")
+
+# Step 4: Display merged DataFrame
+print(merged_df)
+
+2.import pandas as pd
+
+# Step 1: Create users DataFrame
+users = pd.DataFrame({
+    "user_id": [1, 2, 3, 4, 5],
+    "username": ["Alice", "Bob", "Charlie", "David", "Eva"],
+    "city": ["Delhi", "Mumbai", "Bangalore", "Chennai", "Kolkata"]
+})
+
+# Step 2: Create orders DataFrame
+orders = pd.DataFrame({
+    "order_id": [101, 102, 103, 104, 105, 106, 107],
+    "user_id": [1, 2, 2, 3, 5, 5, 5],
+    "order_amount": [500, 300, 450, 700, 200, 150, 600]
+})
+
+# Step 3: Perform left join
+merged_df = pd.merge(users, orders, on="user_id", how="left")
+
+3.import pandas as pd
+
+# Step 1: Create restaurants DataFrame
+restaurants = pd.DataFrame({
+    "restaurant_id": [1, 2, 3],
+    "name": ["Spice Villa", "Curry House", "Tandoori Hub"],
+    "city": ["Mumbai", "Delhi", "Bangalore"]
+})
+
+3.
+import pandas as pd
+
+# Step 1: Create restaurants DataFrame
+restaurants = pd.DataFrame({
+    "restaurant_id": [1, 2, 3],
+    "name": ["Spice Villa", "Curry House", "Tandoori Hub"],
+    "city": ["Mumbai", "Delhi", "Bangalore"]
+})
+
+# Step 2: Create zomato_reviews DataFrame
+zomato_reviews = pd.DataFrame({
+    "review_id": [101, 102, 103, 104],
+    "restaurant_id": [1, 2, 4, 5],  # 4 and 5 don't exist in restaurants
+    "rating": [4.5, 4.0, 3.5, 5.0],
+    "reviewer_city": ["Mumbai", "Delhi", "Hyderabad", "Chennai"]
+})
+
+# Step 3: Perform outer join
+merged_df = pd.merge(restaurants, zomato_reviews, on="restaurant_id", how="outer")
+
+# Step 4: Display merged DataFrame
+print(merged_df)
+
+4.import pandas as pd
+
+# Step 1: Create playlists DataFrame
+playlists = pd.DataFrame({
+    "playlist_id": [301, 302, 303, 304],
+    "user_id": [1, 2, 3, 4],
+    "genre": ["Rock", "Pop", "Jazz", "Classical"],
+    "city": ["Delhi", "Mumbai", "Bangalore", "Chennai"]  # playlist owner's city
+})
+
+# Step 2: Create user_profiles DataFrame
+user_profiles = pd.DataFrame({
+    "user_id": [1, 2, 3, 5],
+    "username": ["Alice", "Bob", "Charlie", "Eva"],
+    "city": ["Delhi", "Mumbai", "Bangalore", "Kolkata"]  # user profile city
+})
+
+# Step 3: Merge on both user_id and city
+merged_df = pd.merge(playlists, user_profiles, on=["user_id", "city"], how="inner")
+
+# Step 4: Display merged DataFrame
+print(merged_df)
+
+
+5.import pandas as pd
+
+# Step 1: Create Flipkart products DataFrame
+products = pd.DataFrame({
+    "product_id": [1, 2, 3],
+    "name": ["Smartphone", "Laptop", "Headphones"],
+    "category": ["Electronics", "Electronics", "Accessories"]
+})
+
+# Step 2: Create product ratings DataFrame
+ratings = pd.DataFrame({
+    "rating_id": [101, 102, 103, 104],
+    "product_id": [1, 2, 4, 5],  # Notice 4 and 5 don't exist in products
+    "rating": [4.5, 4.0, 3.5, 5.0]
+})
+
+# Step 3: Default merge (inner join)
+default_merge = pd.merge(products, ratings, on="product_id")
+print("Default (Inner Join):")
+print(default_merge)
+
+# Step 4: Modified merge (right join)
+right_merge = pd.merge(products, ratings, on="product_id", how="right")
+print("\nRight Join:")
+print(right_merge)
+
