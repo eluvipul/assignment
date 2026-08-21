@@ -1,0 +1,78 @@
+1.
+Create a Pandas Series of 5 random date strings in the format 'DD-MM-YYYY', then convert this Series to datetime objects using pd.to_datetime and print the result.
+2.
+Given a DataFrame with a 'release_date' column containing movie release dates (as strings), add three new columns: 'year', 'month', and 'day' by extracting these values from the 'release_date' column using Pandas.<br><br><em><strong>Hint:</strong> Use the .dt accessor after converting to datetime.</em>
+3.
+Generate a date range for the next 7 days starting from today using pd.date_range, and display the list of dates in the console.
+4.
+Suppose you have a DataFrame of Zomato Gold subscriptions with columns 'user_id' and 'start_date' (as strings). Calculate the tenure (in days) for each user by subtracting the 'start_date' from today's date, and add it as a new column 'tenure_days'.<br><br><em><strong>Hint:</strong> Use pd.to_datetime for conversion and (today - start_date).dt.days for calculation.</em>
+
+Solutions:
+
+1.import pandas as pd
+
+# Step 1: Create a Series of random date strings
+dates = pd.Series([
+    "12-05-2021",
+    "23-11-2020",
+    "07-08-2019",
+    "15-01-2022",
+    "30-09-2023"
+])
+
+# Step 2: Convert to datetime objects
+dates_converted = pd.to_datetime(dates, format="%d-%m-%Y")
+
+# Step 3: Print result
+print(dates_converted)
+
+2.import pandas as pd
+
+# Example DataFrame
+data = {
+    "Movie": ["Inception", "Interstellar", "Tenet", "Dunkirk"],
+    "release_date": ["16-07-2010", "07-11-2014", "03-09-2020", "21-07-2017"]
+}
+df = pd.DataFrame(data)
+
+# Step 1: Convert release_date to datetime
+df["release_date"] = pd.to_datetime(df["release_date"], format="%d-%m-%Y")
+
+# Step 2: Extract year, month, and day
+df["year"] = df["release_date"].dt.year
+df["month"] = df["release_date"].dt.month
+df["day"] = df["release_date"].dt.day
+
+# Step 3: Display updated DataFrame
+print(df)
+
+3.import pandas as pd
+
+# Step 1: Generate date range for next 7 days
+date_range = pd.date_range(start=pd.Timestamp.today().normalize(), periods=7, freq="D")
+
+# Step 2: Print the list of dates
+print(date_range)
+
+4.import pandas as pd
+
+# Example DataFrame
+data = {
+    "user_id": [101, 102, 103, 104],
+    
+    "start_date": ["2026-07-01", "2026-06-15", "2026-08-01", "2026-05-20"]
+}
+df = pd.DataFrame(data)
+
+# Step 1: Convert start_date to datetime
+df["start_date"] = pd.to_datetime(df["start_date"], format="%Y-%m-%d")
+
+# Step 2: Get today's date
+today = pd.Timestamp.today().normalize()
+
+# Step 3: Calculate tenure in days
+df["tenure_days"] = (today - df["start_date"]).dt.days
+
+# Step 4: Display updated DataFrame
+print(df)
+
