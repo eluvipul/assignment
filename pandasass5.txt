@@ -1,0 +1,89 @@
+1.
+Download a CSV file of IPL cricket players with columns for player name, team, and age, then use pandas to load it and print out all rows where the age column has missing values.
+2.
+Using a dataset of food delivery orders (with columns: order_id, customer_name, delivery_rating), use pandas to drop all rows where the delivery_rating is missing and display the cleaned DataFrame.
+3.
+Given a Flipkart-style product reviews dataset with some missing 'rating' values, use pandas to fill all missing ratings with the mean rating of the dataset and print the updated DataFrame.<br><br><em><strong>Hint:</strong> Use the fillna() method with the mean() function.</em>
+4.
+You have a Spotify playlist CSV with missing 'duration' values for some songs. Replace all missing durations with the median duration of the available songs using pandas, then save the cleaned DataFrame to a new CSV file.
+5.
+Use ChatGPT to generate pandas code that replaces all missing values in a 'followers' column (from a simulated Instagram user data CSV) with 0, then test the code on your own sample data and submit both the code and the result.<br><br><em><strong>Hint:</strong> Ask ChatGPT: 'How do I replace missing values in a pandas DataFrame column with zero?'</em>
+
+
+Solutions:
+
+1.import pandas as pd
+
+# Step 1: Load the CSV file
+df = pd.read_csv("ipl_players.csv")  # replace with your actual file path
+
+# Step 2: Filter rows where 'age' is missing
+missing_age_players = df[df["age"].isnull()]
+
+# Step 3: Print the result
+print(missing_age_players)
+
+2.import pandas as pd
+
+# Example DataFrame
+df = pd.DataFrame({
+    "order_id": [101, 102, 103, 104, 105],
+    "customer_name": ["Amit", "Priya", "Rahul", "Sneha", "Karan"],
+    "delivery_rating": [5, None, 4, None, 3]
+})
+
+# Step 1: Drop rows with missing delivery_rating
+df_cleaned = df.dropna(subset=["delivery_rating"])
+
+# Step 2: Display the cleaned DataFrame
+print(df_cleaned)
+
+3.import pandas as pd
+
+# Example DataFrame
+df = pd.DataFrame({
+    "product_name": ["Laptop", "Smartphone", "Shoes", "Watch", "Headphones"],
+    "rating": [4.5, None, 3.8, None, 4.2],
+    "review": ["Great performance", "Good value", "Comfortable", "Stylish", "Clear sound"]
+})
+
+# Step 1: Calculate mean rating (ignores NaN by default)
+mean_rating = df["rating"].mean()
+
+# Step 2: Fill missing ratings with mean
+df["rating"] = df["rating"].fillna(mean_rating)
+
+# Step 3: Display updated DataFrame
+print(df)
+
+4.import pandas as pd
+
+# Step 1: Load the CSV file
+df = pd.read_csv("spotify_playlist.csv")  # replace with your actual file path
+
+# Step 2: Calculate the median duration (ignores NaN by default)
+median_duration = df["duration"].median()
+
+# Step 3: Fill missing durations with the median
+df["duration"] = df["duration"].fillna(median_duration)
+
+# Step 4: Save the cleaned Data
+
+5.import pandas as pd
+
+# Step 1: Create sample Instagram user data
+df = pd.DataFrame({
+    "username": ["user1", "user2", "user3", "user4", "user5"],
+    "followers": [1200, None, 560, None, 300],
+    "posts": [50, 20, 35, 10, 5]
+})
+
+print("Original DataFrame:")
+print(df)
+
+# Step 2: Replace missing values in 'followers' with 0
+df["followers"] = df["followers"].fillna(0)
+
+print("\nCleaned DataFrame:")
+print(df)
+
