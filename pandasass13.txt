@@ -1,0 +1,87 @@
+1.
+Load the 'IPL_2023_Batsmen.csv' dataset (containing player name, runs, matches, average, strike rate) into a Pandas DataFrame and display the first 10 rows.
+2.
+Perform univariate analysis on the 'runs' column: calculate and print the mean, median, mode, minimum, and maximum runs scored by batsmen in the IPL_2023_Batsmen dataset.
+3.
+Create a Pandas DataFrame for your top 5 favorite Zomato restaurants with columns: 'name', 'rating', 'votes', and 'avg_cost'. Perform bivariate analysis between 'rating' and 'votes' by calculating their correlation coefficient.
+4.
+Generate summary statistics (count, mean, std, min, 25%, 50%, 75%, max) for all numeric columns in the IPL_2023_Batsmen DataFrame using the describe() function and interpret any one interesting insight you observe.<br><br><em><strong>Hint:</strong> Look for outliers or surprising averages in the summary.</em>
+5.
+Use ChatGPT to suggest two additional univariate or bivariate analyses you could perform on the IPL_2023_Batsmen dataset, then implement one of them in code and show the output.
+
+Solutions:
+
+1.import pandas as pd
+
+# Step 1: Load the CSV file
+df = pd.read_csv("IPL_2023_Batsmen.csv")
+
+# Step 2: Display the first 10 rows
+print(df.head(10))
+
+2.import pandas as pd
+
+# Step 1: Load the dataset
+df = pd.read_csv("IPL_2023_Batsmen.csv")
+
+# Step 2: Perform univariate analysis on 'runs'
+mean_runs = df["runs"].mean()
+median_runs = df["runs"].median()
+mode_runs = df["runs"].mode()[0]   # mode() returns a Series, take the first value
+min_runs = df["runs"].min()
+max_runs = df["runs"].max()
+
+# Step 3: Print results
+print("Univariate Analysis of 'runs' column:")
+print(f"Mean runs   : {mean_runs}")
+print(f"Median runs : {median_runs}")
+print(f"Mode runs   : {mode_runs}")
+print(f"Minimum runs: {min_runs}")
+print(f"Maximum runs: {max_runs}")
+
+
+3.import pandas as pd
+
+# Step 1: Create DataFrame of favorite restaurants
+data = {
+    "name": ["Spice Villa", "Curry House", "Tandoori Hub", "Ocean Dine", "Golden Dragon"],
+    "rating": [4.5, 4.3, 4.2, 4.4, 4.6],
+    "votes": [120, 95, 60, 50, 80],
+    "avg_cost": [500, 400, 350, 600, 700]
+}
+
+df = pd.DataFrame(data)
+
+print("Favorite Zomato Restaurants:")
+print(df)
+
+# Step 2: Perform bivariate analysis (correlation between rating and votes)
+correlation = df["rating"].corr(df["votes"])
+
+print("\nCorrelation between rating and votes:")
+print(correlation)
+
+
+4.import pandas as pd
+
+# Step 1: Load the dataset
+df = pd.read_csv("IPL_2023_Batsmen.csv")
+
+# Step 2: Generate summary statistics
+summary_stats = df.describe()
+
+# Step 3: Display results
+print("Summary Statistics for Numeric Columns:")
+print(summary_stats)
+
+5.import pandas as pd
+
+# Step 1: Load dataset
+df = pd.read_csv("IPL_2023_Batsmen.csv")
+
+# Step 2: Calculate correlation between runs and batting average
+correlation = df["runs"].corr(df["average"])
+
+print("Correlation between runs and batting average:")
+print(correlation)
+
