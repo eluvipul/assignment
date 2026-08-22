@@ -1,0 +1,115 @@
+1.
+Download a dataset of IPL cricket matches (CSV) and use pandas to group the data by 'team' to find the total runs scored by each team. Display the result as a DataFrame.
+2.
+Given a DataFrame of Zomato food orders with columns ['city', 'restaurant', 'order_amount'], use groupby to calculate the average order_amount for each restaurant in each city using the agg() function.
+3.
+Take a Flipkart-style product sales DataFrame with columns ['category', 'region', 'sales', 'units_sold'], and apply multiple aggregations: for each (category, region) pair, calculate the total sales and the average units_sold using groupby and agg().
+4.
+Refactor the code that groups a DataFrame by 'region' and sums 'revenue' so it also returns the maximum and minimum revenue per region in the same result.<br><br><em><strong>Hint:</strong> Use agg() with a dictionary to specify multiple aggregation functions for the 'revenue' column.</em>
+5.
+Suppose you have a DataFrame of Spotify song streams with columns ['artist', 'genre', 'streams']. Use groupby and agg() to find both the total and average streams for each genre, then sort the result by total streams in descending order.<br><br><em><strong>Constraint:</strong> Your final DataFrame should have genres as the index and columns for total and average streams.
+
+Solutions:
+
+1.import pandas as pd
+
+# Step 1: Load IPL dataset (replace with actual CSV path)
+df = pd.read_csv("ipl_matches.csv")
+
+# Step 2: Group by team and sum runs
+team_runs = df.groupby("team")["runs"].sum().reset_index()
+
+# Step 3: Display result
+print(team_runs)
+
+2.
+
+import pandas as pd
+
+# Step 1: Example Zomato orders DataFrame
+data = {
+    "city": ["Mumbai", "Mumbai", "Delhi", "Delhi", "Bangalore", "Bangalore"],
+    "restaurant": ["Spice Villa", "Spice Villa", "Curry House", "Curry House", "Tandoori Hub", "Tandoori Hub"],
+    "order_amount": [500, 700, 300, 400, 600, 800]
+}
+df = pd.DataFrame(data)
+
+print("Original DataFrame:")
+print(df)
+
+# Step 2: Group by city and restaurant, then calculate average order_amount
+avg_orders = df.groupby(["city", "restaurant"]).agg(
+    avg_order_amount=("order_amount", "mean")
+).reset_index()
+
+print("\nAverage Order Amount per Restaurant in Each City:")
+print(avg_orders)
+
+3.import pandas as pd
+
+# Step 1: Example Flipkart-style sales DataFrame
+data = {
+    "category": ["Electronics", "Electronics", "Fashion", "Fashion", "Books", "Books"],
+    "region": ["North", "South", "North", "South", "North", "South"],
+    "sales": [60000, 45000, 20000, 25000, 12000, 15000],
+    "units_sold": [300, 250, 400, 350, 500, 600]
+}
+df = pd.DataFrame(data)
+
+print("Original DataFrame:")
+print(df)
+
+# Step 2: Group by category and region, apply multiple aggregations
+agg_result = df.groupby(["category", "region"]).agg(
+    total_sales=("sales", "sum"),
+    avg_units_sold=("units_sold", "mean")
+).reset_index()
+
+print("\nAggregated Result:")
+print(agg_result)
+
+4.import pandas as pd
+
+# Step 1: Example DataFrame
+data = {
+    "region": ["North", "North", "South", "South", "East", "East", "West", "West"],
+    "revenue": [5000, 7000, 8000, 6000, 4000, 4500, 9000, 8500]
+}
+df = pd.DataFrame(data)
+
+print("Original DataFrame:")
+print(df)
+
+# Step 2: Group by region and apply multiple aggregations
+region_stats = df.groupby("region").agg(
+    total_revenue=("revenue", "sum"),
+    max_revenue=("revenue", "max"),
+    min_revenue=("revenue", "min")
+)
+
+print("\nAggregated Result:")
+print(region_stats)
+
+5.import pandas as pd
+
+# Step 1: Example DataFrame
+data = {
+    "region": ["North", "North", "South", "South", "East", "East", "West", "West"],
+    "revenue": [5000, 7000, 8000, 6000, 4000, 4500, 9000, 8500]
+}
+df = pd.DataFrame(data)
+
+print("Original DataFrame:")
+print(df)
+
+# Step 2: Group by region and apply multiple aggregations
+region_stats = df.groupby("region").agg(
+    total_revenue=("revenue", "sum"),
+    max_revenue=("revenue", "max"),
+    min_revenue=("revenue", "min")
+)
+
+print("\nAggregated Result:")
+print(region_stats)
+
+
