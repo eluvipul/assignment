@@ -1,0 +1,97 @@
+1.
+Download a publicly available CSV dataset of IPL cricket matches (for example, from Kaggle or data.world), and use pandas to load it into a DataFrame named ipl_df. Display the first 5 rows.
+2.
+Clean the ipl_df DataFrame by removing any rows where the 'winner' column is missing or null, and reset the index afterwards.
+3.
+Transform the ipl_df DataFrame to add a new column 'match_margin_type' that labels each match as 'Runs' if the 'win_by_runs' value is greater than 0, 'Wickets' if 'win_by_wickets' is greater than 0, or 'Tie/No Result' otherwise.<br><br><em><strong>Hint:</strong> Use numpy.select() or pandas' apply() for this transformation.</em>
+4.
+Merge the ipl_df DataFrame with a separate DataFrame containing IPL team names and their home cities (create this manually with at least 5 teams), using the team name as the key, and add the home city for both 'team1' and 'team2' in each match.
+5.
+Create a pivot table to show the total number of matches won by each team per season, and display the top 3 teams with the most wins in any single season.
+
+
+Solutions:
+
+1.import pandas as pd
+
+# Load the IPL dataset
+ipl_df = pd.read_csv("ipl_matches.csv")
+
+# Display the first 5 rows
+print(ipl_df.head())
+
+
+2.import pandas as pd
+
+# Step 1: Remove rows with missing 'winner'
+ipl_df_cleaned = ipl_df.dropna(subset=["winner"])
+
+# Step 2: Reset the index
+ipl_df_cleaned = ipl_df_cleaned.reset_index(drop=True)
+
+# Step 3: Display the first 5 rows of the cleaned DataFrame
+print(ipl_df_cleaned.head())
+
+3.ipl_df["match_margin_type"] = ipl_df.apply(
+    lambda row: "Runs" if row["win_by_runs"] > 0 
+                else "Wickets" if row["win_by_wickets"] > 0 
+                else "Tie/No Result",
+    axis=1
+)
+
+print(ipl_df[["win_by_runs", "win_by_wickets", "match_margin_type"]].head())
+
+4.import pandas as pd
+
+# Step 1: Example IPL matches DataFrame (already loaded as ipl_df)
+# Columns include: ['date', 'season', 'team1', 'team2', 'winner', 'win_by_runs', 'win_by_wickets']
+
+# Step 2: Create a DataFrame of team names and their home cities
+teams_data = {
+    "team": ["Mumbai Indians", "Chennai Super Kings", "Royal Challengers Bangalore", 
+             "Kolkata Knight Riders", "Rajasthan Royals"],
+    "home_city": ["Mumbai", "Chennai", "Bangalore", "Kolkata", "Jaipur"]
+}
+teams_df = pd.DataFrame(teams_data)
+
+# Step 3: Merge to add home city for team1
+ipl_df = ipl_df.merge(teams_df, left_on="team1", right_on="team", how="left")
+ipl_df = ipl_df.rename(columns={"home_city": "team1_home_city"})
+ipl_df = ipl_df.drop(columns=["team"])
+
+# Step 4: Merge to add home city for team2
+ipl_df = ipl_df.merge(teams_df, left_on="team2", right_on="team", how="left")
+ipl_df = ipl_df.rename(columns={"home_city": "team2_home_city"})
+ipl_df = ipl_df.drop(columns=["team"])
+
+# Step 5: Display first 5 rows
+print(ipl_df.head())
+
+
+5.import pandas as pd
+
+# Step 1: Create pivot table of matches won per team per season
+pivot_table = pd.pivot_table(
+    ipl_df,
+    index="season",
+    columns="winner",
+    values="date",   # any column works, we just need counts
+    aggfunc="count",
+    fill_value=0
+)
+
+print("Pivot Table: Matches Won by Each Team per Season")
+print(pivot_table.head())
+
+# Step 2: Find the top 3 teams with most wins in any single season
+# Stack to long format, then sort
+wins_per_season = pivot_table.stack().reset_index()
+wins_per_season.columns = ["season", "team", "wins"]
+
+top3 = wins_per_season.sort_values(by="wins", ascending=False).head(3)
+
+print("\nTop 3 Teams with Most Wins in a Single Season Season:")
+print(top3)
+
+
+
