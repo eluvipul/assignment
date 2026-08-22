@@ -1,0 +1,50 @@
+1.
+Download and install Power BI Desktop on your computer, then open the application and take a screenshot of the blank report interface.
+2.
+Explore the Power BI Desktop interface and identify the following components: Report View, Data View, Model View, Fields Pane, Visualizations Pane, and Filters Pane. Write a short description (1-2 lines) for each component.
+3.
+Create a new blank report in Power BI Desktop and add a table visual using the Visualizations Pane. Rename the report page to 'My First Dashboard'.
+4.
+List 3 key differences between Excel Dashboards and Power BI Dashboards, focusing on features or workflows you noticed while exploring Power BI Desktop.
+
+Solutions:
+
+1.
+
+
+
+
+2. Key Components in Power BI Desktop
+Report View: The main canvas where you design dashboards with visuals.
+
+Data View: Shows the raw tables and columns imported into Power BI.
+
+Model View: Displays relationships between tables in a diagram format.
+
+Fields Pane: Lists all available tables and fields you can drag into visuals.
+
+Visualizations Pane: Contains chart types and formatting options to build visuals.
+
+Filters Pane: Lets you apply filters at visual, page, or report level.
+
+
+3.
+
+
+4.Data Connectivity
+
+Excel: Primarily works with static datasets or manual imports.
+
+Power BI: Connects directly to multiple live data sources (SQL, cloud services, APIs) with automatic refresh options.
+
+Interactivity
+
+Excel: Offers limited interactivity through slicers, filters, and pivot tables.
+
+Power BI: Provides dynamic drill-downs, cross-filtering between visuals, and interactive dashboards that respond instantly to user actions.
+
+Sharing & Collaboration
+
+Excel: Shared as files via email, OneDrive, or SharePoint.
+
+Power BI: Dashboards can be published to the Power BI Service, enabling real-time collaboration, role-based access, and cloud-based updates.
