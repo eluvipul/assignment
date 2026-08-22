@@ -1,0 +1,104 @@
+1.
+Open Power BI Desktop, load the provided 'Sample Data' Excel file, and switch between Report View, Data View, and Model View to observe how the data is displayed differently in each.
+2.
+In the Report View, use the Fields Pane to drag any two different fields onto the canvas and create two separate visualizations (for example, a bar chart and a pie chart).
+3.
+Use the Filters Pane in Report View to add a filter that only shows data for a specific value (for example, filter to display sales data for one city or category only).
+4.
+Explore the Ribbon commands under the Home and Insert tabs: add a new page to your report, and then insert a text box with your name on it.
+5.
+Switch to the Model View and use the Visualizations Pane to check relationships between tables; then, rename one field in the Fields Pane to make it more readable (for example, change 'Cust_ID' to 'Customer ID').<br><br><em><strong>Hint:</strong> Right-click the field name to rename it directly in the Fields Pane.</em>
+
+
+Solutions:
+
+1.Load the Sample Data
+Open Power BI Desktop.
+
+Go to Home → Get Data → Excel.
+
+Select your Sample Data file and load the tables into Power BI.
+
+🔄 Switching Between Views
+Report View
+
+This is the design canvas for dashboards.
+
+You’ll see a blank white area where you can add visuals (charts, tables, maps).
+
+Fields and visualization options appear on the right side.
+
+Data View
+
+Displays the raw data in a grid format, similar to Excel.
+
+Useful for checking values, column types, and transformations.
+
+Model View
+
+Shows tables as boxes and their relationships (lines connecting them).
+
+Helps you understand how different tables link together
+
+2.
+Steps to Add Visuals
+Open Power BI Desktop and make sure you’re in Report View (the canvas with a blank white background).
+
+On the right side, expand the Fields Pane to see the tables and columns from your Sample Data.
+
+From the Visualizations Pane, select a Bar Chart visual and drag one field (e.g., Sales Amount) into the chart.
+
+Next, select a Pie Chart visual and drag a different field (e.g., Product Category) into it.
+
+Arrange both visuals side by side on the canvas.
+
+3.Steps to Use the Filters Pane
+Make sure you’re in Report View with your visuals already created (e.g., bar chart and pie chart).
+
+On the right side, open the Filters Pane.
+
+Select the visual you want to filter (or apply it at the page/report level).
+
+Drag the field you want to filter (e.g., City or Category) into the Filters Pane.
+
+Choose a specific value (e.g., Ahmedabad or Electronics) by checking the box for that value.
+
+The visuals on your canvas will now update to display only the filtered data.
+
+4.
+Add a New Page
+In Report View, go to the Home tab on the Ribbon.
+
+Click New Page (or use the “+” icon at the bottom of the canvas).
+
+A fresh blank page will appear, ready for new visuals or content.
+
+✍️ Insert a Text Box
+Switch to the Insert tab on the Ribbon.
+
+Select Text Box.
+
+A text box will appear on the canvas.
+
+Type your name (e.g., ELU) inside the box.
+
+You can resize, move, and format the text using the formatting options in the Ribbon
+
+5.Check Relationships in Model View
+Switch to Model View from the left-hand toolbar (icon looks like a diagram).
+
+You’ll see each table represented as a box, with lines showing relationships between them.
+
+Use the Visualizations Pane here to inspect how tables are connected (e.g., one-to-many relationships).
+
+This helps you understand how data flows across tables for reporting.
+
+✍️ Rename a Field in Fields Pane
+Go to the Fields Pane on the right side.
+
+Locate the field you want to rename (e.g., Cust_ID).
+
+Right-click the field → select Rename.
+
+
+
