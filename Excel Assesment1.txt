@@ -1,0 +1,15 @@
+Excel Assesment1:
+Module 9 . Visualization
+Question 1. a correlation matrix in Excel, let’s consider the following example. You are the stock
+analyst in the investment bank. Your manager recently asked you to analyze the correlations
+between prices of stocks that can be potentially added to the portfolio
+You then analyze the stocks of the following companies: Zorto ,Maxp ,Survelia and Jecco . 
+
+Interpret the Results
+High correlation (close to 1.0) → Stocks move together (e.g., Maxp & Jecco at 0.70).
+
+Low correlation (close to 0) → Stocks move independently (e.g., Survelia & Jecco at 0.25).
+
+Negative correlation (<0) → Stocks move in opposite directions.
+
+For portfolio diversification, you want low or negative correlations to reduce risk.
