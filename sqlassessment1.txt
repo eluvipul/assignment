@@ -1,0 +1,88 @@
+Employee Details
+
+1.Order by First Name & Department
+
+SELECT * 
+FROM Worker
+ORDER BY FIRST_NAME ASC, DEPARTMENT DESC;
+
+2.Filter by specific names
+
+SELECT * 
+FROM Worker
+WHERE FIRST_NAME IN ('Vipul', 'Satish');
+
+3.Names ending with 'h' and 6 letters
+
+SELECT * 
+FROM Worker
+WHERE FIRST_NAME LIKE '_____h';
+
+4.Salary between values
+
+SELECT * 
+FROM Worker
+WHERE SALARY BETWEEN 1000 AND 2000;
+
+5.Fetch duplicate records
+
+SELECT FIRST_NAME, DEPARTMENT, COUNT(*)
+FROM Worker
+GROUP BY FIRST_NAME, DEPARTMENT
+HAVING COUNT(*) > 1;
+
+6.Top 6 records
+
+SELECT * 
+FROM Worker
+LIMIT 6;
+
+7.Departments with < 5 people
+
+SELECT DEPARTMENT
+FROM Worker
+GROUP BY DEPARTMENT
+HAVING COUNT(*) < 5;
+
+8.Departments with counts
+
+SELECT DEPARTMENT, COUNT(*) AS NumPeople
+FROM Worker
+GROUP BY DEPARTMENT;
+
+9.Highest salary per department
+
+SELECT DEPARTMENT, FIRST_NAME, SALARY
+FROM Worker w
+WHERE SALARY = (
+    SELECT MAX(SALARY)
+    FROM Worker
+    WHERE DEPARTMENT = w.DEPARTMENT
+);
+
+2.Student Details
+
+1.Details of all Students
+
+Select * from Students
+
+2.Name and DOB
+
+SELECT StdName, DOB FROM student;
+
+3.Percentage>=80
+
+SELECT * FROM student WHERE percentage >= 80;
+
+4.Name, Stream, Percentage > 80
+
+SELECT StdName, Stream, Percentage 
+FROM student 
+WHERE percentage > 80;
+
+5.Science students with percentage > 75
+
+SELECT * 
+FROM student 
+WHERE Stream = 'Science' AND Percentage > 75;
+
