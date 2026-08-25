@@ -1,0 +1,99 @@
+NumPy,Pandas,Matplotlib:
+
+1.Import pandas and read CSV
+
+import pandas as pd
+
+# Load dataset
+banks = pd.read_csv("banklist.csv")
+
+2.Show head of dataframe
+
+print(banks.head())
+
+3.Column names
+
+print(banks.columns)
+
+4.Number of States represented
+
+print(banks['ST'].nunique())
+
+5.List of all states
+
+print(banks['ST'].unique())
+
+6.Top 5 states with most failed banks
+
+print(banks['ST'].value_counts().head(5))
+
+7.Top 5 acquiring institutions
+
+print(banks['Acquiring Institution'].value_counts().head(5))
+
+8.State Bank of Texas acquisitions
+
+total_acquired = banks[banks['Acquiring Institution'] == 'State Bank of Texas'].shape[0]
+texas_acquired = banks[(banks['Acquiring Institution'] == 'State Bank of Texas') & (banks['ST'] == 'TX')].shape[0]
+
+print(total_acquired, texas_acquired)
+
+9.Most common city in California for bank failures
+
+print(banks[banks['ST'] == 'CA']['City'].value_counts().head(1))
+
+Assessment 2: Automobile Sales Dataset
+
+1.Line chart of sales over years
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = pd.read_csv("historical_automobile_sales.csv")
+
+# Group by Year and sum sales
+sales_by_year = df.groupby('Year')['Automobile_Sales'].sum()
+
+# Plot line chart
+sales_by_year.plot(kind='line', figsize=(10,6), marker='o')
+
+plt.title("Automobile Sales Over Years")
+plt.xlabel("Year")
+plt.ylabel("Total Sales")
+plt.grid(True)
+plt.show()
+
+2.Different lines for vehicle types
+
+df.groupby(['Year','Vehicle_Type'])['Automobile_Sales'].sum().unstack().plot(figsize=(12,6))
+plt.title("Sales Trends by Vehicle Type")
+plt.ylabel("Sales")
+plt.show()
+
+3.Seaborn comparison recession vs non-recession
+
+import seaborn as sns
+
+sns.lineplot(data=df, x='Year', y='Automobile_Sales', hue='Vehicle_Type', style='Recession')
+plt.title("Sales Trend per Vehicle Type (Recession vs Non-Recession)")
+plt.show()
+
+4.Bar chart comparing recession vs non-recession
+
+sns.barplot(
+    data=df,
+    x='Vehicle_Type',
+    y='Automobile_Sales',
+    hue='Recession',
+    estimator='mean'
+)
+plt.title("Average Sales by Vehicle Type (Recession vs Non-Recession)")
+plt.show()
+
+
+
+
+
+
+
