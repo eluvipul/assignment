@@ -1,0 +1,12 @@
+Interpret results
+High correlation (close to 1) → stocks move together (less diversification).
+
+Low correlation (close to 0) → stocks move independently (better diversification).
+
+Negative correlation (<0) → stocks move in opposite directions (useful for hedging).
+
+Example:
+
+Zorto & Maxp (0.82) → strongly related.
+
+Jecco & Zorto (0.40) → more independent, good for diversification.
