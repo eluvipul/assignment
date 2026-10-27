@@ -1,0 +1,71 @@
+1.
+Create an array of 7 daily step counts (e.g., from your phone's fitness app) and write code to calculate the mean (average) number of steps.
+2.
+Given this list of food delivery times in minutes for your last 9 Zomato/Swiggy orders: [32, 28, 29, 45, 30, 31, 60, 30, 29], write a function to find the median delivery time.
+3.
+Imagine you tracked the genres of 12 YouTube videos you watched this week: ['Music', 'Vlog', 'Music', 'Tech', 'Music', 'Vlog', 'Tech', 'Music', 'Comedy', 'Vlog', 'Music', 'Comedy']. Write code to determine the mode (most watched genre).
+4.
+Take this array of daily UPI transaction amounts (in ₹): [100, 120, 105, 110, 5000, 115, 108]. Calculate both the mean and the median, then explain in 2-3 lines which is a better measure of your 'typical' transaction and why.<br><br><em><strong>Hint:</strong> Consider the effect of the ₹5000 value.</em>
+
+Solutions:
+
+1.
+
+ #Step counts for 7 days
+steps = [6500, 8200, 7500, 10000, 9000, 11000, 7800]
+
+# Calculate the mean (average)
+mean_steps = sum(steps) / len(steps)
+
+print("Daily step counts:", steps)
+print("Mean daily steps:", mean_steps)
+
+2.
+
+def find_median(delivery_times):
+    delivery_times.sort()
+    n = len(delivery_times)
+    middle = n // 2
+
+    if n % 2 == 1:
+        return delivery_times[middle]
+    else:
+        return (delivery_times[middle - 1] +
+                delivery_times[middle]) / 2
+
+
+times = [32, 28, 29, 45, 30, 31, 60, 30, 29]
+
+print("Median delivery time:", find_median(times), "minutes")
+
+3.
+from collections import Counter
+
+genres = [
+    'Music', 'Vlog', 'Music', 'Tech', 'Music', 'Vlog',
+    'Tech', 'Music', 'Comedy', 'Vlog', 'Music', 'Comedy'
+]
+
+# Count how often each genre appears
+genre_counts = Counter(genres)
+
+# Find the most watched genre
+mode_genre = genre_counts.most_common(1)[0][0]
+
+print("Genre counts:", genre_counts)
+print("Most watched genre:", mode_genre)
+
+
+4.
+transactions = [100, 120, 105, 110, 5000, 115, 108]
+
+# Calculate mean
+mean = sum(transactions) / len(transactions)
+
+# Calculate median
+sorted_transactions = sorted(transactions)
+n = len(sorted_transactions)
+median = sorted_transactions[n // 2]
+
+print("Mean transaction amount: ₹", round(mean, 2))
+print("Median transaction amount: ₹", median)
