@@ -1,0 +1,107 @@
+1.
+Open Microsoft Excel or Google Sheets, create a column named 'Order Amount', and enter 20 random numbers between 100 and 1000 to simulate Zomato order values for a day.
+2.
+From your 'Order Amount' data, calculate the mean, median, and mode using Excel or Sheets functions (AVERAGE, MEDIAN, MODE) and write the results below your data.
+3.
+Select the first 5 values from your 'Order Amount' column as a sample. Calculate the sample mean and compare it to the population mean you found earlier.<br><br><em><strong>Hint:</strong> Use the AVERAGE function for both calculations and observe the difference between sample and population means.</em>
+4.
+Write a short paragraph explaining the difference between 'population' and 'sample' using your Zomato order data as an example. Mention which one is more practical to use for a food delivery company and why.
+
+Solutions:
+
+1.
+
+
+Order Amount
+250
+480
+150
+720
+350
+890
+420
+600
+180
+950
+300
+540
+670
+220
+800
+450
+990
+380
+710
+120
+
+2.
+
+Using the 20 Zomato order amounts from the previous step, here are the Excel/Google Sheets formulas and results.
+
+## 1. Order Amount data and calculations
+
+| Cell | Order Amount (₹) |
+| --- | --- |
+| A1 | Order Amount |
+| A2–A21 | 250, 480, 150, 720, 350, 890, 420, 600, 180, 950, 300, 540, 670, 220, 800, 450, 990, 380, 710, 120 |
+
+Enter the following formulas below your data, for example in cells A23:B25.
+
+| Statistic | Excel / Sheets formula | Result |
+| --- | --- | --- |
+| Mean | `=AVERAGE(A2:A21)` | ₹509.50 |
+| Median | `=MEDIAN(A2:A21)` | ₹450.00 |
+| Mode | `=MODE(A2:A21)` | No unique mode |
+
+Note: All 20 order amounts are different, so there is no mode. Excel and Google Sheets may return `#N/A` for the `MODE` formula when no value repeats.
+
+## 2. Interpretation
+
+- Mean (₹509.50): The average order amount across the 20 orders.
+- Median (₹450): Half the orders are at or below ₹450, and half are at or above it.
+- Mode: There is no mode because no order amount occurs more than once.
+
+3.
+
+## 1. Select the first 5 order amounts
+
+From our Zomato dataset, the first 5 values are:
+
+`[250, 480, 150, 720, 350]`
+
+## 2. Calculate the sample mean
+
+In Excel or Google Sheets, enter:
+
+excel
+
+```
+=AVERAGE(A2:A6)
+```
+
+Calculation:
+
+$$
+\text{Sample Mean}=\frac{250+480+150+720+350}{5}
+$$
+
+$$
+=\frac{1950}{5}=\boxed{₹390}
+$$
+
+## 3. Compare sample mean with population mean
+
+| Measure | Formula | Result |
+| --- | --- | --- |
+| Sample mean (5 orders) | `=AVERAGE(A2:A6)` | ₹390.00 |
+| Population mean (20 orders) | `=AVERAGE(A2:A21)` | ₹509.50 |
+| Difference | ₹509.50 − ₹390.00 | ₹119.50 |
+
+## 4. Interpretation
+
+The sample mean is ₹390, while the population mean is ₹509.50. The sample mean is ₹119.50 lower because the first five orders happen to have smaller amounts on average than the full dataset.
+
+Conclusion: A sample mean can differ from the population mean depending on which observations are selected. A larger, representative sample generally provides a more reliable estimate of the population mean.
+
+4.
+Population vs. Sample: In our Zomato order dataset, the population consists of all 20 order amounts recorded for the day, while the sample consists of the first 5 order amounts selected from those 20 orders. A population includes every observation of interest, whereas a sample is only a subset of the population. For a food delivery company like Zomato, using a sample is often more practical because the company handles thousands or millions of orders daily, making it faster and less expensive to analyze a representative subset of orders to understand customer spending patterns.
