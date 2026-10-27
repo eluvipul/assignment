@@ -1,0 +1,136 @@
+Tasks
+1.
+Write a Python script that generates 1000 random numbers following a normal distribution with mean 500 and standard deviation 100, then plot the resulting distribution using matplotlib.
+2.
+Given an array of daily step counts from a fitness app, calculate the Z-score for a specific day where the user walked 9500 steps. Assume the mean is 8000 and standard deviation is 1200.<br><br><em><strong>Hint:</strong> Use the formula Z = (X - μ) / σ.</em>
+3.
+Plot a standard normal curve (mean 0, standard deviation 1) using matplotlib, and shade the area between Z = -1 and Z = 1 to visualize the probability of values within one standard deviation.
+4.
+You are analyzing the delivery times (in minutes) for a food delivery app like Zomato. Given a normal distribution with mean 30 and standard deviation 5, write code to find the probability that a randomly selected delivery takes less than 25 minutes.<br><br><em><strong>Hint:</strong> Use scipy.stats.norm.cdf().</em>
+5.
+Use ChatGPT to explain in your own words why the normal distribution is important for analyzing real-world app data like sales, delivery times, or user ratings. Paste your prompt and the AI's answer in your submission.
+
+Solutions:
+1.
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters of the normal distribution
+mean = 500
+std_dev = 100
+size = 1000
+
+# Generate 1000 random numbers
+data = np.random.normal(loc=mean, scale=std_dev, size=size)
+
+# Plot the distribution as a histogram
+plt.figure(figsize=(9, 5))
+plt.hist(data, bins=30, color="skyblue", edgecolor="black",
+         alpha=0.75)
+
+plt.axvline(mean, color="red", linestyle="--",
+            linewidth=2, label="Mean = 500")
+
+plt.title("Normal Distribution of 1000 Random Numbers")
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.legend()
+plt.grid(axis="y", linestyle=":", alpha=0.5)
+
+plt.tight_layout()
+plt.show()
+
+# Display sample statistics
+print("Sample mean:", round(np.mean(data), 2))
+print("Sample standard deviation:", round(np.std(data), 2))
+
+2.
+X = 9500
+mean = 8000
+std_dev = 1200
+
+z_score = (X - mean) / std_dev
+
+print("Z-score:", z_score)
+
+3.
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Standard normal distribution: mean = 0, standard deviation = 1
+mu = 0
+sigma = 1
+
+# Generate x values and corresponding probability density
+x = np.linspace(-4, 4, 1000)
+y = norm.pdf(x, mu, sigma)
+
+# Plot the normal curve
+plt.figure(figsize=(9, 5))
+plt.plot(x, y, color="blue", linewidth=2, label="Standard normal curve")
+
+# Shade the area between Z = -1 and Z = 1
+x_shade = np.linspace(-1, 1, 300)
+y_shade = norm.pdf(x_shade, mu, sigma)
+plt.fill_between(x_shade, y_shade, color="skyblue",
+                 alpha=0.7, label="Area between Z = -1 and Z = 1")
+
+# Mark the Z boundaries
+plt.axvline(-1, color="red", linestyle="--", label="Z = -1")
+plt.axvline(1, color="red", linestyle="--", label="Z = 1")
+
+plt.title("Standard Normal Distribution")
+plt.xlabel("Z-score")
+plt.ylabel("Probability Density")
+plt.legend()
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# Calculate the probability
+probability = norm.cdf(1) - norm.cdf(-1)
+print(f"Probability between Z = -1 and Z = 1: {probability:.4f}")
+print(f"Percentage: {probability * 100:.2f}%")
+
+4.
+
+from scipy.stats import norm
+
+# Given parameters
+mean = 30
+std_dev = 5
+delivery_time = 25
+
+# Calculate probability of delivery taking less than 25 minutes
+probability = norm.cdf(delivery_time, loc=mean, scale=std_dev)
+
+print("Probability:", round(probability, 4))
+print(f"Percentage: {probability * 100:.2f}%")
+
+5.
+## 1\. Prompt given to ChatGPT
+
+Writing
+
+Explain in simple words why the normal distribution is important for analyzing real-world app data, such as sales, food delivery times, or user ratings. Give practical examples and explain how businesses can use it to make better decisions.
+
+## 2\. AI's answer
+
+The normal distribution is important because it helps businesses understand how data is spread around an average value. It usually looks like a bell-shaped curve, where most values are near the average and fewer values are extremely high or low.
+
+For example:
+
+- Sales: An e-commerce app like Flipkart can analyze daily sales to understand typical sales levels and identify unusually high or low sales days.
+- Delivery times: A food delivery app like Swiggy can study delivery times to estimate how long orders usually take and identify unusually delayed deliveries.
+- User ratings: An app can analyze restaurant ratings to understand overall customer satisfaction and identify ratings that differ significantly from the average.
+
+The normal distribution also helps businesses calculate probabilities, identify unusual observations using Z-scores, and make predictions based on historical data.
+
+However, not all real-world data follows a normal distribution. For example, sales amounts may be strongly skewed, and ratings are often limited to values such as 1 to 5 stars. Businesses should check the shape of their data before assuming it is normally distributed.
+
+## 3\. Conclusion
+
+The normal distribution helps businesses understand typical patterns, detect unusual events, and make better data-driven decisions about sales, delivery performance, and customer satisfaction.
