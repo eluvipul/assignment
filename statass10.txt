@@ -1,0 +1,3081 @@
+1.
+Create a Python script that generates a random sample of 20 users from a list of 200 user IDs, simulating how a music app like Spotify might select users for a feedback survey.
+2.
+Given an array of 1000 Flipkart orders labeled by city (e.g., 'Ahmedabad', 'Surat', 'Vadodara'), write code to generate a stratified sample of 60 orders, ensuring each city is proportionally represented in the sample.<br><br><em><strong>Hint:</strong> Calculate the proportion of orders per city and sample accordingly from each group.</em>
+3.
+Write a function to perform systematic sampling on a list of 500 Zomato restaurant reviews, selecting every 10th review to create a sample set.
+4.
+Suppose you want to estimate the average delivery time for Swiggy orders in your city. Explain with calculations how the sample size affects the accuracy of your estimate if you have access to 10,000 delivery records and can only sample 50, 200, or 500 records.
+5.
+Modify the stratified sampling demo shown in class: instead of customer segments, use a dataset of IPL cricket fans grouped by favorite team, and generate a stratified sample of 40 fans for a survey, ensuring each team is represented proportionally.<br><br><em><strong>Constraint:</strong> Do not copy the code from the demo—write your own logic for grouping and sampling.</em>
+
+Solutions:
+
+1.
+
+import random
+
+# Create a list of 200 user IDs
+user_ids = list(range(1, 201))
+
+# Randomly select 20 unique users for the survey
+survey_users = random.sample(user_ids, 20)
+
+# Display the selected users
+print("Selected users for Spotify feedback survey:")
+print(survey_users)
+
+print("Total users selected:", len(survey_users))
+
+2.
+
+import pandas as pd
+import numpy as np
+
+# Create a sample dataset of 1000 Flipkart orders
+np.random.seed(42)
+
+cities = ["Ahmedabad", "Surat", "Vadodara"]
+city_probabilities = [0.5, 0.3, 0.2]
+
+orders = pd.DataFrame({
+    "Order_ID": range(1, 1001),
+    "City": np.random.choice(
+        cities, size=1000, p=city_probabilities
+    )
+})
+
+# Calculate proportional sample sizes for each city
+sample_size = 60
+city_counts = orders["City"].value_counts()
+city_proportions = city_counts / len(orders)
+sample_counts = (city_proportions * sample_size).round().astype(int)
+
+# Adjust rounding so the total sample size is exactly 60
+while sample_counts.sum() < sample_size:
+    fractions = city_proportions * sample_size - sample_counts
+    sample_counts.loc[fractions.idxmax()] += 1
+
+while sample_counts.sum() > sample_size:
+    fractions = city_proportions * sample_size - sample_counts
+    sample_counts.loc[fractions.idxmin()] -= 1
+
+# Select orders proportionally from each city
+stratified_sample = pd.concat([
+    orders[orders["City"] == city].sample(
+        n=int(sample_counts[city]), random_state=42
+    )
+    for city in sample_counts.index
+], ignore_index=True)
+
+# Display results
+print("Sample size:", len(stratified_sample))
+print("\nOrders sampled per city:")
+print(stratified_sample["City"].value_counts())
+print("\nSelected orders:")
+print(stratified_sample.head())
+
+3.
+
+def systematic_sampling(reviews, interval=10):
+    # Select every 10th review, starting from the 10th
+    sample = reviews[interval - 1::interval]
+    return sample
+
+
+# Create 500 sample restaurant reviews
+reviews = [
+    f"Restaurant review {i}" for i in range(1, 501)
+]
+
+# Perform systematic sampling
+sampled_reviews = systematic_sampling(reviews)
+
+# Print results
+print("Total reviews:", len(reviews))
+print("Sample size:", len(sampled_reviews))
+print("Selected reviews:")
+print(sampled_reviews)
+
+4.
+1. Understanding the problem
+Suppose Swiggy has 10,000 delivery records and wants to estimate the average delivery time. We can select a sample of 50, 200, or 500 records.
+
+A larger sample generally gives a more accurate and reliable estimate because it captures more variation in delivery times.
+
+Assume:
+
+Population size (
+N
+N) = 10,000 orders
+
+Population standard deviation (
+σ
+σ) = 10 minutes (assumed for this example)
+
+Confidence level = 95%
+
+2. Calculate the accuracy for each sample size
+We can estimate the margin of error for the sample mean using:
+
+M
+E
+=
+1.96
+×
+σ
+n
+×
+N
+−
+n
+N
+Log in
+Sign up for free
+You said:
+Given the following columns from a mock Zomato restaurant dataset — Restaurant Name, Cuisine Type, Average Cost for Two, User Rating, City, and Open/Closed Status — classify each column as either Numerical (Continuous or Discrete) or Categorical (Nominal or Ordinal).
+
+ChatGPT said:
+Column
+
+Data Type
+
+Subtype
+
+Explanation
+
+Restaurant Name
+
+Categorical
+
+Nominal
+
+Names identify restaurants and have no natural order.
+
+Cuisine Type
+
+Categorical
+
+Nominal
+
+Categories such as Indian, Chinese, and Italian have no inherent order.
+
+Average Cost for Two
+
+Numerical
+
+Continuous
+
+Cost is a measurable quantity that can take decimal values.
+
+User Rating
+
+Numerical
+
+Continuous
+
+Ratings can take decimal values, such as 3.5 or 4.2.
+
+City
+
+Categorical
+
+Nominal
+
+City names are labels with no natural order.
+
+Open/Closed Status
+
+Categorical
+
+Nominal
+
+Values such as Open and Closed represent categories without a natural ranking.
+
+Note: User Rating is treated as continuous when ratings can include decimals. If ratings are recorded only as whole numbers, they may be classified as discrete numerical data. Similarly, Average Cost for Two may be treated as discrete if recorded only in whole currency units.
+
+
+You said:
+Create a table with 8 real-life examples (not from class) of data you might find in popular apps like Instagram, Flipkart, or IRCTC. For each, specify the measurement scale (Nominal, Ordinal, Interval, or Ratio) and briefly explain your choice.<br><br><em><strong>Hint:</strong> Think about things like 'Order Status', 'Train Departure Time', 'Number of Likes', or 'Payment Method'.</em>
+
+ChatGPT said:
+8 Real-Life Examples of Measurement Scales in Popular Apps
+No.
+
+App
+
+Example of Data
+
+Measurement Scale
+
+Explanation
+
+1
+
+Instagram
+
+Type of account (Personal, Business, Creator)
+
+Nominal
+
+These are categories with no natural order.
+
+2
+
+Flipkart
+
+Order status (Placed, Shipped, Delivered)
+
+Ordinal
+
+The statuses generally follow an order in the delivery process.
+
+3
+
+IRCTC
+
+Train departure time (e.g., 6:30 AM)
+
+Interval
+
+Time differences are meaningful, but the clock's zero point is arbitrary.
+
+4
+
+Instagram
+
+Number of likes on a post
+
+Ratio
+
+Zero likes means none, and 20 likes is twice as many as 10.
+
+5
+
+Flipkart
+
+Product price (e.g., ₹1,500)
+
+Ratio
+
+A price of ₹0 means no cost, and ratios are meaningful.
+
+6
+
+IRCTC
+
+Passenger's seat number (e.g., 12, 25)
+
+Nominal
+
+Seat numbers are identifiers, not quantities that indicate magnitude.
+
+7
+
+Instagram
+
+Customer satisfaction rating (1 to 5 stars)
+
+Ordinal
+
+The ratings have an order, but the difference between consecutive ratings may not be equal.
+
+8
+
+Flipkart
+
+Product review date (e.g., 15 March 2026)
+
+Interval
+
+Differences between dates can be measured, but calendar dates have no true zero point.
+
+Quick summary
+Nominal: Names or labels without order.
+
+Ordinal: Categories with a meaningful order.
+
+Interval: Numeric values with meaningful differences but no true zero.
+
+Ratio: Numeric values with meaningful differences and a true zero.
+
+
+You said:
+Given this time-series data from a Spotify user's listening history — Date, Song Name, Play Count per Day — identify which columns represent time-series, and which are categorical or numerical. Explain your reasoning.
+
+ChatGPT said:
+Column
+
+Data Type
+
+Classification
+
+Reasoning
+
+Date
+
+Time-series
+
+Temporal
+
+Records when listening activity occurred, allowing us to track changes over time.
+
+Song Name
+
+Categorical
+
+Nominal
+
+Represents song titles, which are labels with no natural order.
+
+Play Count per Day
+
+Numerical
+
+Discrete
+
+Counts the number of times a song was played each day. It takes whole-number values (0, 1, 2, etc.).
+
+Explanation
+Date: The time component of the dataset. It helps organize observations chronologically and identify listening trends.
+
+Song Name: A categorical variable used to identify each song. It does not represent a measurable quantity.
+
+Play Count per Day: A numerical variable because it represents a count. It is discrete because plays are counted in whole numbers.
+
+Important distinction: The Date column provides the time dimension, while Play Count per Day is the numerical variable tracked over time. Together, they form the basis of a time-series analysis, potentially grouped by song name.
+
+
+You said:
+Write a function or pseudocode that takes a column of data (array of values) from a Flipkart order history and automatically detects whether it is likely Nominal, Ordinal, Interval, or Ratio scale. Briefly describe the logic used for each type.<br><br><em><strong>Constraint:</strong> You do not need to write a perfect algorithm — focus on simple rules based on value types and patterns.</em>
+
+ChatGPT said:
+Here is a simple Python function that takes a column of values from a Flipkart order history and predicts whether its measurement scale is Nominal, Ordinal, Interval, or Ratio based on the data type and common patterns.
+
+Python pseudocode / function
+
+python
+
+def detect_scale(data, column_name=""):
+    # Remove missing values
+    values = [v for v in data if v is not None]
+
+    if not values:
+        return "Unknown"
+
+    name = column_name.lower()
+
+    # Rule 1: Known ordered categories
+    ordinal_keywords = ["order status", "size", "rating",
+                        "priority", "delivery stage"]
+
+    if any(word in name for word in ordinal_keywords):
+        return "Ordinal"
+
+    # Rule 2: Dates and times
+    if all(isinstance(v, str) for v in values):
+        if "date" in name or "time" in name:
+            return "Interval"
+
+        # Categories with a known order
+        ordered = {
+            "order status": ["placed", "packed", "shipped",
+                             "out for delivery", "delivered"],
+            "rating": ["1 star", "2 stars", "3 stars",
+                       "4 stars", "5 stars"]
+        }
+
+        for key, order in ordered.items():
+            if key in name:
+                return "Ordinal"
+
+        return "Nominal"
+
+    # Rule 3: Numerical columns
+    if all(isinstance(v, (int, float)) and not isinstance(v, bool)
+           for v in values):
+
+        # Counts and amounts generally have a true zero
+        ratio_keywords = ["price", "quantity", "count",
+                          "amount", "discount", "weight"]
+
+        if any(word in name for word in ratio_keywords):
+            return "Ratio"
+
+        # Temperature or calendar-year-like values
+        if "temperature" in name or "year" in name:
+            return "Interval"
+
+        # Default for unexplained numerical values
+        return "Ratio"
+
+    # Rule 4: Other values
+    return "Nominal"
+Logic used for each measurement scale
+Scale
+
+Simple detection rule
+
+Flipkart example
+
+Nominal
+
+Text labels or categories without a meaningful order.
+
+Payment method: UPI, Cash, Card
+
+Ordinal
+
+Categories with a meaningful ranking or sequence.
+
+Delivery status: Packed, Shipped, Delivered
+
+Interval
+
+Numerical values where differences are meaningful but zero is arbitrary.
+
+Calendar year of purchase
+
+Ratio
+
+Numerical values with a meaningful zero, allowing ratios to be compared.
+
+Product price, quantity ordered
+
+Example output
+
+python
+print(detect_scale(["UPI", "Card", "Cash"], "Payment Method"))
+# Nominal
+
+print(detect_scale(
+    ["Packed", "Shipped", "Delivered"], "Order Status"))
+# Ordinal
+
+print(detect_scale([2023, 2024, 2025], "Purchase Year"))
+# Interval
+
+print(detect_scale([500, 1200, 0], "Product Price"))
+# Ratio
+Note: This is a heuristic, not a perfect classifier. A column's values alone may not reveal its measurement scale. For example, a product ID can contain numbers but is nominal, and a date is not automatically interval-scaled in every representation. In practice, column names, domain knowledge, and the meaning of zero are important for accurate classification.
+
+
+You said:
+Create an array of 7 daily step counts (e.g., from your phone's fitness app) and write code to calculate the mean (average) number of steps.
+
+ChatGPT said:
+Here’s a simple Python example using 7 days of step counts from a hypothetical phone fitness app.
+
+
+python
+# Step counts for 7 days
+steps = [6500, 8200, 7500, 10000, 9000, 11000, 7800]
+
+# Calculate the mean (average)
+mean_steps = sum(steps) / len(steps)
+
+print("Daily step counts:", steps)
+print("Mean daily steps:", mean_steps)
+Output:
+
+
+text
+Daily step counts: [6500, 8200, 7500, 10000, 9000, 11000, 7800]
+Mean daily steps: 8571.43
+Explanation
+sum(steps) adds all 7 daily step counts, giving 60,000 steps.
+
+len(steps) counts the number of days, which is 7.
+
+Divide the total by the number of days:
+
+Mean
+=
+60
+,
+000
+7
+=
+8
+,
+571.43
+Mean= 
+7
+60,000
+​
+ =8,571.43
+Answer: The mean daily step count is approximately 8,571 steps per day.
+
+
+You said:
+Given this list of food delivery times in minutes for your last 9 Zomato/Swiggy orders: [32, 28, 29, 45, 30, 31, 60, 30, 29], write a function to find the median delivery time.
+
+ChatGPT said:
+Here is a simple Python function to calculate the median delivery time for your 9 Zomato/Swiggy orders.
+
+
+python
+def find_median(delivery_times):
+    delivery_times.sort()
+    n = len(delivery_times)
+    middle = n // 2
+
+    if n % 2 == 1:
+        return delivery_times[middle]
+    else:
+        return (delivery_times[middle - 1] +
+                delivery_times[middle]) / 2
+
+
+times = [32, 28, 29, 45, 30, 31, 60, 30, 29]
+
+print("Median delivery time:", find_median(times), "minutes")
+Output:
+
+
+text
+Median delivery time: 30 minutes
+Explanation
+Sort the delivery times: [28, 29, 29, 30, 30, 31, 32, 45, 60]
+
+There are 9 values, so the median is the middle value at index 9 // 2 = 4 (using zero-based indexing).
+
+The middle value is 30 minutes.
+
+Answer: The median delivery time is 30 minutes.
+
+
+You said:
+Imagine you tracked the genres of 12 YouTube videos you watched this week: ['Music', 'Vlog', 'Music', 'Tech', 'Music', 'Vlog', 'Tech', 'Music', 'Comedy', 'Vlog', 'Music', 'Comedy']. Write code to determine the mode (most watched genre).
+
+ChatGPT said:
+Here is a simple Python program to find the mode (most watched genre) from your YouTube viewing history.
+
+
+python
+from collections import Counter
+
+genres = [
+    'Music', 'Vlog', 'Music', 'Tech', 'Music', 'Vlog',
+    'Tech', 'Music', 'Comedy', 'Vlog', 'Music', 'Comedy'
+]
+
+# Count how often each genre appears
+genre_counts = Counter(genres)
+
+# Find the most watched genre
+mode_genre = genre_counts.most_common(1)[0][0]
+
+print("Genre counts:", genre_counts)
+print("Most watched genre:", mode_genre)
+Output:
+
+
+text
+Genre counts: Counter({'Music': 5, 'Vlog': 3, 'Tech': 2, 'Comedy': 2})
+Most watched genre: Music
+Explanation
+Counter(genres) counts how many times each genre appears.
+
+most_common(1) returns the genre with the highest count.
+
+Music appears 5 times, more than any other genre.
+
+Answer: The mode is Music, with 5 videos watched.
+
+
+You said:
+Take this array of daily UPI transaction amounts (in ₹): [100, 120, 105, 110, 5000, 115, 108]. Calculate both the mean and the median, then explain in 2-3 lines which is a better measure of your 'typical' transaction and why.<br><br><em><strong>Hint:</strong> Consider the effect of the ₹5000 value.</em>
+
+ChatGPT said:
+Python code
+
+python
+transactions = [100, 120, 105, 110, 5000, 115, 108]
+
+# Calculate mean
+mean = sum(transactions) / len(transactions)
+
+# Calculate median
+sorted_transactions = sorted(transactions)
+n = len(sorted_transactions)
+median = sorted_transactions[n // 2]
+
+print("Mean transaction amount: ₹", round(mean, 2))
+print("Median transaction amount: ₹", median)
+Output
+Mean: ₹808.29
+
+Median: ₹110
+
+Which is the better measure?
+The median (₹110) is a better measure of a typical transaction because the unusually large ₹5,000 transaction pulls the mean upward. The median is less affected by extreme values and better represents the usual UPI transaction amount in this dataset.
+
+
+You said:
+Given the daily step counts of a user for the last 7 days as [6500, 7200, 8000, 6000, 9000, 7500, 8200], calculate the range of steps and explain what this tells you about the user's activity pattern.
+
+ChatGPT said:
+1. Calculate the range
+Daily step counts: [6500, 7200, 8000, 6000, 9000, 7500, 8200]
+
+Formula:
+
+Range
+=
+Maximum
+−
+Minimum
+Range=Maximum−Minimum
+Maximum steps = 9,000
+
+Minimum steps = 6,000
+
+Range
+=
+9000
+−
+6000
+=
+3000
+ steps
+Range=9000−6000= 
+3000 steps
+​
+ 
+2. Python code
+
+python
+steps = [6500, 7200, 8000, 6000, 9000, 7500, 8200]
+
+step_range = max(steps) - min(steps)
+
+print("Range of steps:", step_range)
+Output:
+
+
+text
+Range of steps: 3000
+3. What does this tell us?
+The user's daily activity varied by 3,000 steps between the least active day (6,000 steps) and the most active day (9,000 steps). This suggests some variation in activity levels throughout the week, but the user maintained a relatively consistent daily walking routine.
+
+
+You said:
+For a list of 5 food delivery order amounts on Zomato: [250, 400, 350, 300, 500], write code to compute the variance and standard deviation of the order amounts.
+
+ChatGPT said:
+Here is a Python program to calculate the variance and standard deviation of the 5 Zomato order amounts. This example uses population variance (dividing by 
+N
+N).
+
+
+python
+import statistics
+import math
+
+# Order amounts in rupees
+orders = [250, 400, 350, 300, 500]
+
+# Calculate mean
+mean = sum(orders) / len(orders)
+
+# Calculate population variance
+variance = sum((x - mean) ** 2 for x in orders) / len(orders)
+
+# Calculate standard deviation
+std_dev = math.sqrt(variance)
+
+print("Mean:", mean)
+print("Variance:", variance)
+print("Standard deviation:", round(std_dev, 2))
+Output
+
+text
+Mean: 360.0
+Variance: 7400.0
+Standard deviation: 86.02
+Explanation
+Mean: The average order amount is ₹360.
+
+Variance: 
+7400
+7400 rupees squared measures how spread out the order amounts are around the mean.
+
+Standard deviation: ₹86.02 indicates the typical scale of variation in order amounts around the mean.
+
+Note: If these five orders are a sample of a larger set of orders, use sample variance instead (divide by 
+N
+−
+1
+N−1); the sample variance would be 
+9250
+9250, and the sample standard deviation would be approximately ₹96.18.
+
+
+You said:
+You have the monthly mobile data usage (in GB) for a user over 6 months: [3.2, 2.8, 3.5, 3.0, 2.9, 3.1]. Calculate the coefficient of variation (CV) and interpret whether the user's data usage is consistent or highly variable.<br><br><em><strong>Hint:</strong> CV = (Standard Deviation / Mean) × 100%</em>
+
+ChatGPT said:
+Python Code
+
+python
+import statistics
+
+# Monthly mobile data usage in GB
+data_usage = [3.2, 2.8, 3.5, 3.0, 2.9, 3.1]
+
+# Calculate mean and population standard deviation
+mean = statistics.mean(data_usage)
+std_dev = statistics.pstdev(data_usage)
+
+# Calculate coefficient of variation
+cv = (std_dev / mean) * 100
+
+print("Mean:", round(mean, 2), "GB")
+print("Standard Deviation:", round(std_dev, 2), "GB")
+print("Coefficient of Variation:", round(cv, 2), "%")
+Output
+Mean: 3.08 GB
+
+Standard Deviation: 0.23 GB
+
+Coefficient of Variation (CV): 7.34%
+
+Interpretation
+The CV is approximately 7.34%, indicating that the user's monthly mobile data usage is fairly consistent, with relatively little variation compared with the average usage.
+
+
+Log in to analyze data, create charts, and build tables for free.
+
+
+Log in
+
+Sign up for free
+You said:
+Suppose you are analyzing the number of likes on 10 recent Instagram posts: [120, 150, 130, 110, 170, 140, 135, 160, 125, 155]. Compute the standard deviation and compare it with the mean to comment on the consistency of engagement.
+
+ChatGPT said:
+Python Code
+
+python
+import statistics
+
+# Likes on 10 recent Instagram posts
+likes = [120, 150, 130, 110, 170, 140, 135, 160, 125, 155]
+
+# Calculate mean and population standard deviation
+mean = statistics.mean(likes)
+std_dev = statistics.pstdev(likes)
+
+# Compare standard deviation with mean
+cv = (std_dev / mean) * 100
+
+print("Mean likes:", round(mean, 2))
+print("Standard deviation:", round(std_dev, 2))
+print("Coefficient of variation:", round(cv, 2), "%")
+Results
+Mean: 139.5 likes
+
+Standard deviation: 17.76 likes
+
+Coefficient of variation (CV): 12.73%
+
+Interpretation
+The standard deviation of 17.76 likes is relatively small compared with the mean of 139.5 likes. The CV of 12.73% suggests that engagement is fairly consistent across the 10 posts, although some posts receive noticeably more likes than others.
+
+Note: This uses population standard deviation because all 10 posts in the given dataset are being analyzed.
+
+
+You said:
+Use ChatGPT or any AI tool to generate a small dataset (at least 8 values) representing daily UPI transaction amounts for a week. Then, calculate the variance and standard deviation of the generated data, and briefly interpret what the results mean for spending stability.
+
+ChatGPT said:
+1. Generated dataset: Daily UPI transaction amounts
+Here is a hypothetical dataset of daily UPI spending for one week, with 8 transaction amounts in total.
+
+Transaction
+
+Amount (₹)
+
+1
+
+100
+
+2
+
+150
+
+3
+
+200
+
+4
+
+120
+
+5
+
+180
+
+6
+
+250
+
+7
+
+100
+
+8
+
+300
+
+2. Python code to calculate variance and standard deviation
+
+python
+import statistics
+
+# Generated UPI transaction amounts in rupees
+amounts = [100, 150, 200, 120, 180, 250, 100, 300]
+
+# Calculate population variance and standard deviation
+variance = statistics.pvariance(amounts)
+std_dev = statistics.pstdev(amounts)
+mean = statistics.mean(amounts)
+
+print("Mean spending: ₹", round(mean, 2))
+print("Variance:", round(variance, 2))
+print("Standard deviation: ₹", round(std_dev, 2))
+3. Results
+Mean: ₹175.00
+
+Population variance: 4,375.00
+
+Population standard deviation: ₹66.14
+
+4. Interpretation
+The standard deviation of ₹66.14 means transaction amounts typically vary by around ₹66 from the average transaction amount of ₹175. This suggests moderate variation in spending, with transactions ranging from ₹100 to ₹300 rather than staying close to a single amount.
+
+Note: Variance is expressed in rupees squared (₹²), while standard deviation is expressed in rupees (₹). These results describe the generated dataset, not actual UPI transaction records.
+
+
+You said:
+Given a list of delivery times (in minutes) for 20 Zomato orders, calculate the 25th, 50th, and 75th percentiles using Python's numpy.percentile function.
+
+ChatGPT said:
+Here is a Python example using numpy.percentile() to calculate the 25th, 50th, and 75th percentiles for 20 Zomato order delivery times.
+
+Python code
+
+python
+import numpy as np
+
+# Delivery times for 20 Zomato orders (in minutes)
+delivery_times = [
+    25, 30, 35, 28, 40, 32, 45, 38, 27, 33,
+    50, 42, 31, 36, 29, 55, 34, 41, 37, 60
+]
+
+# Calculate percentiles
+p25 = np.percentile(delivery_times, 25)
+p50 = np.percentile(delivery_times, 50)
+p75 = np.percentile(delivery_times, 75)
+
+print("25th percentile (Q1):", p25, "minutes")
+print("50th percentile (Median):", p50, "minutes")
+print("75th percentile (Q3):", p75, "minutes")
+Output
+
+text
+25th percentile (Q1): 31.75 minutes
+50th percentile (Median): 35.5 minutes
+75th percentile (Q3): 41.25 minutes
+Interpretation
+25th percentile (Q1): 25% of orders took approximately 31.75 minutes or less.
+
+50th percentile (Median): Half of the orders took approximately 35.5 minutes or less.
+
+75th percentile (Q3): 75% of orders took approximately 41.25 minutes or less.
+
+These percentiles help summarize delivery performance and show how delivery times are distributed.
+
+
+You said:
+Create a Python script that takes an array of IPL player scores and divides them into quartiles using numpy.quantile. Print the values for Q1, Q2 (median), and Q3.
+
+ChatGPT said:
+Here is a Python script that uses numpy.quantile() to divide a sample of IPL player scores into quartiles and print Q1, Q2 (median), and Q3.
+
+Python code
+
+python
+import numpy as np
+
+# Sample IPL player scores (runs)
+scores = [15, 42, 8, 67, 35, 90, 24, 55, 12, 78,
+          30, 45, 10, 62, 50, 5, 85, 28, 40, 70]
+
+# Calculate quartiles
+Q1 = np.quantile(scores, 0.25)
+Q2 = np.quantile(scores, 0.50)
+Q3 = np.quantile(scores, 0.75)
+
+# Print results
+print("Q1 (25th percentile):", Q1)
+print("Q2 (Median, 50th percentile):", Q2)
+print("Q3 (75th percentile):", Q3)
+Output
+
+text
+Q1 (25th percentile): 23.0
+Q2 (Median, 50th percentile): 37.5
+Q3 (75th percentile): 58.5
+Explanation
+Q1: 25% of the scores are at or below 23 runs.
+
+Q2: 50% of the scores are at or below 37.5 runs; this is the median.
+
+Q3: 75% of the scores are at or below 58.5 runs.
+
+Note: These are illustrative IPL scores. NumPy's default quantile method interpolates between values when needed, so quartiles may be decimals even though individual scores are whole numbers.
+
+
+You said:
+Given a list of daily step counts from your fitness app for one month, calculate the Interquartile Range (IQR) in Python and explain what it tells you about your activity consistency
+
+ChatGPT said:
+Python Code to Calculate the Interquartile Range (IQR)
+Here is an example using 30 days of hypothetical step counts from a fitness app.
+
+
+python
+import numpy as np
+
+# Daily step counts for 30 days
+steps = [
+    6500, 7200, 8000, 6000, 9000, 7500, 8200, 6800, 7100, 9500,
+    7800, 6400, 8500, 7300, 10000, 6900, 7600, 8800, 6200, 8100,
+    7400, 9200, 6700, 7900, 8600, 7000, 8300, 6100, 7700, 8900
+]
+
+# Calculate quartiles
+Q1 = np.quantile(steps, 0.25)
+Q3 = np.quantile(steps, 0.75)
+
+# Calculate IQR
+IQR = Q3 - Q1
+
+print("Q1 (25th percentile):", Q1)
+print("Q3 (75th percentile):", Q3)
+print("Interquartile Range (IQR):", IQR, "steps")
+Output
+
+text
+Q1 (25th percentile): 6900.0
+Q3 (75th percentile): 8350.0
+Interquartile Range (IQR): 1450.0 steps
+Interpretation
+IQR = 1,450 steps: The middle 50% of daily step counts fall within a range of 1,450 steps, from 6,900 to 8,350 steps.
+
+Activity consistency: This relatively narrow middle range suggests that the user's daily activity is fairly consistent, although some days may have considerably higher or lower step counts.
+
+In general: A smaller IQR indicates less variation in typical daily activity, while a larger IQR indicates greater variation. The IQR is useful because it is less affected by unusually high or low step counts than the overall range.
+
+
+You said:
+Write a Python function to detect outliers in a list of Swiggy order amounts using the IQR method (any value below Q1 - 1.5*IQR or above Q3 + 1.5*IQR). Print the outlier values.
+
+ChatGPT said:
+Here is a Python function to detect outliers in Swiggy order amounts using the Interquartile Range (IQR) method.
+
+Python code
+
+python
+import numpy as np
+
+def detect_outliers(order_amounts):
+    # Calculate the first and third quartiles
+    Q1 = np.percentile(order_amounts, 25)
+    Q3 = np.percentile(order_amounts, 75)
+
+    # Calculate the interquartile range
+    IQR = Q3 - Q1
+
+    # Calculate the lower and upper bounds
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+
+    # Identify outliers
+    outliers = [
+        amount for amount in order_amounts
+        if amount < lower_bound or amount > upper_bound
+    ]
+
+    print("Q1:", Q1)
+    print("Q3:", Q3)
+    print("IQR:", IQR)
+    print("Lower bound:", lower_bound)
+    print("Upper bound:", upper_bound)
+    print("Outlier amounts:", outliers)
+
+# Sample Swiggy order amounts (₹)
+orders = [150, 200, 180, 250, 220, 190, 210, 175, 230, 1500]
+
+detect_outliers(orders)
+Output
+
+text
+Q1: 180.0
+Q3: 227.5
+IQR: 47.5
+Lower bound: 108.75
+Upper bound: 298.75
+Outlier amounts: [1500]
+Explanation
+Q1: The 25th percentile of order amounts.
+
+Q3: The 75th percentile of order amounts.
+
+IQR: The difference between Q3 and Q1.
+
+Outlier bounds: Values below the lower bound or above the upper bound are flagged as outliers.
+
+Result: ₹1,500 is identified as an outlier because it exceeds the upper bound of ₹298.75. This method helps identify unusually large or small orders, but an outlier is not necessarily an error.
+
+
+You said:
+Using matplotlib, create a boxplot of your weekly screen time (in hours) for the past 8 weeks. Label the axes and highlight any outliers.
+
+ChatGPT said:
+Here is a Python script using Matplotlib to create a boxplot of weekly screen time over 8 weeks. The data is hypothetical, and the boxplot highlights any outliers as red diamond markers.
+
+Python code
+
+python
+
+import matplotlib.pyplot as plt
+
+# Weekly screen time for 8 weeks (in hours)
+screen_time = [28, 32, 30, 35, 31, 29, 33, 65]
+
+# Create the boxplot and highlight outliers
+plt.figure(figsize=(8, 5))
+
+plt.boxplot(
+    screen_time,
+    patch_artist=True,
+    boxprops=dict(facecolor="skyblue"),
+    medianprops=dict(color="black", linewidth=2),
+    flierprops=dict(
+        marker="D",
+        markerfacecolor="red",
+        markeredgecolor="red",
+        markersize=8,
+        label="Outlier"
+    )
+)
+
+plt.title("Weekly Screen Time Over 8 Weeks")
+plt.xlabel("Screen Time")
+plt.ylabel("Hours per Week")
+plt.xticks([1], ["8 Weeks"])
+plt.grid(axis="y", linestyle="--", alpha=0.5)
+
+plt.tight_layout()
+plt.show()
+Explanation
+Box: Represents the middle 50% of screen-time values, between Q1 and Q3.
+
+Median line: Shows the middle value of weekly screen time.
+
+Whiskers: Show the spread of values within the outlier limits.
+
+Red diamond: Highlights an outlier. In this example, 65 hours is unusually high compared with the other weeks.
+
+Interpretation: The boxplot helps you see typical screen time, how much it varies from week to week, and whether any week has unusually high or low usage.
+
+
+You said:
+List all possible outcomes (sample space) for rolling a standard six-sided die and flipping a coin at the same time. Write your answer as a list of ordered pairs.
+
+ChatGPT said:
+The sample space includes all possible combinations of the six die outcomes (1–6) and the two coin outcomes (Heads or Tails).
+
+Let H = Heads and T = Tails.
+
+The sample space 
+S
+S, written as a list of ordered pairs (die result, coin result), is:
+
+S
+=
+{
+(
+1
+,
+H
+)
+,
+(
+1
+,
+T
+)
+,
+(
+2
+,
+H
+)
+,
+(
+2
+,
+T
+)
+,
+(
+3
+,
+H
+)
+,
+(
+3
+,
+T
+)
+,
+(
+4
+,
+H
+)
+,
+(
+4
+,
+T
+)
+,
+(
+5
+,
+H
+)
+,
+(
+5
+,
+T
+)
+,
+(
+6
+,
+H
+)
+,
+(
+6
+,
+T
+)
+}
+S={
+​
+  
+(1,H),(1,T),
+(2,H),(2,T),
+(3,H),(3,T),
+(4,H),(4,T),
+(5,H),(5,T),
+(6,H),(6,T)}
+​
+ 
+Total possible outcomes: 
+6
+×
+2
+=
+12
+6×2= 
+12
+​
+ .
+
+Each outcome is equally likely, assuming a fair die and a fair coin.
+
+
+You said:
+Suppose you have a deck of 10 cards numbered 1 to 10. Calculate the classical probability of drawing a card with an even number. Show your calculation steps.
+
+ChatGPT said:
+Step 1: Identify the total number of outcomes
+The deck contains 10 cards numbered 1 to 10.
+
+Total possible outcomes = 10
+
+Step 2: Identify the favorable outcomes
+The even-numbered cards are:
+
+{
+2
+,
+4
+,
+6
+,
+8
+,
+10
+}
+{2,4,6,8,10}
+Number of favorable outcomes = 5
+
+Step 3: Apply the classical probability formula
+P
+(
+E
+)
+=
+Favorable outcomes
+Total outcomes
+P(E)= 
+Total outcomes
+Favorable outcomes
+​
+ 
+Substituting the values:
+
+P
+(
+Even
+)
+=
+5
+10
+=
+1
+2
+=
+0.5
+P(Even)= 
+10
+5
+​
+ = 
+2
+1
+​
+ =0.5
+Final answer
+P
+(
+Even
+)
+=
+0.5
+=
+50
+%
+P(Even)=0.5=50%
+​
+ 
+Therefore, the probability of drawing an even-numbered card is 50%, assuming each card is equally likely to be drawn.
+
+
+You said:
+In a playlist of 8 songs on Spotify, 3 are by Arijit Singh. If you shuffle and play one random song, what is the probability that it is NOT by Arijit Singh? Show your working.
+4
+
+ChatGPT said:
+Step 1: Identify the total number of songs
+Total songs = 8
+
+Songs by Arijit Singh = 3
+
+Step 2: Calculate songs NOT by Arijit Singh
+8
+−
+3
+=
+5
+ songs
+8−3=5 songs
+Step 3: Apply the probability formula
+P
+(
+Not Arijit Singh
+)
+=
+Favorable outcomes
+Total outcomes
+P(Not Arijit Singh)= 
+Total outcomes
+Favorable outcomes
+​
+ 
+=
+5
+8
+=
+0.625
+= 
+8
+5
+​
+ =0.625
+Final answer
+P
+(
+Not Arijit Singh
+)
+=
+5
+8
+=
+62.5
+%
+P(Not Arijit Singh)= 
+8
+5
+​
+ =62.5%
+​
+ 
+Therefore, the probability that the randomly selected song is not by Arijit Singh is 62.5%.
+
+
+You said:
+A Zomato user places an order. The probability they order Pizza is 0.3, and the probability they order Burger is 0.4. If the probability they order both is 0.1, use the addition rule to find the probability the user orders Pizza or Burger.
+
+ChatGPT said:
+Step 1: Write the addition rule
+The addition rule for two events is:
+
+P
+(
+P
+∪
+B
+)
+=
+P
+(
+P
+)
++
+P
+(
+B
+)
+−
+P
+(
+P
+∩
+B
+)
+P(P∪B)=P(P)+P(B)−P(P∩B)
+Where:
+
+P
+(
+P
+)
+=
+0.3
+P(P)=0.3 (probability of ordering Pizza)
+
+P
+(
+B
+)
+=
+0.4
+P(B)=0.4 (probability of ordering Burger)
+
+P
+(
+P
+∩
+B
+)
+=
+0.1
+P(P∩B)=0.1 (probability of ordering both)
+
+Step 2: Substitute the values
+P
+(
+P
+∪
+B
+)
+=
+0.3
++
+0.4
+−
+0.1
+P(P∪B)=0.3+0.4−0.1
+=
+0.7
+−
+0.1
+=
+0.6
+=0.7−0.1=0.6
+
+P
+(
+A
+∪
+B
+)
+=
+P
+(
+A
+)
++
+P
+(
+B
+)
+−
+P
+(
+A
+∩
+B
+)
+Final answer
+P
+(
+Pizza or Burger
+)
+=
+0.6
+=
+60
+%
+P(Pizza or Burger)=0.6=60%
+​
+ 
+Therefore, the probability that the user orders Pizza or Burger or both is 60%. We subtract 0.1 to avoid counting users who order both twice.
+
+
+You said:
+A Flipkart user is browsing electronics. The probability they add a phone to cart is 0.2. If you know they are interested in mobiles, the probability rises to 0.5. Briefly explain in your own words what this conditional probability means, using this scenario.
+
+ChatGPT said:
+Conditional probability means the probability of an event happening when we already know that a particular condition is true.
+
+In this Flipkart example:
+
+Without the condition: The probability that a user adds a phone to their cart is 20%.
+
+Given that they are interested in mobiles: The probability increases to 50%.
+
+This means that users known to be interested in mobiles are more likely to add a phone to their cart than users in general. We use the information about their interest to update the probability.
+
+
+You said:
+Given the following data from an e-commerce app: out of 500 users, 120 bought phone accessories, 80 bought a phone, and 50 bought both, calculate the probability that a user bought a phone given they already bought accessories (P(Phone|Accessories)).
+
+ChatGPT said:
+Step 1: Write the conditional probability formula
+P
+(
+Phone
+∣
+Accessories
+)
+=
+P
+(
+Phone
+∩
+Accessories
+)
+P
+(
+Accessories
+)
+P(Phone∣Accessories)= 
+P(Accessories)
+P(Phone∩Accessories)
+​
+ 
+Step 2: Substitute the given values
+Total users = 500
+
+Users who bought accessories = 120
+
+Users who bought both a phone and accessories = 50
+
+P
+(
+Phone
+∣
+Accessories
+)
+=
+50
+120
+P(Phone∣Accessories)= 
+120
+50
+​
+ 
+Step 3: Calculate the probability
+=
+50
+120
+=
+0.4167
+= 
+120
+50
+​
+ =0.4167
+P
+(
+Phone
+∣
+Accessories
+)
+≈
+41.67
+%
+P(Phone∣Accessories)≈41.67%
+​
+ 
+Interpretation: Approximately 41.67% of users who bought phone accessories also bought a phone.
+
+
+You said:
+Imagine you are analyzing Flipkart's user data: 30% of users buy headphones, and among those, 40% later buy a smartphone. Calculate the conditional probability that a randomly selected user buys a smartphone, given they have already bought headphones.<br><br><em><strong>Hint:</strong> Use the formula for conditional probability: P(A|B) = P(A and B) / P(B).
+
+ChatGPT said:
+Step 1: Identify the given probabilities
+Probability of buying headphones: 
+P
+(
+H
+)
+=
+0.30
+P(H)=0.30
+
+Probability of buying a smartphone given that the user bought headphones: 
+P
+(
+S
+∣
+H
+)
+=
+0.40
+P(S∣H)=0.40
+
+Step 2: Apply the conditional probability formula
+P
+(
+S
+∣
+H
+)
+=
+P
+(
+S
+∩
+H
+)
+P
+(
+H
+)
+P(S∣H)= 
+P(H)
+P(S∩H)
+​
+ 
+Since the question already states that 40% of headphone buyers later buy a smartphone, this is directly the conditional probability we need.
+
+Final Answer
+P
+(
+S
+∣
+H
+)
+=
+0.40
+=
+40
+%
+P(S∣H)=0.40=40%
+​
+ 
+Interpretation: There is a 40% probability that a randomly selected user will buy a smartphone, given that they have already bought headphones.
+
+
+You said:
+Write a Python function bayes_churn_probability(prior_churn, prob_email_given_churn, prob_email) that uses Bayes’ Theorem to compute the probability a user will churn given they received a 'we miss you' email. Test your function with prior_churn=0.15, prob_email_given_churn=0.6, prob_email=0.25.
+
+ChatGPT said:
+Python function using Bayes' Theorem
+Bayes' Theorem calculates the probability that a user will churn given that they received a "we miss you" email.
+
+
+python
+
+def bayes_churn_probability(prior_churn, prob_email_given_churn, prob_email):
+    if prob_email <= 0:
+        raise ValueError("prob_email must be greater than 0")
+
+    # Bayes' Theorem
+    posterior = (prior_churn * prob_email_given_churn) / prob_email
+
+    return posterior
+
+
+# Test the function
+result = bayes_churn_probability(
+    prior_churn=0.15,
+    prob_email_given_churn=0.6,
+    prob_email=0.25
+)
+
+print(f"Probability of churn given email: {result:.2%}")
+Output
+
+text
+Probability of churn given email: 36.00%
+Calculation
+
+P
+(
+A
+∣
+B
+)
+=
+P
+(
+B
+∣
+A
+)
+P
+(
+A
+)
+P
+(
+B
+)
+Using Bayes' Theorem:
+
+P
+(
+C
+∣
+E
+)
+=
+P
+(
+E
+∣
+C
+)
+×
+P
+(
+C
+)
+P
+(
+E
+)
+P(C∣E)= 
+P(E)
+P(E∣C)×P(C)
+​
+ 
+Substitute the given values:
+
+P
+(
+C
+∣
+E
+)
+=
+0.6
+×
+0.15
+0.25
+=
+0.09
+0.25
+=
+0.36
+P(C∣E)= 
+0.25
+0.6×0.15
+​
+ = 
+0.25
+0.09
+​
+ =0.36
+Final answer: 36%.
+
+This means the estimated probability of churn for a user who received the email is 36%, given the supplied probabilities.
+
+
+You said:
+A digital wallet app detects fraud based on spending patterns. If 2% of all transactions are fraudulent, and the app’s alert system correctly flags 90% of fraudulent transactions but also falsely flags 5% of normal transactions, use Bayes’ Theorem to calculate the probability that a transaction is actually fraudulent when flagged by the alert system.<br><br><em><strong>Hint:</strong> Define events: F = fraud, A = alert. Use Bayes’ formula: P(F|A) = [P(A|F) * P(F)] / P(A).</em>
+
+ChatGPT said:
+Step 1: Identify the given probabilities
+Let:
+
+F
+F = Transaction is fraudulent
+
+A
+A = Alert system flags the transaction
+
+Given:
+
+Probability of fraud: 
+P
+(
+F
+)
+=
+0.02
+P(F)=0.02
+
+Probability of an alert when fraud occurs: 
+P
+(
+A
+∣
+F
+)
+=
+0.90
+P(A∣F)=0.90
+
+Probability of a false alert: 
+P
+(
+A
+∣
+¬
+F
+)
+=
+0.05
+P(A∣¬F)=0.05
+
+Probability of a normal transaction: 
+P
+(
+¬
+F
+)
+=
+1
+−
+0.02
+=
+0.98
+P(¬F)=1−0.02=0.98
+
+Step 2: Apply Bayes’ Theorem
+P
+(
+F
+∣
+A
+)
+=
+P
+(
+A
+∣
+F
+)
+P
+(
+F
+)
+P
+(
+A
+)
+P(F∣A)= 
+P(A)
+P(A∣F)P(F)
+​
+ 
+First, calculate the total probability of an alert:
+
+P
+(
+A
+)
+=
+P
+(
+A
+∣
+F
+)
+P
+(
+F
+)
++
+P
+(
+A
+∣
+¬
+F
+)
+P
+(
+¬
+F
+)
+P(A)=P(A∣F)P(F)+P(A∣¬F)P(¬F)
+Substitute the values:
+
+P
+(
+A
+)
+=
+(
+0.90
+×
+0.02
+)
++
+(
+0.05
+×
+0.98
+)
+P(A)=(0.90×0.02)+(0.05×0.98)
+P
+(
+A
+)
+=
+0.018
++
+0.049
+=
+0.067
+P(A)=0.018+0.049=0.067
+Step 3: Calculate the probability of fraud given an alert
+P
+(
+F
+∣
+A
+)
+=
+0.90
+×
+0.02
+0.067
+P(F∣A)= 
+0.067
+0.90×0.02
+​
+ 
+=
+0.018
+0.067
+≈
+0.2687
+= 
+0.067
+0.018
+​
+ ≈0.2687
+Final answer
+P
+(
+F
+∣
+A
+)
+≈
+26.87
+%
+P(F∣A)≈26.87%
+​
+ 
+Interpretation: When the wallet app flags a transaction, there is approximately a 26.87% probability that it is actually fraudulent. Despite the alert system detecting 90% of fraudulent transactions, the low overall fraud rate and false alerts mean that many flagged transactions may be legitimate.
+
+
+You said:
+Use ChatGPT or another AI tool to generate a real-world scenario where conditional probability is used in a food delivery app (like Zomato or Swiggy), and explain how Bayes’ Theorem could help improve their recommendation system. Paste the AI’s output and add one sentence of your own analysis.
+
+ChatGPT said:
+AI-Generated Output: Conditional Probability in a Food Delivery App
+Scenario: Food recommendations on Swiggy
+Suppose a Swiggy user frequently orders vegetarian food. The app wants to recommend restaurants that the user is likely to enjoy.
+
+Based on previous orders, Swiggy observes that:
+
+40% of all orders are vegetarian.
+
+70% of users who order vegetarian food also order from vegetarian restaurants again.
+
+The app can use conditional probability to estimate the likelihood that a user will order from a vegetarian restaurant, given their previous food choices.
+
+How Bayes’ Theorem helps
+Bayes’ Theorem allows Swiggy to update the probability of a user liking a particular type of restaurant based on evidence, such as previous orders, searches, ratings, and clicks.
+
+For example, if a user frequently searches for vegetarian dishes, the recommendation system can combine this new evidence with the user's existing preferences to estimate which restaurants are most relevant. The app can then rank those restaurants higher in the user's recommendations, potentially improving customer satisfaction and increasing orders.
+
+Bayes’ Theorem is useful because it helps the system update its predictions as new information about a user's preferences becomes available.
+
+My own analysis
+I think Bayes’ Theorem can make food recommendations more personalized by allowing Swiggy to adapt to changing user preferences instead of relying only on past order history.
+
+
+You said:
+Open Microsoft Excel or Google Sheets, create a column named 'Order Amount', and enter 20 random numbers between 100 and 1000 to simulate Zomato order values for a day.
+
+ChatGPT said:
+Here are 20 random order amounts between ₹100 and ₹1,000 to simulate Zomato orders for a day. You can copy and paste this directly into Microsoft Excel or Google Sheets.
+
+
+text
+
+Order Amount
+250
+480
+150
+720
+350
+890
+420
+600
+180
+950
+300
+540
+670
+220
+800
+450
+990
+380
+710
+120
+How to use the data
+Open Microsoft Excel or Google Sheets.
+
+Copy the data above, including the column heading.
+
+Click cell A1 and paste it.
+
+You will have one column named Order Amount with 20 simulated order values.
+
+Optional: To generate new random amounts between ₹100 and ₹1,000, enter =RANDBETWEEN(100,1000) in cell A2 and drag it down to A21.
+
+
+You said:
+From your 'Order Amount' data, calculate the mean, median, and mode using Excel or Sheets functions (AVERAGE, MEDIAN, MODE) and write the results below your data.
+
+ChatGPT said:
+Using the 20 Zomato order amounts from the previous step, here are the Excel/Google Sheets formulas and results.
+
+1. Order Amount data and calculations
+Cell
+
+Order Amount (₹)
+
+A1
+
+Order Amount
+
+A2–A21
+
+250, 480, 150, 720, 350, 890, 420, 600, 180, 950, 300, 540, 670, 220, 800, 450, 990, 380, 710, 120
+
+Enter the following formulas below your data, for example in cells A23:B25.
+
+Statistic
+
+Excel / Sheets formula
+
+Result
+
+Mean
+
+=AVERAGE(A2:A21)
+
+₹509.50
+
+Median
+
+=MEDIAN(A2:A21)
+
+₹450.00
+
+Mode
+
+=MODE(A2:A21)
+
+No unique mode
+
+Note: All 20 order amounts are different, so there is no mode. Excel and Google Sheets may return #N/A for the MODE formula when no value repeats.
+
+2. Interpretation
+Mean (₹509.50): The average order amount across the 20 orders.
+
+Median (₹450): Half the orders are at or below ₹450, and half are at or above it.
+
+Mode: There is no mode because no order amount occurs more than once.
+
+
+You said:
+Select the first 5 values from your 'Order Amount' column as a sample. Calculate the sample mean and compare it to the population mean you found earlier.<br><br><em><strong>Hint:</strong> Use the AVERAGE function for both calculations and observe the difference between sample and population means.</em>
+
+ChatGPT said:
+1. Select the first 5 order amounts
+From our Zomato dataset, the first 5 values are:
+
+[250, 480, 150, 720, 350]
+
+2. Calculate the sample mean
+In Excel or Google Sheets, enter:
+
+
+excel
+=AVERAGE(A2:A6)
+Calculation:
+
+Sample Mean
+=
+250
++
+480
++
+150
++
+720
++
+350
+5
+Sample Mean= 
+5
+250+480+150+720+350
+​
+ 
+=
+1950
+5
+=
+₹
+390
+= 
+5
+1950
+​
+ = 
+₹390
+​
+ 
+3. Compare sample mean with population mean
+Measure
+
+Formula
+
+Result
+
+Sample mean (5 orders)
+
+=AVERAGE(A2:A6)
+
+₹390.00
+
+Population mean (20 orders)
+
+=AVERAGE(A2:A21)
+
+₹509.50
+
+Difference
+
+₹509.50 − ₹390.00
+
+₹119.50
+
+4. Interpretation
+The sample mean is ₹390, while the population mean is ₹509.50. The sample mean is ₹119.50 lower because the first five orders happen to have smaller amounts on average than the full dataset.
+
+Conclusion: A sample mean can differ from the population mean depending on which observations are selected. A larger, representative sample generally provides a more reliable estimate of the population mean.
+
+
+You said:
+Write a short paragraph explaining the difference between 'population' and 'sample' using your Zomato order data as an example. Mention which one is more practical to use for a food delivery company and why.
+
+ChatGPT said:
+Population vs. Sample: In our Zomato order dataset, the population consists of all 20 order amounts recorded for the day, while the sample consists of the first 5 order amounts selected from those 20 orders. A population includes every observation of interest, whereas a sample is only a subset of the population. For a food delivery company like Zomato, using a sample is often more practical because the company handles thousands or millions of orders daily, making it faster and less expensive to analyze a representative subset of orders to understand customer spending patterns.
+
+
+You said:
+Simulate a Bernoulli trial in Python to model whether a user successfully logs into their Zomato account (success=1, failure=0) with a given probability of success p=0.85. Run the simulation 20 times and print the results.
+
+ChatGPT said:
+Here is a Python program that simulates 20 Bernoulli trials to model successful and failed logins to a Zomato account, with a success probability of 
+p
+=
+0.85
+p=0.85.
+
+Python code
+
+python
+
+import random
+
+# Probability of successful login
+p = 0.85
+
+# Simulate 20 Bernoulli trials
+results = [
+    1 if random.random() < p else 0
+    for _ in range(20)
+]
+
+print("Login results (1 = Success, 0 = Failure):")
+print(results)
+
+print("Successful logins:", results.count(1))
+print("Failed logins:", results.count(0))
+Example output
+
+text
+Login results (1 = Success, 0 = Failure):
+[1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1]
+
+Successful logins: 16
+Failed logins: 4
+Note: The output is illustrative; your results may differ each time you run the code because the simulation is random.
+
+Explanation
+1 (Success): The login succeeds, with probability 0.85 (85%).
+
+0 (Failure): The login fails, with probability 0.15 (15%).
+
+Each login attempt is treated as an independent Bernoulli trial.
+
+Over 20 attempts, the expected number of successful logins is 
+20
+×
+0.85
+=
+17
+20×0.85=17, although the actual number can vary.
+
+
+You said:
+Write a Python function that uses the binomial distribution to calculate the probability of getting exactly 3 successful UPI payments out of 5 attempts on Paytm, if the success rate per payment is 0.9.<br><br><em><strong>Hint:</strong> Use scipy.stats.binom.pmf for the calculation.</em>
+
+ChatGPT said:
+Here is a Python function that uses the binomial distribution and scipy.stats.binom.pmf to calculate the probability of exactly 3 successful UPI payments out of 5 attempts, with a success rate of 0.9.
+
+Python code
+
+python
+
+from scipy.stats import binom
+
+def upi_payment_probability(n, k, p):
+    # Probability of exactly k successful payments
+    probability = binom.pmf(k, n, p)
+    return probability
+
+# Parameters
+n = 5      # Total payment attempts
+k = 3      # Exactly 3 successful payments
+p = 0.9    # Probability of success per payment
+
+result = upi_payment_probability(n, k, p)
+
+print("Probability of exactly 3 successful payments:", result)
+print(f"Probability in percentage: {result * 100:.2f}%")
+Output
+
+text
+Probability of exactly 3 successful payments: 0.0729
+Probability in percentage: 7.29%
+Explanation
+The binomial probability formula is:
+
+P
+(
+X
+=
+k
+)
+=
+(
+n
+k
+)
+p
+k
+(
+1
+−
+p
+)
+n
+−
+k
+P(X=k)=( 
+k
+n
+​
+ )p 
+k
+ (1−p) 
+n−k
+ 
+Substituting the values:
+
+P
+(
+X
+=
+3
+)
+=
+(
+5
+3
+)
+(
+0.9
+)
+3
+(
+0.1
+)
+2
+P(X=3)=( 
+3
+5
+​
+ )(0.9) 
+3
+ (0.1) 
+2
+ 
+=
+10
+×
+0.729
+×
+0.01
+=
+0.0729
+=10×0.729×0.01=0.0729
+Final answer: The probability of exactly 3 successful payments out of 5 attempts is 0.0729, or 7.29%, assuming the payment attempts are independent and each has a 90% success probability.
+
+
+You said:
+Suppose the average number of new playlist creations per minute on Spotify is 4. Use the Poisson distribution to calculate the probability that exactly 6 playlists are created in a given minute.<br><br><em><strong>Hint:</strong> Use scipy.stats.poisson.pmf.</em>
+
+ChatGPT said:
+Python code using the Poisson distribution
+The average number of new Spotify playlists created per minute is 
+λ
+=
+4
+λ=4. We want to calculate the probability of exactly 
+k
+=
+6
+k=6 playlists being created in one minute.
+
+
+python
+from scipy.stats import poisson
+
+# Average number of playlists created per minute
+lam = 4
+
+# Number of playlists we want the probability for
+k = 6
+
+# Calculate probability using Poisson PMF
+probability = poisson.pmf(k, lam)
+
+print("Probability of exactly 6 playlists:", round(probability, 4))
+print(f"Probability in percentage: {probability * 100:.2f}%")
+Output
+
+text
+Probability of exactly 6 playlists: 0.1042
+Probability in percentage: 10.42%
+Calculation
+The Poisson probability formula is:
+
+P
+(
+X
+=
+k
+)
+=
+e
+−
+λ
+λ
+k
+k
+!
+P(X=k)= 
+k!
+e 
+−λ
+ λ 
+k
+ 
+​
+ 
+Substituting 
+λ
+=
+4
+λ=4 and 
+k
+=
+6
+k=6:
+
+P
+(
+X
+=
+6
+)
+=
+e
+−
+4
+×
+4
+6
+6
+!
+P(X=6)= 
+6!
+e 
+−4
+ ×4 
+6
+ 
+​
+ 
+P
+(
+X
+=
+6
+)
+≈
+0.1042
+P(X=6)≈0.1042
+Final answer: The probability that exactly 6 playlists are created in a given minute is approximately 0.1042, or 10.42%.
+
+
+You said:
+Given a scenario where Flipkart receives an average of 10 product reviews per hour, write code to simulate and plot the number of reviews received in 12 randomly selected hours using the Poisson distribution.<br><br><em><strong>Hint:</strong> Use numpy.random.poisson and matplotlib for plotting.</em>
+
+ChatGPT said:
+Here is a Python script that simulates the number of product reviews Flipkart receives in 12 randomly selected hours using a Poisson distribution with an average of 10 reviews per hour, then plots the results using Matplotlib.
+
+Python code
+
+python
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Average number of reviews per hour
+lam = 10
+
+# Simulate review counts for 12 randomly selected hours
+np.random.seed(42)  # For reproducible results
+reviews = np.random.poisson(lam=lam, size=12)
+
+# Print the simulated data
+print("Reviews received in 12 hours:")
+print(reviews)
+
+# Plot the results
+hours = np.arange(1, 13)
+
+plt.figure(figsize=(9, 5))
+plt.bar(hours, reviews, color="skyblue", edgecolor="black")
+
+# Show the expected average
+plt.axhline(y=lam, color="red", linestyle="--",
+            label="Average = 10 reviews/hour")
+
+plt.title("Simulated Flipkart Product Reviews per Hour")
+plt.xlabel("Selected Hour")
+plt.ylabel("Number of Reviews")
+plt.xticks(hours)
+plt.legend()
+plt.grid(axis="y", linestyle=":", alpha=0.5)
+plt.tight_layout()
+plt.show()
+Explanation
+np.random.poisson(lam=10, size=12) generates 12 simulated hourly review counts, assuming an average of 10 reviews per hour.
+
+plt.bar() creates a bar chart showing the number of reviews in each selected hour.
+
+plt.axhline() adds a red dashed line at 10 reviews to show the expected average.
+
+Interpretation: The number of reviews will vary from hour to hour. Some hours may receive more than 10 reviews, while others receive fewer. Over many hours, the average should approach 10 reviews per hour, assuming the underlying rate remains stable.
+
+
+You said:
+Pick any one of the three distributions (Bernoulli, Binomial, Poisson) and use ChatGPT to generate a real-world analytics use-case from a popular Indian app (like Swiggy, BookMyShow, or IRCTC). Paste the use-case ChatGPT gives you and explain in 2-3 lines why that distribution fits the scenario.
+
+ChatGPT said:
+Selected Distribution: Poisson Distribution
+AI-generated real-world use case: IRCTC
+Scenario: IRCTC wants to analyze how many ticket booking requests it receives per minute during peak booking hours. Suppose the system receives an average of 50 booking requests per minute. IRCTC can use the Poisson distribution to estimate the probability of receiving 40, 50, or 60 requests in a particular minute. This helps the company plan server capacity, manage traffic spikes, and reduce booking failures.
+
+Why does the Poisson distribution fit?
+The Poisson distribution is suitable because it models the number of events occurring within a fixed time interval when events happen at a relatively stable average rate. Here, the events are ticket booking requests per minute, which helps IRCTC anticipate traffic and allocate server resources efficiently.
+
+
+You said:
+Write a Python script that generates 1000 random numbers following a normal distribution with mean 500 and standard deviation 100, then plot the resulting distribution using matplotlib.
+
+ChatGPT said:
+Here is a Python script that generates 1,000 random numbers from a normal distribution with a mean of 500 and a standard deviation of 100, then plots the distribution using Matplotlib.
+
+Python code
+
+python
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters of the normal distribution
+mean = 500
+std_dev = 100
+size = 1000
+
+# Generate 1000 random numbers
+data = np.random.normal(loc=mean, scale=std_dev, size=size)
+
+# Plot the distribution as a histogram
+plt.figure(figsize=(9, 5))
+plt.hist(data, bins=30, color="skyblue", edgecolor="black",
+         alpha=0.75)
+
+plt.axvline(mean, color="red", linestyle="--",
+            linewidth=2, label="Mean = 500")
+
+plt.title("Normal Distribution of 1000 Random Numbers")
+plt.xlabel("Value")
+plt.ylabel("Frequency")
+plt.legend()
+plt.grid(axis="y", linestyle=":", alpha=0.5)
+
+plt.tight_layout()
+plt.show()
+
+# Display sample statistics
+print("Sample mean:", round(np.mean(data), 2))
+print("Sample standard deviation:", round(np.std(data), 2))
+Explanation
+np.random.normal(loc=500, scale=100, size=1000) generates 1,000 values with a target mean of 500 and standard deviation of 100.
+
+plt.hist() plots the values as a histogram.
+
+The red dashed line marks the target mean of 500.
+
+The printed sample mean and standard deviation may differ slightly from the target values because the data is randomly generated.
+
+Expected result: The histogram should roughly resemble a bell-shaped curve, with most values concentrated around 500 and fewer values farther from the mean.
+
+
+You said:
+Given an array of daily step counts from a fitness app, calculate the Z-score for a specific day where the user walked 9500 steps. Assume the mean is 8000 and standard deviation is 1200.<br><br><em><strong>Hint:</strong> Use the formula Z = (X - μ) / σ.</em>
+
+ChatGPT said:
+Step 1: Identify the given values
+Observed steps (
+X
+X) = 9,500
+
+Mean (
+μ
+μ) = 8,000
+
+Standard deviation (
+σ
+σ) = 1,200
+
+Step 2: Apply the Z-score formula
+Z
+=
+X
+−
+μ
+σ
+Z= 
+σ
+X−μ
+​
+ 
+Substitute the values:
+
+Z
+=
+9500
+−
+8000
+1200
+Z= 
+1200
+9500−8000
+​
+ 
+Z
+=
+1500
+1200
+=
+1.25
+Z= 
+1200
+1500
+​
+ = 
+1.25
+​
+ 
+Step 3: Python code
+
+python
+X = 9500
+mean = 8000
+std_dev = 1200
+
+z_score = (X - mean) / std_dev
+
+print("Z-score:", z_score)
+Output:
+
+
+text
+Z-score: 1.25
+Interpretation
+The Z-score is 1.25, meaning the user walked 9,500 steps, which is 1.25 standard deviations above the average of 8,000 steps. This indicates a more active day than usual.
+
+
+You said:
+Plot a standard normal curve (mean 0, standard deviation 1) using matplotlib, and shade the area between Z = -1 and Z = 1 to visualize the probability of values within one standard deviation.
+
+ChatGPT said:
+Here is a Python script that plots the standard normal distribution and shades the area between 
+Z
+=
+−
+1
+Z=−1 and 
+Z
+=
+1
+Z=1, representing approximately 68.27% probability.
+
+Python code
+
+python
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Standard normal distribution: mean = 0, standard deviation = 1
+mu = 0
+sigma = 1
+
+# Generate x values and corresponding probability density
+x = np.linspace(-4, 4, 1000)
+y = norm.pdf(x, mu, sigma)
+
+# Plot the normal curve
+plt.figure(figsize=(9, 5))
+plt.plot(x, y, color="blue", linewidth=2, label="Standard normal curve")
+
+# Shade the area between Z = -1 and Z = 1
+x_shade = np.linspace(-1, 1, 300)
+y_shade = norm.pdf(x_shade, mu, sigma)
+plt.fill_between(x_shade, y_shade, color="skyblue",
+                 alpha=0.7, label="Area between Z = -1 and Z = 1")
+
+# Mark the Z boundaries
+plt.axvline(-1, color="red", linestyle="--", label="Z = -1")
+plt.axvline(1, color="red", linestyle="--", label="Z = 1")
+
+plt.title("Standard Normal Distribution")
+plt.xlabel("Z-score")
+plt.ylabel("Probability Density")
+plt.legend()
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# Calculate the probability
+probability = norm.cdf(1) - norm.cdf(-1)
+print(f"Probability between Z = -1 and Z = 1: {probability:.4f}")
+print(f"Percentage: {probability * 100:.2f}%")
+Expected output
+
+text
+Probability between Z = -1 and Z = 1: 0.6827
+Percentage: 68.27%
+Interpretation
+The shaded region represents the probability that a standard normally distributed value lies between −1 and +1.
+
+Approximately 68.27% of values fall within one standard deviation of the mean.
+
+The remaining 31.73% lies outside this interval, split equally between the two tails (about 15.87% on each side).
+
+
+You said:
+You are analyzing the delivery times (in minutes) for a food delivery app like Zomato. Given a normal distribution with mean 30 and standard deviation 5, write code to find the probability that a randomly selected delivery takes less than 25 minutes.<br><br><em><strong>Hint:</strong> Use scipy.stats.norm.cdf().</em>
+
+ChatGPT said:
+Python code using scipy.stats.norm.cdf()
+
+python
+from scipy.stats import norm
+
+# Given parameters
+mean = 30
+std_dev = 5
+delivery_time = 25
+
+# Calculate probability of delivery taking less than 25 minutes
+probability = norm.cdf(delivery_time, loc=mean, scale=std_dev)
+
+print("Probability:", round(probability, 4))
+print(f"Percentage: {probability * 100:.2f}%")
+Output
+
+text
+Probability: 0.1587
+Percentage: 15.87%
+Calculation
+First, calculate the Z-score:
+
+Z
+=
+X
+−
+μ
+σ
+=
+25
+−
+30
+5
+=
+−
+1
+Z= 
+σ
+X−μ
+​
+ = 
+5
+25−30
+​
+ =−1
+Using the standard normal distribution, 
+P
+(
+Z
+<
+−
+1
+)
+≈
+0.1587
+P(Z<−1)≈0.1587.
+
+Final answer: There is approximately a 15.87% probability that a randomly selected food delivery takes less than 25 minutes, assuming delivery times follow the given normal distribution.
+
+
+You said:
+Use ChatGPT to explain in your own words why the normal distribution is important for analyzing real-world app data like sales, delivery times, or user ratings. Paste your prompt and the AI's answer in your submission.
+
+ChatGPT said:
+1. Prompt given to ChatGPT
+Writing
+
+
+Explain in simple words why the normal distribution is important for analyzing real-world app data, such as sales, food delivery times, or user ratings. Give practical examples and explain how businesses can use it to make better decisions.
+
+2. AI's answer
+The normal distribution is important because it helps businesses understand how data is spread around an average value. It usually looks like a bell-shaped curve, where most values are near the average and fewer values are extremely high or low.
+
+For example:
+
+Sales: An e-commerce app like Flipkart can analyze daily sales to understand typical sales levels and identify unusually high or low sales days.
+
+Delivery times: A food delivery app like Swiggy can study delivery times to estimate how long orders usually take and identify unusually delayed deliveries.
+
+User ratings: An app can analyze restaurant ratings to understand overall customer satisfaction and identify ratings that differ significantly from the average.
+
+The normal distribution also helps businesses calculate probabilities, identify unusual observations using Z-scores, and make predictions based on historical data.
+
+However, not all real-world data follows a normal distribution. For example, sales amounts may be strongly skewed, and ratings are often limited to values such as 1 to 5 stars. Businesses should check the shape of their data before assuming it is normally distributed.
+
+3. Conclusion
+The normal distribution helps businesses understand typical patterns, detect unusual events, and make better data-driven decisions about sales, delivery performance, and customer satisfaction.
+
+
+You said:
+Create a Python script that generates a random sample of 20 users from a list of 200 user IDs, simulating how a music app like Spotify might select users for a feedback survey.
+
+ChatGPT said:
+Here is a Python script that randomly selects 20 users from a list of 200 user IDs, simulating how Spotify might choose users for a feedback survey.
+
+Python code
+
+python
+
+import random
+
+# Create a list of 200 user IDs
+user_ids = list(range(1, 201))
+
+# Randomly select 20 unique users for the survey
+survey_users = random.sample(user_ids, 20)
+
+# Display the selected users
+print("Selected users for Spotify feedback survey:")
+print(survey_users)
+
+print("Total users selected:", len(survey_users))
+Example output
+
+text
+Selected users for Spotify feedback survey:
+[14, 87, 32, 156, 9, 121, 45, 190, 63, 101,
+ 28, 174, 72, 5, 139, 54, 112, 198, 36, 81]
+
+Total users selected: 20
+Note: The output is an example; your selected IDs will likely differ each time you run the script.
+
+Explanation
+range(1, 201) creates 200 user IDs, from 1 to 200.
+
+random.sample(user_ids, 20) selects 20 unique users without replacement, so no user is selected twice.
+
+This simulates simple random sampling, where every user has an equal chance of being selected.
+
+Practical use: Spotify could use this method to select users for a feedback survey and gather opinions about features, playlists, or the overall listening experience.
+
+
+You said:
+Given an array of 1000 Flipkart orders labeled by city (e.g., 'Ahmedabad', 'Surat', 'Vadodara'), write code to generate a stratified sample of 60 orders, ensuring each city is proportionally represented in the sample.<br><br><em><strong>Hint:</strong> Calculate the proportion of orders per city and sample accordingly from each group.</em>
+
+ChatGPT said:
+Here is a Python script to generate a stratified random sample of 60 Flipkart orders from 1,000 orders, ensuring each city is represented proportionally to its share of the total orders.
+
+Python code
+
+python
+
+import pandas as pd
+import numpy as np
+
+# Create a sample dataset of 1000 Flipkart orders
+np.random.seed(42)
+
+cities = ["Ahmedabad", "Surat", "Vadodara"]
+city_probabilities = [0.5, 0.3, 0.2]
+
+orders = pd.DataFrame({
+    "Order_ID": range(1, 1001),
+    "City": np.random.choice(
+        cities, size=1000, p=city_probabilities
+    )
+})
+
+# Calculate proportional sample sizes for each city
+sample_size = 60
+city_counts = orders["City"].value_counts()
+city_proportions = city_counts / len(orders)
+sample_counts = (city_proportions * sample_size).round().astype(int)
+
+# Adjust rounding so the total sample size is exactly 60
+while sample_counts.sum() < sample_size:
+    fractions = city_proportions * sample_size - sample_counts
+    sample_counts.loc[fractions.idxmax()] += 1
+
+while sample_counts.sum() > sample_size:
+    fractions = city_proportions * sample_size - sample_counts
+    sample_counts.loc[fractions.idxmin()] -= 1
+
+# Select orders proportionally from each city
+stratified_sample = pd.concat([
+    orders[orders["City"] == city].sample(
+        n=int(sample_counts[city]), random_state=42
+    )
+    for city in sample_counts.index
+], ignore_index=True)
+
+# Display results
+print("Sample size:", len(stratified_sample))
+print("\nOrders sampled per city:")
+print(stratified_sample["City"].value_counts())
+print("\nSelected orders:")
+print(stratified_sample.head())
+Explanation
+Create the dataset: Generate 1,000 orders, each labeled with a city.
+
+Calculate proportions: Determine what fraction of all orders belongs to each city.
+
+Allocate the sample: Assign approximately 60 orders proportionally across the cities, adjusting for rounding.
+
+Sample randomly: Select orders from each city without replacement.
+
+For example, if the dataset contains 50% Ahmedabad orders, 30% Surat orders, and 20% Vadodara orders, the sample of 60 would contain approximately:
+
+City
+
+Proportion
+
+Sample orders
+
+Ahmedabad
+
+50%
+
+30
+
+Surat
+
+30%
+
+18
+
+Vadodara
+
+20%
+
+12
+
+Total
+
+100%
+
+60
+
+Conclusion: Stratified sampling ensures that cities with different numbers of orders are proportionally represented, making the sample more representative of the overall order dataset.
+
+
+You said:
+Write a function to perform systematic sampling on a list of 500 Zomato restaurant reviews, selecting every 10th review to create a sample set.
+
+ChatGPT said:
+Here is a Python function that performs systematic sampling on a list of 500 Zomato restaurant reviews by selecting every 10th review.
+
+Python code
+
+python
+
+def systematic_sampling(reviews, interval=10):
+    # Select every 10th review, starting from the 10th
+    sample = reviews[interval - 1::interval]
+    return sample
+
+
+# Create 500 sample restaurant reviews
+reviews = [
+    f"Restaurant review {i}" for i in range(1, 501)
+]
+
+# Perform systematic sampling
+sampled_reviews = systematic_sampling(reviews)
+
+# Print results
+print("Total reviews:", len(reviews))
+print("Sample size:", len(sampled_reviews))
+print("Selected reviews:")
+print(sampled_reviews)
+Explanation
+reviews[interval - 1::interval] selects every 10th review, starting with review 10.
+
+From 500 reviews, this produces a sample of 50 reviews.
+
+The selected reviews will be review numbers 10, 20, 30, and so on, up to 500.
+
+Note: For a more randomized systematic sample, choose a random starting position between 1 and 10, then select every 10th review from that point.
+
+
+You said:
+Suppose you want to estimate the average delivery time for Swiggy orders in your city. Explain with calculations how the sample size affects the accuracy of your estimate if you have access to 10,000 delivery records and can only sample 50, 200, or 500 records.
+
+ChatGPT said:
+1. Understanding the problem
+Suppose Swiggy has 10,000 delivery records and wants to estimate the average delivery time. We can select a sample of 50, 200, or 500 records.
+
+A larger sample generally gives a more accurate and reliable estimate because it captures more variation in delivery times.
+
+Assume:
+
+Population size (
+N
+N) = 10,000 orders
+
+Population standard deviation (
+σ
+σ) = 10 minutes (assumed for this example)
+
+Confidence level = 95%
+
+2. Calculate the accuracy for each sample size
+We can estimate the margin of error for the sample mean using:
+
+M
+E
+=
+1.96
+×
+σ
+n
+×
+N
+−
+n
+N
+−
+1
+ME=1.96× 
+n
+​
+ 
+σ
+​
+ × 
+N−1
+N−n
+​
+ 
+​
+ 
+The final term adjusts for sampling without replacement from a finite population.
+
+For a sample of 50 orders:
+
+M
+E
+=
+1.96
+×
+10
+50
+×
+10000
+−
+
+4.
+
+5.
+
+import pandas as pd
+import random
+from collections import defaultdict
+
+random.seed(42)
+
+# Create a sample dataset of 200 IPL fans
+teams = ["CSK", "MI", "RCB", "KKR", "RR"]
+fans = pd.DataFrame({
+    "Fan_ID": range(1, 201),
+    "Favorite_Team": (
+        ["CSK"] * 60 +
+        ["MI"] * 50 +
+        ["RCB"] * 40 +
+        ["KKR"] * 30 +
+        ["RR"] * 20
+    )
+})
+
+# Group fans by their favorite team
+team_groups = defaultdict(list)
+for _, fan in fans.iterrows():
+    team_groups[fan["Favorite_Team"]].append(fan.to_dict())
+
+# Calculate proportional sample sizes
+total_fans = len(fans)
+sample_size = 40
+quotas = {
+    team: len(group) * sample_size / total_fans
+    for team, group in team_groups.items()
+}
+
+# Round quotas using the largest-remainder method
+sample_counts = {
+    team: int(quota) for team, quota in quotas.items()
+}
+remaining = sample_size - sum(sample_counts.values())
+
+teams_by_remainder = sorted(
+    quotas,
+    key=lambda team: quotas[team] - sample_counts[team],
+    reverse=True
+)
+
+for team in teams_by_remainder[:remaining]:
+    sample_counts[team] += 1
+
+# Randomly select fans within each team
+selected_fans = []
+for team, group in team_groups.items():
+    selected_fans.extend(
+        random.sample(group, sample_counts[team])
+    )
+
+# Convert the sample to a DataFrame and display results
+sample_df = pd.DataFrame(selected_fans)
+print("Total fans selected:", len(sample_df))
+print("\nSample count by favorite team:")
+print(sample_df["Favorite_Team"].value_counts().sort_index())
+print("\nSelected fan records:")
+print(sample_df.sort_values("Fan_ID").to_string(index=False))
+
