@@ -1,0 +1,514 @@
+1.
+List all possible outcomes (sample space) for rolling a standard six-sided die and flipping a coin at the same time. Write your answer as a list of ordered pairs.
+2.
+Suppose you have a deck of 10 cards numbered 1 to 10. Calculate the classical probability of drawing a card with an even number. Show your calculation steps.
+3.
+In a playlist of 8 songs on Spotify, 3 are by Arijit Singh. If you shuffle and play one random song, what is the probability that it is NOT by Arijit Singh? Show your working.
+4.
+A Zomato user places an order. The probability they order Pizza is 0.3, and the probability they order Burger is 0.4. If the probability they order both is 0.1, use the addition rule to find the probability the user orders Pizza or Burger.<br><br><em><strong>Hint:</strong> P(A or B) = P(A) + P(B) - P(A and B)</em>
+5.
+A Flipkart user is browsing electronics. The probability they add a phone to cart is 0.2. If you know they are interested in mobiles, the probability rises to 0.5. Briefly explain in your own words what this conditional probability means, using this scenario.
+
+Solutions:
+
+1.
+
+
+Let H = Heads and T = Tails.
+
+The sample space 
+S
+S, written as a list of ordered pairs (die result, coin result), is:
+
+S
+=
+{
+(
+1
+,
+H
+)
+,
+(
+1
+,
+T
+)
+,
+(
+2
+,
+H
+)
+,
+(
+2
+,
+T
+)
+,
+(
+3
+,
+H
+)
+,
+(
+3
+,
+T
+)
+,
+(
+4
+,
+H
+)
+,
+(
+4
+,
+T
+)
+,
+(
+5
+,
+H
+)
+,
+(
+5
+,
+T
+)
+,
+(
+6
+,
+H
+)
+,
+(
+6
+,
+T
+)
+}
+S={
+​
+  
+(1,H),(1,T),
+(2,H),(2,T),
+(3,H),(3,T),
+(4,H),(4,T),
+(5,H),(5,T),
+(6,H),(6,T)}
+​
+ 
+Total possible outcomes: 
+6
+×
+2
+=
+12
+6×2= 
+12
+​
+2.
+
+Step 1: Identify the total number of outcomes
+The deck contains 10 cards numbered 1 to 10.
+
+Total possible outcomes = 10
+
+Step 2: Identify the favorable outcomes
+The even-numbered cards are:
+
+{
+2
+,
+4
+,
+6
+,
+8
+,
+10
+}
+{2,4,6,8,10}
+Number of favorable outcomes = 5
+
+
+Mean
+=
+60
+,
+000
+7
+=
+8
+,
+571.43
+Mean= 
+7
+60,000
+​
+ 
+Python Code
+
+=
+{
+(
+1
+,
+H
+)
+,
+(
+1
+,
+T
+)
+,
+(
+2
+,
+H
+)
+,
+(
+2
+,
+T
+)
+,
+(
+3
+,
+H
+)
+,
+(
+3
+,
+T
+)
+,
+(
+4
+,
+H
+)
+,
+(
+4
+,
+T
+)
+,
+(
+5
+,
+H
+)
+,
+(
+5
+,
+T
+)
+,
+(
+6
+,
+H
+)
+,
+(
+6
+,
+T
+)
+}
+S={
+​
+  
+(1,H),(1,T),
+(2,H),(2,T),
+(3,H),(3,T),
+(4,H),(4,T),
+(5,H),(5,T),
+(6,H),(6,T)}
+​
+ 
+Total possible outcomes: 
+6
+×
+2
+=
+12
+6×2= 
+12
+​
+ .
+
+Each outcome is equally likely, assuming a fair die and a fair coin.
+
+
+You said:
+Suppose you have a deck of 10 cards numbered 1 to 10. Calculate the classical probability of drawing a card with an even number. Show your calculation steps.
+
+ChatGPT said:
+Step 1: Identify the total number of outcomes
+The deck contains 10 cards numbered 1 to 10.
+
+Total possible outcomes = 10
+
+Step 2: Identify the favorable outcomes
+The even-numbered cards are:
+
+{
+2
+,
+4
+,
+6
+,
+8
+,
+10
+}
+{2,4,6,8,10}
+Number of favorable outcomes = 5
+
+Step 3: Apply the classical probability formula
+P
+(
+E
+)
+=
+Favorable outcomes
+Total outcomes
+P(E)= 
+Total outcomes
+Favorable outcomes
+​
+ 
+Substituting the values:
+
+P
+(
+Even
+)
+=
+5
+10
+=
+1
+2
+=
+0.5
+P(Even)= 
+10
+5
+​
+ = 
+2
+1
+​
+ =0.5
+Final answer
+P
+(
+Even
+)
+=
+0.5
+=
+50
+%
+P(Even)=0.5=50%
+​
+ 
+Therefore, the probability of drawing an even-numbered card is 50%, assuming each card is equally likely to be drawn.
+
+3.
+Step 1: Identify the total number of songs
+Total songs = 8
+
+Songs by Arijit Singh = 3
+
+Step 2: Calculate songs NOT by Arijit Singh
+8
+−
+3
+=
+5
+ songs
+8−3=5 songs
+Step 3: Apply the probability formula
+P
+(
+Not Arijit Singh
+)
+=
+Favorable outcomes
+Total outcomes
+P(Not Arijit Singh)= 
+Total outcomes
+Favorable outcomes
+​
+ 
+=
+5
+8
+=
+0.625
+Final answer
+P
+(
+Not Arijit Singh
+)
+=
+5
+8
+=
+62.5
+%
+P(Not Arijit Singh)= 
+8
+5
+​
+ =62.5%
+​
+4.
+Step 1: Write the addition rule
+The addition rule for two events is:
+
+P
+(
+P
+∪
+B
+)
+=
+P
+(
+P
+)
++
+P
+(
+B
+)
+−
+P
+(
+P
+∩
+B
+)
+P(P∪B)=P(P)+P(B)−P(P∩B)
+Where:
+
+P
+(
+P
+)
+=
+0.3
+P(P)=0.3 (probability of ordering Pizza)
+
+P
+(
+B
+)
+=
+0.4
+P(B)=0.4 (probability of ordering Burger)
+
+P
+(
+P
+∩
+B
+)
+=
+0.1
+P(P∩B)=0.1 (probability of ordering both)
+
+Step 2: Substitute the values
+P
+(
+P
+∪
+B
+)
+=
+0.3
++
+0.4
+−
+0.1
+P(P∪B)=0.3+0.4−0.1
+=
+0.7
+−
+0.1
+=
+0.6
+=0.7−0.1=0.6
+
+P
+(
+A
+∪
+B
+)
+=
+P
+(
+A
+)
++
+P
+(
+B
+)
+−
+P
+(
+A
+∩
+B
+)
+Final answer
+P
+(
+Pizza or Burger
+)
+=
+0.6
+=
+60
+%
+P(Pizza or Burger)=0.6=60%
+​
+ 
+Therefore, the probability that the user orders Pizza or Burger or both is 60%. We subtract 0.1 to avoid counting users who order both twice.
+
+
+5.
+Conditional probability means the probability of an event happening when we already know that a particular condition is true.
+
+In this Flipkart example:
+
+Without the condition: The probability that a user adds a phone to their cart is 20%.
+
+Given that they are interested in mobiles: The probability increases to 50%.
+
+This means that users known to be interested in mobiles are more likely to add a phone to their cart than users in general. We use the information about their interest to update the probability.
+
+
+
