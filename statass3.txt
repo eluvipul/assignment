@@ -1,0 +1,92 @@
+1.
+Given the daily step counts of a user for the last 7 days as [6500, 7200, 8000, 6000, 9000, 7500, 8200], calculate the range of steps and explain what this tells you about the user's activity pattern.
+2.
+For a list of 5 food delivery order amounts on Zomato: [250, 400, 350, 300, 500], write code to compute the variance and standard deviation of the order amounts.
+3.
+You have the monthly mobile data usage (in GB) for a user over 6 months: [3.2, 2.8, 3.5, 3.0, 2.9, 3.1]. Calculate the coefficient of variation (CV) and interpret whether the user's data usage is consistent or highly variable.<br><br><em><strong>Hint:</strong> CV = (Standard Deviation / Mean) × 100%</em>
+4.
+Suppose you are analyzing the number of likes on 10 recent Instagram posts: [120, 150, 130, 110, 170, 140, 135, 160, 125, 155]. Compute the standard deviation and compare it with the mean to comment on the consistency of engagement.
+5.
+Use ChatGPT or any AI tool to generate a small dataset (at least 8 values) representing daily UPI transaction amounts for a week. Then, calculate the variance and standard deviation of the generated data, and briefly interpret what the results mean for spending stability.
+
+Solutions:
+
+1.
+steps = [6500, 7200, 8000, 6000, 9000, 7500, 8200]
+
+step_range = max(steps) - min(steps)
+
+print("Range of steps:", step_range)
+
+2.
+
+import statistics
+import math
+
+# Order amounts in rupees
+orders = [250, 400, 350, 300, 500]
+
+# Calculate mean
+mean = sum(orders) / len(orders)
+
+# Calculate population variance
+variance = sum((x - mean) ** 2 for x in orders) / len(orders)
+
+# Calculate standard deviation
+std_dev = math.sqrt(variance)
+
+print("Mean:", mean)
+print("Variance:", variance)
+print("Standard deviation:", round(std_dev, 2))
+
+3.
+
+import statistics
+
+# Monthly mobile data usage in GB
+data_usage = [3.2, 2.8, 3.5, 3.0, 2.9, 3.1]
+
+# Calculate mean and population standard deviation
+mean = statistics.mean(data_usage)
+std_dev = statistics.pstdev(data_usage)
+
+# Calculate coefficient of variation
+cv = (std_dev / mean) * 100
+
+print("Mean:", round(mean, 2), "GB")
+print("Standard Deviation:", round(std_dev, 2), "GB")
+print("Coefficient of Variation:", round(cv, 2), "%")
+
+4.
+import statistics
+
+# Likes on 10 recent Instagram posts
+likes = [120, 150, 130, 110, 170, 140, 135, 160, 125, 155]
+
+# Calculate mean and population standard deviation
+mean = statistics.mean(likes)
+std_dev = statistics.pstdev(likes)
+
+# Compare standard deviation with mean
+cv = (std_dev / mean) * 100
+
+print("Mean likes:", round(mean, 2))
+print("Standard deviation:", round(std_dev, 2))
+print("Coefficient of variation:", round(cv, 2), "%")
+
+5.
+
+import statistics
+
+# Generated UPI transaction amounts in rupees
+amounts = [100, 150, 200, 120, 180, 250, 100, 300]
+
+# Calculate population variance and standard deviation
+variance = statistics.pvariance(amounts)
+std_dev = statistics.pstdev(amounts)
+mean = statistics.mean(amounts)
+
+print("Mean spending: ₹", round(mean, 2))
+print("Variance:", round(variance, 2))
+print("Standard deviation: ₹", round(std_dev, 2))
+
