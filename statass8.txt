@@ -1,0 +1,87 @@
+1.
+Simulate a Bernoulli trial in Python to model whether a user successfully logs into their Zomato account (success=1, failure=0) with a given probability of success p=0.85. Run the simulation 20 times and print the results.
+2.
+Write a Python function that uses the binomial distribution to calculate the probability of getting exactly 3 successful UPI payments out of 5 attempts on Paytm, if the success rate per payment is 0.9.<br><br><em><strong>Hint:</strong> Use scipy.stats.binom.pmf for the calculation.</em>
+3.
+Suppose the average number of new playlist creations per minute on Spotify is 4. Use the Poisson distribution to calculate the probability that exactly 6 playlists are created in a given minute.<br><br><em><strong>Hint:</strong> Use scipy.stats.poisson.pmf.</em>
+4.
+Given a scenario where Flipkart receives an average of 10 product reviews per hour, write code to simulate and plot the number of reviews received in 12 randomly selected hours using the Poisson distribution.<br><br><em><strong>Hint:</strong> Use numpy.random.poisson and matplotlib for plotting.</em>
+5.
+Pick any one of the three distributions (Bernoulli, Binomial, Poisson) and use ChatGPT to generate a real-world analytics use-case from a popular Indian app (like Swiggy, BookMyShow, or IRCTC). Paste the use-case ChatGPT gives you and explain in 2-3 lines why that distribution fits the scenario.
+
+Solutions:
+1.
+
+import random
+
+# Probability of successful login
+p = 0.85
+
+# Simulate 20 Bernoulli trials
+results = [
+    1 if random.random() < p else 0
+    for _ in range(20)
+]
+
+print("Login results (1 = Success, 0 = Failure):")
+print(results)
+
+print("Successful logins:", results.count(1))
+print("Failed logins:", results.count(0))
+
+2.
+
+from scipy.stats import binom
+
+def upi_payment_probability(n, k, p):
+    # Probability of exactly k successful payments
+    probability = binom.pmf(k, n, p)
+    return probability
+
+# Parameters
+n = 5      # Total payment attempts
+k = 3      # Exactly 3 successful payments
+p = 0.9    # Probability of success per payment
+
+result = upi_payment_probability(n, k, p)
+
+print("Probability of exactly 3 successful payments:", result)
+print(f"Probability in percentage: {result * 100:.2f}%")
+
+3.
+from scipy.stats import poisson
+
+# Average number of playlists created per minute
+lam = 4
+
+# Number of playlists we want the probability for
+k = 6
+
+# Calculate probability using Poisson PMF
+probability = poisson.pmf(k, lam)
+
+print("Probability of exactly 6 playlists:", round(probability, 4))
+print(f"Probability in percentage: {probability * 100:.2f}%")
+
+4.
+from scipy.stats import poisson
+
+# Average number of playlists created per minute
+lam = 4
+
+# Number of playlists we want the probability for
+k = 6
+
+# Calculate probability using Poisson PMF
+probability = poisson.pmf(k, lam)
+
+print("Probability of exactly 6 playlists:", round(probability, 4))
+print(f"Probability in percentage: {probability * 100:.2f}%")
+
+5.
+AI-generated real-world use case: IRCTC
+Scenario: IRCTC wants to analyze how many ticket booking requests it receives per minute during peak booking hours. Suppose the system receives an average of 50 booking requests per minute. IRCTC can use the Poisson distribution to estimate the probability of receiving 40, 50, or 60 requests in a particular minute. This helps the company plan server capacity, manage traffic spikes, and reduce booking failures.
+
+Why does the Poisson distribution fit?
+The Poisson distribution is suitable because it models the number of events occurring within a fixed time interval when events happen at a relatively stable average rate. Here, the events are ticket booking requests per minute, which helps IRCTC anticipate traffic and allocate server resources efficiently.
+
