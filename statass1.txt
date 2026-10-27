@@ -1,0 +1,101 @@
+Tasks
+1.
+Given the following columns from a mock Zomato restaurant dataset — Restaurant Name, Cuisine Type, Average Cost for Two, User Rating, City, and Open/Closed Status — classify each column as either Numerical (Continuous or Discrete) or Categorical (Nominal or Ordinal).
+2.
+Create a table with 8 real-life examples (not from class) of data you might find in popular apps like Instagram, Flipkart, or IRCTC. For each, specify the measurement scale (Nominal, Ordinal, Interval, or Ratio) and briefly explain your choice.<br><br><em><strong>Hint:</strong> Think about things like 'Order Status', 'Train Departure Time', 'Number of Likes', or 'Payment Method'.</em>
+3.
+Given this time-series data from a Spotify user's listening history — Date, Song Name, Play Count per Day — identify which columns represent time-series, and which are categorical or numerical. Explain your reasoning.
+4.
+Write a function or pseudocode that takes a column of data (array of values) from a Flipkart order history and automatically detects whether it is likely Nominal, Ordinal, Interval, or Ratio scale. Briefly describe the logic used for each type.<br><br><em><strong>Constraint:</strong> You do not need to write a perfect algorithm — focus on simple rules based on value types and patterns.</em>
+
+Solutions:
+
+1.
+Column                          Data Type                       Subtype           Explanation
+
+Restaurant Name			Categorical			Nominal		  Names identify restaurants and have no natural order.
+
+Cuisine Type		        Categorical			Nominal		  Categories such as Indian, Chinese, and Italian have no inherent order.
+
+Average Cost for Two		Numerical			Continuous	  Cost is a measurable quantity that can take decimal values.
+
+User Rating			Numerical			Continuous	  Ratings can take decimal values, such as 3.5 or 4.2.
+
+City				Categorical			Nominal		  City names are labels with no natural order.
+
+Open/Closed Status		Categorical			Nominal		Values such as Open and Closed represent categories without a natural ranking.
+
+2.
+
+No.	App		Example of Data					Measurement Scale	Explanation
+
+1	Instagram	Type of account (Personal, Business, Creator)	Nominal			These are categories with no natural order.
+
+2	Flipkart	Order status (Placed, Shipped, Delivered)	Ordinal			The statuses generally follow an order in the delivery 
+												process.
+
+3	IRCTC		Train departure time (e.g., 6:30 AM)		Interval		Time differences are meaningful, but the clock's zero point 												is arbitrary.
+
+4	Instagram	Number of likes on a post			Ratio			Zero likes means none, and 20 likes is twice as many as 10.
+
+5	Flipkart	Product price (e.g., ₹1,500)			Ratio			A price of ₹0 means no cost, and ratios are meaningful.
+
+6	IRCTC		Passenger's seat number (e.g., 12, 25)		Nominal			Seat numbers are identifiers, not quantities that indicate 												magnitude.
+
+7	Instagram	Customer satisfaction rating (1 to 5 stars)	Ordinal			The ratings have an order, but the difference between 													consecutive ratings may not be equal.
+
+8	Flipkart	Product review date (e.g., 15 March 2026)	Interval		Differences between dates can be measured, but calendar 												dates have no true zero point.
+
+3.
+
+Column		Data Type	Classification		Reasoning
+
+Date		Time-series	Temporal		Records when listening activity occurred, allowing us to track changes over time.
+
+Song Name	Categorical	Nominal			Represents song titles, which are labels with no natural order.
+
+Play Count 
+per Day		Numerical	Discrete		Counts the number of times a song was played each day. It takes whole-number values (0, 1, 2, etc.).
+
+4.
+
+def detect_scale(data, column_name=""):
+    # Remove missing values
+    values = [v for v in data if v is not None]
+
+    if not values:
+        return "Unknown"
+
+    name = column_name.lower()
+
+    # Rule 1: Known ordered categories
+    ordinal_keywords = ["order status", "size", "rating",
+                        "priority", "delivery stage"]
+
+    if any(word in name for word in ordinal_keywords):
+        return "Ordinal"
+
+    # Rule 2: Dates and times
+    if all(isinstance(v, str) for v in values):
+        if "date" in name or "time" in name:
+            return "Interval"
+
+        # Categories with a known order
+        ordered = {
+            "order status": ["placed", "packed", "shipped",
+                             "out for delivery", "delivered"],
+            "rating": ["1 star", "2 stars", "3 stars",
+                       "4 stars", "5 stars"]
+        }
+
+        for key, order in ordered.items():
+            if key in name:
+                return "Ordinal"
+
+        return "Nominal"
+
+
+
+
+
+
