@@ -1,0 +1,179 @@
+1.
+Given the following data from an e-commerce app: out of 500 users, 120 bought phone accessories, 80 bought a phone, and 50 bought both, calculate the probability that a user bought a phone given they already bought accessories (P(Phone|Accessories)).
+2.
+Imagine you are analyzing Flipkart's user data: 30% of users buy headphones, and among those, 40% later buy a smartphone. Calculate the conditional probability that a randomly selected user buys a smartphone, given they have already bought headphones.<br><br><em><strong>Hint:</strong> Use the formula for conditional probability: P(A|B) = P(A and B) / P(B).</em>
+3.
+Write a Python function bayes_churn_probability(prior_churn, prob_email_given_churn, prob_email) that uses Bayes’ Theorem to compute the probability a user will churn given they received a 'we miss you' email. Test your function with prior_churn=0.15, prob_email_given_churn=0.6, prob_email=0.25.
+4.
+A digital wallet app detects fraud based on spending patterns. If 2% of all transactions are fraudulent, and the app’s alert system correctly flags 90% of fraudulent transactions but also falsely flags 5% of normal transactions, use Bayes’ Theorem to calculate the probability that a transaction is actually fraudulent when flagged by the alert system.<br><br><em><strong>Hint:</strong> Define events: F = fraud, A = alert. Use Bayes’ formula: P(F|A) = [P(A|F) * P(F)] / P(A).</em>
+5.
+Use ChatGPT or another AI tool to generate a real-world scenario where conditional probability is used in a food delivery app (like Zomato or Swiggy), and explain how Bayes’ Theorem could help improve their recommendation system. Paste the AI’s output and add one sentence of your own analysis.
+
+Solutions:
+
+1.
+	
+Step 1: Write the conditional probability formula
+P
+(
+Phone
+∣
+Accessories
+)
+=
+P
+(
+Phone
+∩
+Accessories
+)
+P
+(
+Accessories
+)
+P(Phone∣Accessories)= 
+P(Accessories)
+P(Phone∩Accessories)
+​
+ 
+Step 2: Substitute the given values
+Total users = 500
+
+Users who bought accessories = 120
+
+Users who bought both a phone and accessories = 50
+
+P
+(
+Phone
+∣
+Accessories
+)
+=
+50
+120
+P(Phone∣Accessories)= 
+120
+50
+​
+2.
+## Step 1: Identify the given probabilities
+
+- Probability of buying headphones: $P(H)=0.30$
+- Probability of buying a smartphone given that the user bought headphones: $P(S\mid H)=0.40$
+
+## Step 2: Apply the conditional probability formula
+
+$$
+P(S\mid H)=\frac{P(S\cap H)}{P(H)}
+$$
+
+Since the question already states that 40% of headphone buyers later buy a smartphone, this is directly the conditional probability we need.
+
+## Final Answer
+
+$$
+\boxed{P(S\mid H)=0.40=40\%}
+$$
+
+Interpretation: There is a 40% probability that a randomly selected user will buy a smartphone, given that they have already bought headphones.
+
+3.
+
+def bayes_churn_probability(prior_churn, prob_email_given_churn, prob_email):
+    if prob_email <= 0:
+        raise ValueError("prob_email must be greater than 0")
+
+    # Bayes' Theorem
+    posterior = (prior_churn * prob_email_given_churn) / prob_email
+
+    return posterior
+
+
+# Test the function
+result = bayes_churn_probability(
+    prior_churn=0.15,
+    prob_email_given_churn=0.6,
+    prob_email=0.25
+)
+
+print(f"Probability of churn given email: {result:.2%}")
+
+4.
+## Step 1: Identify the given probabilities
+
+Let:
+
+- $F$ = Transaction is fraudulent
+- $A$ = Alert system flags the transaction
+
+Given:
+
+- Probability of fraud: $P(F)=0.02$
+- Probability of an alert when fraud occurs: $P(A\mid F)=0.90$
+- Probability of a false alert: $P(A\mid \neg F)=0.05$
+- Probability of a normal transaction: $P(\neg F)=1-0.02=0.98$
+
+## Step 2: Apply Bayes’ Theorem
+
+$$
+P(F\mid A)=\frac{P(A\mid F)P(F)}{P(A)}
+$$
+
+First, calculate the total probability of an alert:
+
+$$
+P(A)=P(A\mid F)P(F)+P(A\mid\neg F)P(\neg F)
+$$
+
+Substitute the values:
+
+$$
+P(A)=(0.90\times0.02)+(0.05\times0.98)
+$$
+
+$$
+P(A)=0.018+0.049=0.067
+$$
+
+## Step 3: Calculate the probability of fraud given an alert
+
+$$
+P(F\mid A)=\frac{0.90\times0.02}{0.067}
+$$
+
+$$
+=\frac{0.018}{0.067}\approx0.2687
+$$
+
+## Final answer
+
+$$
+\boxed{P(F\mid A)\approx26.87\%}
+$$
+
+5.
+## AI-Generated Output: Conditional Probability in a Food Delivery App
+
+### Scenario: Food recommendations on Swiggy
+
+Suppose a Swiggy user frequently orders vegetarian food. The app wants to recommend restaurants that the user is likely to enjoy.
+
+Based on previous orders, Swiggy observes that:
+
+- 40% of all orders are vegetarian.
+- 70% of users who order vegetarian food also order from vegetarian restaurants again.
+
+The app can use conditional probability to estimate the likelihood that a user will order from a vegetarian restaurant, given their previous food choices.
+
+### How Bayes’ Theorem helps
+
+Bayes’ Theorem allows Swiggy to update the probability of a user liking a particular type of restaurant based on evidence, such as previous orders, searches, ratings, and clicks.
+
+For example, if a user frequently searches for vegetarian dishes, the recommendation system can combine this new evidence with the user's existing preferences to estimate which restaurants are most relevant. The app can then rank those restaurants higher in the user's recommendations, potentially improving customer satisfaction and increasing orders.
+
+Bayes’ Theorem is useful because it helps the system update its predictions as new information about a user's preferences becomes available.
+
+### My own analysis
+
+I think Bayes’ Theorem can make food recommendations more personalized by allowing Swiggy to adapt to changing user preferences instead of relying only on past order history.
