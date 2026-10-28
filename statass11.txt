@@ -1,0 +1,217 @@
+1.
+Simulate the Central Limit Theorem in Python by taking 1000 random samples (size 30) from a skewed dataset (e.g., number of likes on Instagram posts), calculating the mean of each sample, and plotting the histogram of these sample means using matplotlib.
+2.
+Explain in your own words why the sampling distribution of the mean becomes approximately normal, even if the original data is not, using an example from any app you use daily (such as Zomato order amounts or Spotify song durations).
+3.
+Pick a real-world scenario from a popular app (Flipkart, Swiggy, or IRCTC) where the Central Limit Theorem could help in analytics or business decision-making. Write a short paragraph describing how CLT would be useful in that context.
+4.
+Modify the CLT simulation code to use a much smaller sample size (n=5) and compare the histogram of sample means to the one with n=30. Briefly describe what changes you observe in the shape of the distribution.<br><br><em><strong>Hint:</strong> Run both simulations and compare the spread and normality of the histograms.</em>
+5.
+Use ChatGPT to generate Python code that demonstrates the Central Limit Theorem using random samples from a non-normal distribution (e.g., exponential). Run the code, paste the output plot, and briefly describe what you observe.
+
+Solutions:
+
+1.
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Make the simulation reproducible
+np.random.seed(42)
+
+# Generate a right-skewed population of Instagram likes
+population = np.random.exponential(scale=500, size=10000)
+
+# Simulation settings
+num_samples = 1000
+sample_size = 30
+
+# Draw samples and calculate their means
+sample_means = []
+
+for _ in range(num_samples):
+    sample = np.random.choice(
+        population, size=sample_size, replace=True
+    )
+    sample_means.append(np.mean(sample))
+
+sample_means = np.array(sample_means)
+
+# Plot the sampling distribution of sample means
+plt.figure(figsize=(10, 6))
+plt.hist(
+    sample_means,
+    bins=30,
+    color="skyblue",
+    edgecolor="black",
+    density=True,
+    alpha=0.75
+)
+
+plt.axvline(
+    np.mean(population),
+    color="red",
+    linestyle="--",
+    linewidth=2,
+    label=f"Population mean = {np.mean(population):.1f}"
+)
+
+plt.axvline(
+    np.mean(sample_means),
+    color="green",
+    linestyle="-",
+    linewidth=2,
+    label=f"Mean of sample means = {np.mean(sample_means):.1f}"
+)
+
+plt.title("Central Limit Theorem: Instagram Likes")
+plt.xlabel("Sample Mean of Likes")
+plt.ylabel("Density")
+plt.legend()
+plt.grid(axis="y", alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# Print summary statistics
+print("Number of samples:", num_samples)
+print("Sample size:", sample_size)
+print("Population mean:", round(np.mean(population), 2))
+print("Mean of sample means:", round(np.mean(sample_means), 2))
+print("Standard deviation of sample means:",
+      round(np.std(sample_means), 2))
+
+2.
+
+The Central Limit Theorem (CLT) states that when we repeatedly take random samples of a sufficiently large size from a population and calculate their means, the distribution of those sample means becomes approximately normal (bell-shaped), even if the original data is not normally distributed.
+
+Example: Zomato order amounts
+
+Suppose Zomato order amounts are right-skewed because most customers place small orders, while a few place very large orders. If we repeatedly select random samples of 30 orders and calculate the average amount for each sample, the distribution of those averages will tend to look bell-shaped. This happens because individual high and low values balance out across samples, making the sample means less variable than individual order amounts.
+
+In conclusion: The Central Limit Theorem helps businesses like Zomato estimate average order values more reliably and perform statistical analysis even when the original data is skewed.
+
+3.
+
+Example: Swiggy delivery time analysis
+
+Swiggy can use the Central Limit Theorem (CLT) to estimate the average delivery time of orders across a city. Delivery times may vary widely because of traffic, weather, and restaurant preparation delays. By repeatedly selecting random samples of, for example, 30 orders and calculating their average delivery times, Swiggy can build a sampling distribution that is approximately normal. This helps the company estimate the city's average delivery time, measure uncertainty, and make better decisions about delivery partner allocation and delivery time estimates, even if individual delivery times are not normally distributed.
+
+4.
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(42)
+
+# Simulate a right-skewed population of Instagram likes
+population = np.random.exponential(scale=500, size=10000)
+
+num_samples = 1000
+
+# Generate sample means for n = 5
+means_n5 = [
+    np.mean(np.random.choice(population, size=5, replace=True))
+    for _ in range(num_samples)
+]
+
+# Generate sample means for n = 30
+means_n30 = [
+    np.mean(np.random.choice(population, size=30, replace=True))
+    for _ in range(num_samples)
+]
+
+# Plot both histograms for comparison
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+axes[0].hist(means_n5, bins=30, color="orange",
+             edgecolor="black", alpha=0.75)
+axes[0].set_title("Sample Means (n = 5)")
+axes[0].set_xlabel("Mean Instagram Likes")
+axes[0].set_ylabel("Frequency")
+
+axes[1].hist(means_n30, bins=30, color="skyblue",
+             edgecolor="black", alpha=0.75)
+axes[1].set_title("Sample Means (n = 30)")
+axes[1].set_xlabel("Mean Instagram Likes")
+axes[1].set_ylabel("Frequency")
+
+plt.suptitle("CLT: Comparing Sample Sizes")
+plt.tight_layout()
+plt.show()
+
+print("Standard deviation of means (n=5):",
+      round(np.std(means_n5), 2))
+print("Standard deviation of means (n=30):",
+      round(np.std(means_n30), 2))
+
+5.
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Reproducible random samples
+np.random.seed(42)
+
+# Parameters
+population_size = 100_000
+num_samples = 10_000
+sample_sizes = [2, 5, 30, 100]
+
+# Non-normal population: exponential distribution
+population = np.random.exponential(
+    scale=1.0, size=population_size
+)
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+axes = axes.flatten()
+
+for ax, n in zip(axes, sample_sizes):
+    # Draw many independent samples and calculate their means
+    samples = np.random.exponential(
+        scale=1.0, size=(num_samples, n)
+    )
+    sample_means = samples.mean(axis=1)
+
+    # Plot the sampling distribution of sample means
+    ax.hist(
+        sample_means,
+        bins=50,
+        density=True,
+        alpha=0.7,
+        color="steelblue",
+        edgecolor="white"
+    )
+
+    # Theoretical normal approximation
+    x = np.linspace(
+        sample_means.min(), sample_means.max(), 300
+    )
+    mu = 1.0
+    sigma = 1.0 / np.sqrt(n)
+
+    normal_pdf = (
+        1 / (sigma * np.sqrt(2 * np.pi))
+        * np.exp(-0.5 * ((x - mu) / sigma) ** 2)
+    )
+
+    ax.plot(x, normal_pdf, "r-", linewidth=2,
+            label="Normal approximation")
+    ax.set_title(f"Sample size n = {n}")
+    ax.set_xlabel("Sample mean")
+    ax.set_ylabel("Density")
+    ax.legend()
+
+plt.suptitle(
+    "Central Limit Theorem: Exponential Population",
+    fontsize=14
+)
+plt.tight_layout()
+plt.show()
+
+
+
+
+
+
+
