@@ -1,0 +1,115 @@
+1.
+Given a dataset of YouTube influencers with their number of followers (independent variable) and average monthly brand deals (dependent variable), identify which variable is dependent and which is independent. Explain your reasoning in 2-3 sentences.
+2.
+Using any spreadsheet tool (Excel, Google Sheets) or Python (pandas), plot a scatter plot of Myntra ad spend (in lakhs) vs. number of app downloads for 10 sample data points. Visually draw or highlight the line of best fit on your plot.
+3.
+Using Python and scikit-learn, fit a simple linear regression model to predict the average daily orders on Swiggy based on daily advertising spend. Print out the slope (coefficient) and intercept, and explain in your own words what each means in this context.<br><br><em><strong>Hint:</strong> The coefficient tells you how much orders increase for every extra lakh spent on ads.</em>
+4.
+Calculate the R-squared value for your regression model in the previous task and interpret what it tells you about the relationship between Swiggy's ad spend and daily orders.<br><br><em><strong>Hint:</strong> Is the R-squared closer to 0 or 1? What does that mean for your model's accuracy?</em>
+
+Solutions:
+
+1.
+The independent variable is the number of followers, as it is used to predict potential brand deal opportunities. The dependent variable is the average number of monthly brand deals, as it may change depending on an influencer’s follower count. In general, influencers with more followers may attract more brand deals, although engagement rates and audience demographics also matter.
+
+2.
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Sample Myntra data (hypothetical)
+data = {
+    "ad_spend_lakhs": [5, 8, 10, 12, 15, 18, 20, 22, 25, 30],
+    "downloads_thousands": [12, 18, 22, 25, 31, 35, 39, 42, 48, 58]
+}
+
+df = pd.DataFrame(data)
+
+# Calculate line of best fit
+slope, intercept = np.polyfit(
+    df["ad_spend_lakhs"],
+    df["downloads_thousands"],
+    1
+)
+
+best_fit = (
+    slope * df["ad_spend_lakhs"] + intercept
+)
+
+# Plot scatter points
+plt.figure(figsize=(9, 6))
+plt.scatter(
+    df["ad_spend_lakhs"],
+    df["downloads_thousands"],
+    color="blue",
+    s=70,
+    label="Sample data"
+)
+
+# Highlight line of best fit
+plt.plot(
+    df["ad_spend_lakhs"],
+    best_fit,
+    color="red",
+    linewidth=2.5,
+    label="Line of best fit"
+)
+
+plt.xlabel("Advertising Spend (₹ lakhs)")
+plt.ylabel("App Downloads (thousands)")
+plt.title("Myntra Ad Spend vs. App Downloads")
+plt.legend()
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+print(f"Best-fit equation: y = {slope:.2f}x + {intercept:.2f}")
+
+3.
+
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+# Daily advertising spend (in ₹ lakhs)
+X = np.array([2, 3, 4, 5, 6, 7, 8, 9, 10, 12]).reshape(-1, 1)
+
+# Average daily orders
+y = np.array([200, 240, 290, 310, 360,
+              390, 430, 460, 510, 580])
+
+# Fit the linear regression model
+model = LinearRegression()
+model.fit(X, y)
+
+# Print coefficient and intercept
+print("Slope (coefficient):", round(model.coef_[0], 2))
+print("Intercept:", round(model.intercept_, 2))
+
+# Predict orders for ₹10 lakhs in advertising
+prediction = model.predict(np.array([[10]]))
+print("Predicted orders at ₹10 lakhs:", round(prediction[0], 2))
+
+4.
+
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+# Advertising spend in ₹ lakhs
+X = np.array([2, 3, 4, 5, 6, 7, 8, 9, 10, 12]).reshape(-1, 1)
+
+# Average daily orders
+y = np.array([200, 240, 290, 310, 360,
+              390, 430, 460, 510, 580])
+
+# Fit the model
+model = LinearRegression()
+model.fit(X, y)
+
+# Calculate R-squared
+r_squared = model.score(X, y)
+
+print("R-squared:", round(r_squared, 4))
+
+
+
