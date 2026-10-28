@@ -1,0 +1,236 @@
+1.
+Open Telco-Customer-Churn.csv in Excel and use the Filter feature to count how many customers have Churn = 'Yes' and how many have Churn = 'No'.
+2.
+Use Excel's PivotTable tool to analyze the relationship between Contract type (Month-to-month, One year, Two year) and Churn — show the count of churned customers for each contract type.
+3.
+Calculate the average MonthlyCharges for customers who churned versus those who did not using Excel's AVERAGEIF function.<br><br><em><strong>Hint:</strong> Use =AVERAGEIF(range, criteria, average_range) for both groups.</em>
+4.
+Create a bar chart in Excel that compares the number of churned vs non-churned customers for each InternetService type (DSL, Fiber optic, No).
+5.
+Use Excel's CORREL function to check if there is a correlation between Tenure and Churn (convert Churn 'Yes' to 1 and 'No' to 0 in a new column first), and interpret the result.<br><br><em><strong>Hint:</strong> Use =CORREL(array1, array2) after preparing the numeric column.</em>
+
+Solutions:
+1.
+## Count customers by Churn status in Excel
+
+Follow these steps using `Telco-Customer-Churn.csv`.
+
+1. Open the CSV: Open the file in Excel.
+2. Enable filters: Select the header row and go to Data → Filter.
+3. Filter Churn = Yes:
+   - Open the dropdown in the `Churn` column.
+   - Select only `Yes`.
+   - Count the visible customer rows, excluding the header.
+4. Filter Churn = No:
+   - Change the filter to select only `No`.
+   - Count the visible customer rows, excluding the header.
+
+### Faster method using Excel formulas
+
+If `Churn` is in column G, use these formulas (adjust the column if needed):
+
+| Churn status | Formula |
+| --- | --- |
+| Yes | `=COUNTIF(G:G,"Yes")` |
+| No | `=COUNTIF(G:G,"No")` |
+
+### Expected result
+
+For the commonly used IBM Telco Customer Churn dataset containing 7,043 customer records, the counts are:
+
+| Churn status | Number of customers |
+| --- | --- |
+| Yes | 1,869 |
+| No | 5,174 |
+| Total | 7,043 |
+
+These counts apply to the standard dataset; if your CSV has been modified, your results may differ.
+
+2.
+## Create a PivotTable: Contract Type vs. Churned Customers
+
+Follow these steps in Excel using `Telco-Customer-Churn.csv` to count customers who churned (`Churn = Yes`) for each contract type.
+
+### 1. Insert a PivotTable
+
+1. Open `Telco-Customer-Churn.csv` in Excel.
+2. Select any cell in the dataset.
+3. Go to Insert → PivotTable → New Worksheet, then click OK.
+
+### 2. Configure the PivotTable
+
+In the PivotTable Fields panel, drag the fields into these areas:
+
+| Area | Field |
+| --- | --- |
+| Rows | `Contract` |
+| Columns | `Churn` |
+| Values | `CustomerID` (set to Count) |
+
+The PivotTable will show counts for both `Yes` and `No` for each contract type.
+
+### 3. Show only churned customers
+
+Open the dropdown for the `Churn` column labels in the PivotTable and select only Yes.
+
+Your table should look like this for the standard IBM Telco Customer Churn dataset:
+
+| Contract type | Churned customers (Yes) |
+| --- | --- |
+| Month-to-month | 1,655 |
+| One year | 166 |
+| Two year | 48 |
+| Total | 1,869 |
+
+### 4. Interpretation
+
+- Month-to-month: Has the highest number of churned customers.
+- One year: Has substantially fewer churned customers.
+- Two year: Has the fewest churned customers.
+
+This suggests that customers on longer-term contracts tend to churn less often. To compare churn rates fairly, divide the churned count by the total customers in each contract type, since the three contract groups have different sizes.
+
+Note: These figures are for the standard dataset and may differ if your CSV has been modified.
+
+3.
+## Calculate average MonthlyCharges by Churn status in Excel
+
+Open `Telco-Customer-Churn.csv` in Excel and use the `AVERAGEIF` function to compare the average monthly charges of customers who churned and those who stayed.
+
+### 1. Enter the formulas
+
+Assuming `Churn` is in column G and `MonthlyCharges` is in column O (check your actual column positions), enter:
+
+Average charges for customers who churned:
+
+excel
+
+```
+=AVERAGEIF(G:G,"Yes",O:O)
+```
+
+Average charges for customers who did not churn:
+
+excel
+
+```
+=AVERAGEIF(G:G,"No",O:O)
+```
+
+### 2. Expected results
+
+For the standard IBM Telco Customer Churn dataset, the results are approximately:
+
+| Customer group | Average MonthlyCharges |
+| --- | --- |
+| Churned (`Yes`) | $74.44 |
+| Did not churn (`No`) | $61.27 |
+
+### 3. Interpretation
+
+Customers who churned paid higher average monthly charges than customers who stayed. This suggests that higher monthly costs may be associated with churn, although it does not prove that price alone caused customers to leave.
+
+Note: These are approximate figures for the standard dataset. Your results may vary if your CSV differs.
+
+4.
+## Create a bar chart in Excel: Churn by Internet Service Type
+
+Use `Telco-Customer-Churn.csv` to compare the number of churned and non-churned customers across DSL, Fiber optic, and No internet service.
+
+### 1. Create a PivotTable
+
+1. Open `Telco-Customer-Churn.csv` in Excel.
+2. Select any cell in the dataset and go to Insert → PivotTable → New Worksheet.
+3. Arrange the PivotTable fields as follows:
+
+| PivotTable area | Field |
+| --- | --- |
+| Rows | `InternetService` |
+| Columns | `Churn` |
+| Values | `CustomerID` — summarize by Count |
+
+You should see counts for `Yes` and `No` for each InternetService type.
+
+### 2. Insert the bar chart
+
+1. Select the PivotTable, including the row and column headings.
+2. Go to Insert → Bar Chart → Clustered Bar (or Insert → Column Chart → Clustered Column).
+3. Set the chart title to Customer Churn by Internet Service Type.
+4. Ensure the legend distinguishes `Yes` (churned) from `No` (not churned).
+5. Add axis titles if desired:
+   - Horizontal axis: Number of Customers
+   - Vertical axis: Internet Service Type
+
+### 3. What your chart should show
+
+For the standard IBM Telco Customer Churn dataset, the approximate counts are:
+
+| Internet service | Churned (Yes) | Not churned (No) |
+| --- | --- | --- |
+| DSL | 459 | 1,969 |
+| Fiber optic | 1,297 | 1,798 |
+| No | 113 | 1,413 |
+
+Customer Churn by Internet Service Type
+
+Counts from the standard IBM Telco Customer Churn dataset.
+
+Expand chart
+
+|  | Churned | Not churned |
+| --- | --- | --- |
+| DSL | 459 | 2K |
+| Fiber optic | 1.3K | 1.8K |
+| No internet | 113 | 1.4K |
+
+### 4. Interpretation
+
+- Fiber optic has the largest number of churned customers.
+- DSL has more non-churned than churned customers.
+- Customers with no internet service have relatively low churn counts.
+
+These are counts, not churn rates. Because the group sizes differ, calculate each service type's churn percentage as well for a fairer comparison.
+
+Note: The counts above apply to the standard dataset and may differ if your CSV has been modified.
+
+5.
+## 1. Convert Churn into numeric values in Excel
+
+Open `Telco-Customer-Churn.csv`. Add a new column named `Churn_Numeric`.
+
+Assuming `Churn` is in column G, enter this formula in the first data row:
+
+excel
+
+```
+=IF(G2="Yes",1,0)
+```
+
+- `Yes` (customer churned) = 1
+- `No` (customer stayed) = 0
+
+Fill the formula down for all customers.
+
+## 2. Calculate the correlation using CORREL
+
+Assuming `Tenure` is in column E and `Churn_Numeric` is in column H, enter:
+
+excel
+
+```
+=CORREL(E2:E7044,H2:H7044)
+```
+
+Adjust the column letters if needed. The range assumes 7,043 customer records plus a header row.
+
+## 3. Interpret the result
+
+For the standard IBM Telco Customer Churn dataset, the correlation is approximately −0.35.
+
+Learn more
+
+- Negative correlation: Customers with longer tenure are generally less likely to churn.
+- Strength: The relationship is modest, not perfect.
+- Conclusion: Tenure is associated with churn, but correlation alone does not establish that longer tenure causes customers to stay.
+
+Note: The exact correlation may vary if your CSV has been modified.
