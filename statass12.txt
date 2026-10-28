@@ -1,0 +1,98 @@
+1.
+State the null and alternative hypotheses for testing whether a new cashback offer on a food delivery app (like Zomato) has increased the average number of daily orders compared to before the offer.
+2.
+Given the following scenario: A music streaming app claims their new playlist recommendation algorithm increases average listening time from 40 to 45 minutes. If you set up a hypothesis test, identify which type of error (Type I or Type II) would occur if you wrongly conclude the algorithm works when it actually doesn't, and explain in one sentence why.
+3.
+Suppose you run an A/B test on a shopping app (like Flipkart) and get a p-value of 0.03 when testing if a new discount banner increases purchases. At a 95% confidence level, state whether you reject or fail to reject the null hypothesis and explain what this means in the context of the app.
+4.
+For a cricket app's push notification feature, you want to be 99% confident that sending match alerts increases user engagement. Explain what the 99% confidence level means in this context, and how it affects your decision to accept or reject the feature.
+
+Solutions:
+
+1.
+Let $\mu_{\text{before}}$ be the average number of daily orders before the cashback offer and $\mu_{\text{after}}$ be the average number of daily orders after the offer.
+
+- Null hypothesis ($H_0$): $\mu_{\text{after}} \leq \mu_{\text{before}}$ — the cashback offer has not increased the average number of daily orders.
+- Alternative hypothesis ($H_1$): $\mu_{\text{after}} > \mu_{\text{before}}$ — the cashback offer has increased the average number of daily orders.
+
+Type of test: A one-tailed (right-tailed) hypothesis test, because we want to determine whether orders have increased.
+
+Decision rule: Reject the null hypothesis if the statistical test provides sufficient evidence that the average daily orders increased after the offer.
+
+Let 
+μ
+before
+μ 
+before
+​
+  be the average number of daily orders before the cashback offer and 
+μ
+after
+μ 
+after
+​
+  be the average number of daily orders after the offer.
+
+Null hypothesis (
+H
+0
+H 
+0
+​
+ ): 
+μ
+after
+≤
+μ
+before
+μ 
+after
+​
+ ≤μ 
+before
+​
+  — the cashback offer has not increased the average number of daily orders.
+
+Alternative hypothesis (
+H
+1
+H 
+1
+​
+ ): 
+μ
+after
+>
+μ
+before
+μ 
+after
+​
+ >μ 
+before
+​
+  — the cashback offer has increased the average number of daily orders.
+
+Type of test: A one-tailed (right-tailed) hypothesis test, because we want to determine whether orders have increased.
+
+Decision rule: Reject the null hypothesis if the statistical test provides sufficient evidence that the average daily orders increased after the offer.
+
+2.
+Type I Error — This occurs because we conclude that the algorithm increases average listening time when, in reality, it does not, meaning we incorrectly reject a true null hypothesis.
+
+3.
+Decision: Reject the null hypothesis.
+
+Since the p-value (0.03) is less than the significance level ($\alpha = 0.05$), we reject the null hypothesis.
+
+In the context of the shopping app: There is statistically significant evidence at the 95% confidence level that the new discount banner increases purchases compared with the existing version. However, this does not guarantee that the banner will increase purchases in every situation.
+
+4.
+A 99% confidence level means we use a significance level of 1% ($\alpha = 0.01$) to test whether match-alert push notifications increase user engagement.
+
+- Reject the null hypothesis ($H_0$): If the p-value is less than 0.01, there is statistically significant evidence that match alerts increase user engagement, supporting the feature's adoption.
+- Fail to reject the null hypothesis ($H_0$): If the p-value is 0.01 or higher, there is insufficient evidence at the 99% confidence level to conclude that the feature increases engagement.
+
+In context: The stricter 99% confidence requirement reduces the risk of adopting a feature based on a false positive, but it may also make it harder to detect a genuine improvement.
+
+
