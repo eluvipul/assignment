@@ -1,0 +1,125 @@
+1.
+Download a small dataset of 10-15 songs with features like danceability, energy, and popularity (you can create a CSV manually or use any open dataset), then calculate the Pearson correlation coefficient between danceability and popularity using pandas.
+2.
+Given a list of IPL players with their total runs and number of Instagram followers, use scipy.stats.spearmanr to calculate the Spearman correlation between runs and followers, and interpret whether higher runs generally mean more followers.
+3.
+Create a correlation matrix for three Flipkart product features: price, user rating, and number of reviews, using pandas' corr() method, and display the result.
+4.
+Visualize the correlation matrix you created in the previous task as a heatmap using seaborn's heatmap() function, and customize it by adding annotations and a color bar.<br><br><em><strong>Hint:</strong> Use sns.heatmap(corr_matrix, annot=True, cmap='coolwarm').</em>
+5.
+List two potential pitfalls when interpreting correlation coefficients in data from real apps like Zomato or YouTube, and give a short example for each showing how correlation can be misleading.
+
+Solutions:
+1.
+
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv("songs.csv")
+
+# Calculate Pearson correlation
+correlation = df["danceability"].corr(df["popularity"])
+
+print("Pearson correlation coefficient:",
+      round(correlation, 4))
+
+# Interpret the result
+if correlation > 0:
+    print("There is a positive correlation.")
+elif correlation < 0:
+    print("There is a negative correlation.")
+else:
+    print("There is no linear correlation.")
+
+2.
+
+
+from scipy.stats import spearmanr
+
+# Illustrative IPL player data
+players = ["Player A", "Player B", "Player C", "Player D",
+           "Player E", "Player F", "Player G", "Player H"]
+
+runs = [450, 600, 350, 700, 550, 800, 400, 650]
+
+# Instagram followers in millions
+followers = [12, 25, 8, 30, 20, 45, 10, 28]
+
+# Calculate Spearman rank correlation
+rho, p_value = spearmanr(runs, followers)
+
+print("Spearman correlation coefficient:", round(rho, 4))
+print("P-value:", round(p_value, 4))
+
+if rho > 0:
+    print("Higher runs generally correspond to more followers.")
+elif rho < 0:
+    print("Higher runs generally correspond to fewer followers.")
+else:
+    print("No monotonic relationship is observed.")
+
+if p_value < 0.05:
+    print("The correlation is statistically significant.")
+else:
+    print("The correlation is not statistically significant.")
+
+3.
+
+import pandas as pd
+
+# Sample Flipkart product data (illustrative)
+data = {
+    "price": [500, 800, 1200, 1500, 2000, 2500, 3000, 3500],
+    "user_rating": [4.2, 4.0, 4.5, 3.9, 4.4, 4.1, 4.6, 4.3],
+    "number_of_reviews": [120, 200, 350, 180, 500, 400, 650, 550]
+}
+
+df = pd.DataFrame(data)
+
+# Calculate Pearson correlation matrix
+correlation_matrix = df.corr()
+
+# Display results
+print("Correlation Matrix:")
+print(correlation_matrix.round(3))
+
+4.
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Sample Flipkart product data (illustrative)
+data = {
+    "price": [500, 800, 1200, 1500, 2000, 2500, 3000, 3500],
+    "user_rating": [4.2, 4.0, 4.5, 3.9, 4.4, 4.1, 4.6, 4.3],
+    "number_of_reviews": [120, 200, 350, 180, 500, 400, 650, 550]
+}
+
+df = pd.DataFrame(data)
+
+# Calculate correlation matrix
+corr_matrix = df.corr()
+
+# Create heatmap
+plt.figure(figsize=(8, 6))
+sns.heatmap(
+    corr_matrix,
+    annot=True,          # Display values in cells
+    cmap="coolwarm",     # Blue-to-red color palette
+    vmin=-1,
+    vmax=1,
+    fmt=".2f",
+    linewidths=0.5,
+    cbar=True            # Display color bar
+)
+
+plt.title("Correlation Heatmap of Flipkart Product Features")
+plt.tight_layout()
+plt.show()
+
+5.
+1. Correlation does not imply causation: Two variables may be correlated without one causing the other. Example: On Zomato, users who receive more discounts may place more orders, but this does not prove discounts alone cause the increase; users may also be ordering more because of festivals or special occasions.
+
+2. Influence of a third variable (confounding): A hidden factor may affect both variables and create a misleading correlation. Example: On YouTube, videos with more views may have more likes, but video age could explain part of this relationship because older videos have had more time to accumulate both views and likes.
+
