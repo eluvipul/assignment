@@ -1,0 +1,231 @@
+1.
+Open OnlineRetail.csv in Excel and use the Filter feature to display only the transactions made by customers from 'United Kingdom'. Count how many unique CustomerIDs made purchases from the UK.
+2.
+Create a PivotTable in Excel to analyze total sales (Quantity * UnitPrice) by Country. Identify the top 3 countries by total sales and write their names in a cell below your table.
+3.
+Using Excel formulas, calculate the average order value (total sales per InvoiceNo) for all customers. Highlight any InvoiceNo where the order value is above ₹10,000.<br><br><em><strong>Hint:</strong> Create a new column for order value, then use Conditional Formatting to highlight.</em>
+4.
+Perform a t-test in Excel to compare the average order value between customers from 'France' and 'Germany'. State whether the difference is statistically significant at the 0.05 level.<br><br><em><strong>Hint:</strong> Use the Data Analysis Toolpak's t-Test: Two-Sample Assuming Unequal Variances.</em>
+5.
+Use ChatGPT or Copilot to generate a summary of key customer purchasing patterns you observe from your analysis (e.g., high-value countries, average order size, seasonal trends). Copy-paste your summary into a new sheet named 'Insights'.
+
+Solutions:
+1.
+## Steps to count unique UK customers in `OnlineRetail.csv` using Excel
+
+1. Open the file: Open `OnlineRetail.csv` in Microsoft Excel.
+2. Enable filters: Select the header row and click Data → Filter.
+3. Filter by country: In the `Country` column, open the filter dropdown, uncheck all values, select United Kingdom, and click OK.
+4. Count unique customers: If `CustomerID` is in column B and `Country` is in column E, use this formula in a blank cell (adjust the column letters to match your file):
+   excel
+   ```
+   =COUNTA(UNIQUE(FILTER(B2:B100000,(E2:E100000="United Kingdom")*(B2:B100000<>""))))
+   ```
+   This counts each nonblank CustomerID only once, even if that customer made multiple transactions.
+
+2.
+## 1. Create a Total Sales column in Excel
+
+Open `OnlineRetail.csv` and add a new column named TotalSales.
+
+If `Quantity` is in column D and `UnitPrice` is in column F, enter this formula in the first data row:
+
+excel
+
+```
+=D2*F2
+```
+
+Fill the formula down for all transactions.
+
+## 2. Create a PivotTable
+
+1. Select your dataset, including the new `TotalSales` column.
+2. Go to Insert → PivotTable → New Worksheet.
+3. In the PivotTable Fields panel, arrange the fields as follows:
+
+| PivotTable area | Field |
+| --- | --- |
+| Rows | Country |
+| Values | TotalSales (set to Sum) |
+
+Sort the Sum of TotalSales column from Largest to Smallest.
+
+## 3. Identify the top 3 countries
+
+For the commonly used UCI Online Retail dataset, the top three countries by total sales calculated as `Quantity × UnitPrice` are generally:
+
+1. United Kingdom
+2. Netherlands
+3. EIRE (Ireland)
+
+These are expected results for the standard dataset; your file's exact values may differ if it has been modified.
+
+## 4. Write the names below your PivotTable
+
+In a blank cell below the table, enter:
+
+text
+
+```
+Top 3 Countries by Total Sales:
+1. United Kingdom
+2. Netherlands
+3. EIRE
+```
+
+Tip: If you want to verify the ranking, ensure the PivotTable uses Sum of TotalSales, not Count of TotalSales or the sum of Quantity.
+
+3.
+## 1. Calculate order value in Excel
+
+Open `OnlineRetail.csv` in Excel. Create a new column named OrderValue to calculate total sales for each invoice using `Quantity × UnitPrice`.
+
+Assuming:
+
+- `InvoiceNo` is in column A
+- `Quantity` is in column D
+- `UnitPrice` is in column F
+
+Enter this formula in the first data row of the new column:
+
+excel
+
+```
+=D2*F2
+```
+
+Fill the formula down for all rows. Format the column as currency if desired.
+
+## 2. Calculate total order value per InvoiceNo
+
+If an invoice contains multiple products, sum the values of all its rows to calculate the invoice's total order value.
+
+Create a summary table with unique invoice numbers and use:
+
+excel
+
+```
+=SUMIF($A:$A,H2,$G:$G)
+```
+
+Here, `H2` contains an invoice number and column G contains the `OrderValue` values. Copy the formula down for every unique invoice.
+
+## 3. Highlight invoices above ₹10,000
+
+1. Select the invoice summary's order-value cells.
+2. Go to Home → Conditional Formatting → Highlight Cells Rules → Greater Than.
+3. Enter `10000`.
+4. Choose a highlight color, such as light red, and click OK.
+
+If you also want to highlight the corresponding `InvoiceNo` cells, apply Conditional Formatting to those cells using a formula such as:
+
+excel
+
+```
+=I2>10000
+```
+
+Assuming the invoice's total order value is in column I.
+
+## 4. Calculate the average order value
+
+To find the average across unique invoices, use:
+
+excel
+
+```
+=AVERAGE(I2:I1000)
+```
+
+Adjust the range to include all invoice totals in your summary table.
+
+Interpretation: Every invoice with a total above ₹10,000 will be highlighted, and the average of the invoice totals gives the average order value. The exact average and highlighted invoice numbers depend on your `OnlineRetail.csv` data.
+
+4.
+## T-test in Excel: France vs. Germany average order value
+
+You can use a two-sample t-test to determine whether the average order value differs significantly between customers in France and Germany, using your `OnlineRetail.csv` dataset.
+
+### 1. Prepare the data
+
+First, calculate each invoice's total order value by summing `Quantity × UnitPrice` for all items on that invoice. Then assign each invoice to its country.
+
+Create a summary table with one row per invoice, containing:
+
+- `InvoiceNo`
+- `Country`
+- `OrderValue`
+
+Filter the summary into two groups: France and Germany.
+
+### 2. Run the t-test in Excel
+
+If your France order values are in `A2:A100` and Germany order values are in `B2:B100`, enter:
+
+excel
+
+```
+=T.TEST(A2:A100,B2:B100,2,3)
+```
+
+- `2` specifies a two-tailed test.
+- `3` specifies a two-sample test assuming unequal variances (Welch's t-test).
+
+Replace the ranges with the actual cells containing each country's invoice totals, excluding blank cells.
+
+### 3. Interpret the result
+
+Use a significance level of $\alpha=0.05$.
+
+- If the p-value is less than 0.05, reject the null hypothesis: there is a statistically significant difference in average order value between France and Germany.
+- If the p-value is 0.05 or greater, fail to reject the null hypothesis: there is insufficient evidence of a statistically significant difference.
+
+### 4. Conclusion
+
+The exact p-value and conclusion cannot be determined without the actual dataset or the calculated order values.
+
+If you upload `OnlineRetail.csv` or share the two groups of order values, I can calculate the t-test result and state definitively whether the difference is statistically significant at the 0.05 level.
+
+5.
+You can create a new Excel worksheet named Insights and paste the following summary into cell A1. It is based on the Online Retail analysis tasks discussed earlier; since the actual CSV results have not been provided, the observations below are preliminary and should be verified against your dataset.
+
+Writing
+
+# Customer Purchasing Insights – Online Retail Dataset
+
+## 1\. High-value countries
+
+The United Kingdom is expected to contribute the largest share of total sales because it represents the main market in the standard Online Retail dataset. Other countries, such as the Netherlands and EIRE (Ireland), may also contribute substantial sales. Confirm the ranking using the PivotTable of total sales by country.
+
+## 2\. Average order value
+
+Average order value can be calculated by summing `Quantity × UnitPrice` for each invoice and then averaging the invoice totals. Invoices exceeding ₹10,000 (or the equivalent in the dataset's currency) can be identified using Conditional Formatting to highlight high-value purchases.
+
+## 3\. Customer purchasing patterns
+
+Customers may place multiple orders and purchase several products within a single invoice. Therefore, invoice-level totals should be calculated before comparing order values across countries or customers.
+
+## 4\. Seasonal trends
+
+Analyze monthly sales by extracting the month from `InvoiceDate` and creating a PivotTable with months as rows and total sales as values. Look for peaks around holiday periods, particularly toward the end of the year, and verify them against the actual data.
+
+## 5\. Country-level comparison
+
+A t-test can compare invoice-level order values between France and Germany. Use a two-tailed Welch's t-test and a 0.05 significance level to determine whether the difference in average order value is statistically significant.
+
+## 6\. Recommendations
+
+- Focus marketing efforts on countries with high total sales and strong order values.
+- Investigate high-value invoices to understand which products and customer segments drive revenue.
+- Use monthly sales trends to plan seasonal promotions and inventory.
+- Validate all findings against the actual dataset before making business decisions.
+
+**Note:** These are preliminary analytical observations, not verified numerical findings. Actual rankings, averages, seasonal peaks, and statistical test results should be inserted after analyzing `OnlineRetail.csv`.
+
+## How to add it to Excel
+
+1. Open your workbook and click the + button to create a new worksheet.
+2. Rename the sheet Insights.
+3. Copy the summary above and paste it into cell A1.
+4. Turn on Wrap Text, widen column A, and bold the title and section headings for readability.
