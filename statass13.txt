@@ -1,0 +1,222 @@
+1.
+Using Python and the scipy.stats library, perform a one-sample t-test to check if the average delivery time for Zomato orders in your city is significantly different from 30 minutes. Assume you have this sample data: [28, 32, 27, 35, 29, 31, 30, 33, 26, 34].
+2.
+Collect or simulate two independent samples of daily step counts: one group for users before installing a fitness app (e.g., Google Fit) and one group after installation. Use Python to perform an independent (two-sample) t-test and determine if the average steps per day increased after using the app.<br><br><em><strong>Hint:</strong> Use scipy.stats.ttest_ind().</em>
+3.
+Simulate paired data for 10 users showing their average screen time (in hours) before and after enabling 'Focus Mode' on their phones. Use Python to conduct a paired t-test and report whether 'Focus Mode' significantly reduced screen time.<br><br><em><strong>Hint:</strong> Use scipy.stats.ttest_rel().</em>
+4.
+Given this scenario: You want to compare the average ratings of two food delivery apps (Zomato vs Swiggy) based on 15 randomly selected user ratings for each app. Write Python code to perform the appropriate t-test, and explain why you chose that test.
+5.
+Use ChatGPT to help you write Python code that performs a one-sample t-test on a dataset of your choice (for example, average daily UPI transactions per user on PhonePe). Copy the code, run it on your data, and paste both the code and output in your submission.
+
+Solutions:
+1.
+
+from scipy import stats
+import numpy as np
+
+# Sample delivery times in minutes
+delivery_times = [28, 32, 27, 35, 29,
+                  31, 30, 33, 26, 34]
+
+# Hypothesized population mean
+population_mean = 30
+
+# Perform a two-tailed one-sample t-test
+t_statistic, p_value = stats.ttest_1samp(
+    delivery_times, popmean=population_mean
+)
+
+# Calculate sample statistics
+sample_mean = np.mean(delivery_times)
+sample_std = np.std(delivery_times, ddof=1)
+
+print("Sample mean:", sample_mean)
+print("Sample standard deviation:", round(sample_std, 3))
+print("T-statistic:", round(t_statistic, 3))
+print("P-value:", round(p_value, 3))
+
+# Decision at 5% significance level
+alpha = 0.05
+
+if p_value < alpha:
+    print("Reject the null hypothesis.")
+else:
+    print("Fail to reject the null hypothesis.")
+
+2.
+
+import numpy as np
+from scipy import stats
+
+# Simulated daily step counts for 10 users per group
+before = np.array([
+    5200, 6100, 4800, 7000, 5500,
+    6300, 5900, 5100, 6800, 5700
+])
+
+after = np.array([
+    6500, 7200, 6100, 8000, 6900,
+    7500, 7100, 6400, 8300, 7000
+])
+
+# Calculate group averages
+print("Mean before:", before.mean())
+print("Mean after:", after.mean())
+
+# One-sided independent t-test
+t_stat, p_two_sided = stats.ttest_ind(
+    after, before, equal_var=False
+)
+
+# Convert the two-sided p-value to a one-sided p-value
+p_one_sided = (
+    p_two_sided / 2
+    if t_stat > 0
+    else 1 - p_two_sided / 2
+)
+
+print("T-statistic:", round(t_stat, 3))
+print("One-sided p-value:", round(p_one_sided, 5))
+
+alpha = 0.05
+
+if p_one_sided < alpha:
+    print("Reject the null hypothesis.")
+    print("Average daily steps increased significantly.")
+else:
+    print("Fail to reject the null hypothesis.")
+    print("Insufficient evidence of an increase.")
+
+3.
+
+import numpy as np
+from scipy import stats
+
+# Simulated daily screen time for 10 users (hours)
+before = np.array([
+    6.0, 5.5, 7.0, 4.5, 6.5,
+    5.8, 8.0, 6.2, 5.0, 7.0
+])
+
+after = np.array([
+    5.0, 4.5, 5.5, 4.0, 5.0,
+    4.8, 6.5, 5.7, 4.5, 6.0
+])
+
+# Paired, one-sided t-test
+result = stats.ttest_rel(before, after, alternative="greater")
+
+print("Mean before:", round(before.mean(), 2), "hours")
+print("Mean after:", round(after.mean(), 2), "hours")
+print("Mean reduction:", round((before - after).mean(), 2), "hours")
+print("T-statistic:", round(result.statistic, 3))
+print("P-value:", f"{result.pvalue:.6f}")
+
+alpha = 0.05
+
+if result.pvalue < alpha:
+    print("Reject the null hypothesis.")
+    print("Focus Mode significantly reduced screen time.")
+else:
+    print("Fail to reject the null hypothesis.")
+    print("Insufficient evidence of reduced screen time.")
+
+4.
+
+import numpy as np
+from scipy import stats
+
+# Sample ratings from 15 randomly selected users per app
+zomato = np.array([
+    4.2, 4.0, 3.8, 4.5, 4.1,
+    3.9, 4.3, 4.0, 4.4, 3.7,
+    4.2, 4.1, 3.9, 4.5, 4.0
+])
+
+swiggy = np.array([
+    3.9, 4.1, 3.7, 4.0, 3.8,
+    4.2, 3.9, 4.1, 3.6, 4.0,
+    3.8, 4.2, 3.9, 4.0, 3.7
+])
+
+# Independent two-sample Welch's t-test
+t_stat, p_value = stats.ttest_ind(
+    zomato, swiggy, equal_var=False
+)
+
+print("Zomato mean rating:", round(zomato.mean(), 3))
+print("Swiggy mean rating:", round(swiggy.mean(), 3))
+print("t-statistic:", round(t_stat, 3))
+print("p-value:", round(p_value, 4))
+
+alpha = 0.05
+
+if p_value < alpha:
+    print("Reject the null hypothesis.")
+    print("The average ratings differ significantly.")
+else:
+    print("Fail to reject the null hypothesis.")
+    print("No significant difference in average ratings.")
+
+5.
+
+import numpy as np
+from scipy import stats
+
+# Hypothetical daily UPI transactions per user
+transactions = np.array([
+    4, 6, 5, 7, 3, 6, 5, 4, 8, 6,
+    5, 7, 4, 6, 5, 3, 7, 6, 4, 5
+])
+
+# Hypothesized population mean
+mu = 5
+
+# Perform a two-tailed one-sample t-test
+t_statistic, p_value = stats.ttest_1samp(
+    transactions, popmean=mu
+)
+
+# Display results
+print("Sample size:", len(transactions))
+print("Sample mean:", round(np.mean(transactions), 2))
+print("Hypothesized mean:", mu)
+print("T-statistic:", round(t_statistic, 4))
+print("P-value:", round(p_value, 4))
+
+# Decision at 5% significance level
+alpha = 0.05
+
+if p_value < alpha:
+    print("Reject the null hypothesis.")
+else:
+    print("Fail to reject the null hypothesis.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
