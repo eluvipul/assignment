@@ -1,0 +1,140 @@
+1.
+Create a CSV file named purchase_data.csv with columns: customer_id, age_group (18-25, 26-35, 36-50), and purchase_value. Enter at least 15 sample records with 5 customers in each age group.
+2.
+Write a Python script using pandas and scipy.stats that reads purchase_data.csv and performs a one-way ANOVA to compare the average purchase_value across the three age groups. Print the F-statistic and p-value.
+3.
+Based on your ANOVA results, interpret whether there is a statistically significant difference in average purchase_value between the age groups. Write your answer in 2-3 lines.
+4.
+Calculate and print the between-group variance and within-group variance for the purchase_value data using numpy or pandas. Explain briefly what each value represents in this context.<br><br><em><strong>Hint:</strong> Between-group variance measures differences between age group means; within-group variance measures variation inside each age group.</em>
+5.
+Imagine you are analyzing Zomato order data for three different customer segments: Students, Working Professionals, and Retirees. Use ChatGPT or Copilot to generate Python code that performs a one-way ANOVA on their average monthly order amounts. Paste the generated code and run it with dummy data for each group.
+
+
+Solutions:
+1.
+
+customer_id,age_group,purchase_value
+C001,18-25,250
+C002,18-25,450
+C003,18-25,180
+C004,18-25,520
+C005,18-25,320
+C006,26-35,650
+C007,26-35,480
+C008,26-35,720
+C009,26-35,550
+C010,26-35,830
+C011,36-50,900
+C012,36-50,750
+C013,36-50,1100
+C014,36-50,680
+C015,36-50,950
+
+
+2.
+
+
+import pandas as pd
+from scipy import stats
+
+# Read the CSV file
+df = pd.read_csv("purchase_data.csv")
+
+# Separate purchase values by age group
+group_18_25 = df[df["age_group"] == "18-25"]["purchase_value"]
+group_26_35 = df[df["age_group"] == "26-35"]["purchase_value"]
+group_36_50 = df[df["age_group"] == "36-50"]["purchase_value"]
+
+# Perform one-way ANOVA
+f_statistic, p_value = stats.f_oneway(
+    group_18_25,
+    group_26_35,
+    group_36_50
+)
+
+# Print results
+print("Mean purchase value by age group:")
+print(df.groupby("age_group")["purchase_value"].mean())
+
+print("\nANOVA Results")
+print("F-statistic:", round(f_statistic, 4))
+print("P-value:", round(p_value, 6))
+
+# Interpret at 5% significance level
+if p_value < 0.05:
+    print("Conclusion: Significant difference between group means.")
+else:
+    print("Conclusion: No statistically significant difference.")
+
+3.
+The ANOVA results indicate a statistically significant difference in average purchase value among the three age groups because the p-value is less than 0.05. Therefore, we reject the null hypothesis that all group means are equal. The 36–50 age group has the highest average purchase value, followed by 26–35 and 18–25.
+
+4.
+import pandas as pd
+import numpy as np
+
+# Load the dataset
+df = pd.read_csv("purchase_data.csv")
+
+# Overall mean and group means
+grand_mean = df["purchase_value"].mean()
+grouped = df.groupby("age_group")["purchase_value"]
+
+# Between-group sum of squares
+ss_between = sum(
+    len(group) * (group.mean() - grand_mean) ** 2
+    for _, group in grouped
+)
+
+# Within-group sum of squares
+ss_within = sum(
+    ((group - group.mean()) ** 2).sum()
+    for _, group in grouped
+)
+
+# Degrees of freedom
+k = df["age_group"].nunique()
+n = len(df)
+
+# ANOVA mean squares (variance estimates)
+between_group_variance = ss_between / (k - 1)
+within_group_variance = ss_within / (n - k)
+
+print("Between-group variance:", round(between_group_variance, 2))
+print("Within-group variance:", round(within_group_variance, 2))
+
+5.
+
+from scipy import stats
+
+# Dummy monthly order amounts per customer (in ₹)
+students = [1200, 1500, 1100, 1300, 1400]
+working_professionals = [2500, 2800, 2200, 3000, 2700]
+retirees = [1800, 1600, 2000, 1700, 1900]
+
+# Calculate group means
+print("Average monthly order amount:")
+print("Students:", sum(students) / len(students))
+print("Working Professionals:",
+      sum(working_professionals) / len(working_professionals))
+print("Retirees:", sum(retirees) / len(retirees))
+
+# Perform one-way ANOVA
+f_statistic, p_value = stats.f_oneway(
+    students,
+    working_professionals,
+    retirees
+)
+
+print("\nANOVA Results")
+print("F-statistic:", round(f_statistic, 4))
+print("P-value:", f"{p_value:.8f}")
+
+# Interpret results
+alpha = 0.05
+if p_value < alpha:
+    print("Conclusion: Significant difference between group means.")
+else:
+    print("Conclusion: No significant difference between group means.")
+
+
