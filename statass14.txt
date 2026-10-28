@@ -1,0 +1,278 @@
+1.
+Create a contingency table in Excel or Google Sheets showing the relationship between users' favorite food delivery app (Zomato, Swiggy, Uber Eats) and their preferred payment method (Paytm, PhonePe, Credit Card) using a sample of at least 20 responses.
+2.
+Given the following observed counts of music streaming preference among males and females: Spotify (Males: 12, Females: 18), Gaana (Males: 8, Females: 7), YouTube Music (Males: 10, Females: 15), calculate the expected counts for each cell assuming independence.<br><br><em><strong>Hint:</strong> Use the formula: (row total × column total) / grand total.</em>
+3.
+Perform a chi-square test of independence using the data from your contingency table in task 1 to determine if there is a significant association between app choice and payment method. Show your calculation steps and state your conclusion.
+4.
+For a new Flipkart product launch, suppose you surveyed 30 users and observed the following: 18 prefer the new product, 12 do not. If the company claims that 70% of users will prefer the new product, perform a chi-square goodness of fit test to check this claim.<br><br><em><strong>Hint:</strong> Calculate expected counts based on the claimed proportion.</em>
+
+Solutions:
+1.
+
+User,Favorite App,Preferred Payment
+1,Zomato,Paytm
+2,Swiggy,PhonePe
+3,Zomato,PhonePe
+4,Uber Eats,Credit Card
+5,Swiggy,Paytm
+6,Zomato,Credit Card
+7,Swiggy,PhonePe
+8,Uber Eats,Paytm
+9,Zomato,Paytm
+10,Swiggy,Credit Card
+11,Zomato,PhonePe
+12,Uber Eats,Credit Card
+13,Swiggy,Paytm
+14,Zomato,Paytm
+15,Uber Eats,PhonePe
+16,Swiggy,PhonePe
+17,Zomato,Credit Card
+18,Swiggy,Paytm
+19,Uber Eats,Paytm
+20,Zomato,PhonePe
+21,Swiggy,Credit Card
+22,Uber Eats,PhonePe
+23,Zomato,Paytm
+24,Swiggy,PhonePe
+
+2.
+To calculate the expected counts assuming independence, use the formula:
+
+$$
+E_{ij}=\frac{\text{Row total}\times\text{Column total}}{\text{Grand total}}
+$$
+
+## 1. Calculate the totals
+
+| Music streaming app | Males | Females | Row total |
+| --- | --- | --- | --- |
+| Spotify | 12 | 18 | 30 |
+| Gaana | 8 | 7 | 15 |
+| YouTube Music | 10 | 15 | 25 |
+| Column total | 30 | 40 | 70 |
+
+Grand total = 70 users.
+
+## 2. Calculate the expected counts
+
+Spotify
+
+- Males: $\frac{30\times30}{70}=12.86$
+- Females: $\frac{30\times40}{70}=17.14$
+
+Gaana
+
+- Males: $\frac{15\times30}{70}=6.43$
+- Females: $\frac{15\times40}{70}=8.57$
+
+YouTube Music
+
+- Males: $\frac{25\times30}{70}=10.71$
+- Females: $\frac{25\times40}{70}=14.29$
+
+## 3. Final expected frequency table
+
+| Music streaming app | Males (Expected) | Females (Expected) | Row total |
+| --- | --- | --- | --- |
+| Spotify | 12.86 | 17.14 | 30 |
+| Gaana | 6.43 | 8.57 | 15 |
+| YouTube Music | 10.71 | 14.29 | 25 |
+| Column total | 30.00 | 40.00 | 70 |
+
+Conclusion: These are the expected counts if music streaming preference and gender are independent. They can be compared with the observed counts to perform a chi-square test of independence.
+
+3.
+## Chi-square test of independence: App choice vs. payment method
+
+We’ll use the contingency table from Task 1, containing 24 simulated survey responses, to test whether users’ favorite food delivery app (Zomato, Swiggy, or Uber Eats) is associated with their preferred payment method (Paytm, PhonePe, or Credit Card).
+
+### 1. Observed frequency table
+
+| Favorite app | Paytm | PhonePe | Credit Card | Total |
+| --- | --- | --- | --- | --- |
+| Zomato | 4 | 3 | 2 | 9 |
+| Swiggy | 3 | 4 | 2 | 9 |
+| Uber Eats | 2 | 2 | 2 | 6 |
+| Total | 9 | 9 | 6 | 24 |
+
+### 2. State the hypotheses
+
+- Null hypothesis ($H_0$): Favorite app choice and preferred payment method are independent; there is no association between them.
+- Alternative hypothesis ($H_1$): Favorite app choice and preferred payment method are associated.
+
+We’ll use a significance level of $\alpha = 0.05$.
+
+### 3. Calculate the expected frequencies
+
+The formula for each cell is:
+
+$$
+E=\frac{\text{Row total}\times\text{Column total}}{\text{Grand total}}
+$$
+
+For example, the expected number of Zomato users preferring Paytm is:
+
+$$
+E=\frac{9\times9}{24}=3.375
+$$
+
+Applying the formula to all cells gives:
+
+| Favorite app | Paytm | PhonePe | Credit Card |
+| --- | --- | --- | --- |
+| Zomato | 3.375 | 3.375 | 2.250 |
+| Swiggy | 3.375 | 3.375 | 2.250 |
+| Uber Eats | 2.250 | 2.250 | 1.500 |
+
+### 4. Calculate the chi-square statistic
+
+The test statistic is calculated as:
+
+$$
+\chi^2=\sum\frac{(O-E)^2}{E}
+$$
+
+where $O$ is the observed frequency and $E$ is the expected frequency.
+
+For example, for the Zomato–Paytm cell:
+
+$$
+\frac{(4-3.375)^2}{3.375}=0.1157
+$$
+
+Summing the contributions from all nine cells gives:
+
+$$
+\boxed{\chi^2\approx0.593}
+$$
+
+The degrees of freedom are:
+
+$$
+df=(r-1)(c-1)=(3-1)(3-1)=4
+$$
+
+### 5. Results and decision
+
+Chi-square statistic
+
+## 0.593
+
+Degrees of freedom
+
+## 4
+
+Approximate p-value
+
+## 0.964
+
+Significance level: 0.05
+
+Decision: Fail to reject the null hypothesis.
+
+Since the p-value ($0.964$) is greater than $0.05$, we do not have sufficient evidence of an association between favorite app and preferred payment method.
+
+### 6. Python verification
+
+python
+
+```
+
+import numpy as np
+from scipy.stats import chi2_contingency
+
+observed = np.array([
+    [4, 3, 2],  # Zomato
+    [3, 4, 2],  # Swiggy
+    [2, 2, 2]   # Uber Eats
+])
+
+chi2, p, dof, expected = chi2_contingency(
+    observed, correction=False
+)
+
+print("Expected frequencies:")
+print(np.round(expected, 3))
+print("Chi-square statistic:", round(chi2, 3))
+print("Degrees of freedom:", dof)
+print("P-value:", round(p, 4))
+```
+
+Important limitation: Several expected cell counts are below 5, so the usual chi-square approximation may not be reliable for this small sample. An exact test for a $3\times3$ table or a larger sample would be preferable for a stronger conclusion. The result above is based on simulated survey data, not actual customer behavior.
+
+4.
+## Chi-square goodness of fit test: Flipkart product launch
+
+We want to test whether the survey results support the company's claim that 70% of users will prefer the new product.
+
+### 1. State the hypotheses
+
+- Null hypothesis ($H_0$): 70% of users prefer the new product ($p=0.70$).
+- Alternative hypothesis ($H_1$): The preference proportion differs from 70% ($p\neq0.70$).
+
+Assume a significance level of $\alpha=0.05$.
+
+### 2. Calculate the expected counts
+
+Total users surveyed = 30.
+
+- Expected users who prefer the product: $30\times0.70=21$
+- Expected users who do not prefer it: $30\times0.30=9$
+
+| Response | Observed count ($O$) | Expected count ($E$) |
+| --- | --- | --- |
+| Prefer | 18 | 21 |
+| Do not prefer | 12 | 9 |
+| Total | 30 | 30 |
+
+### 3. Calculate the chi-square statistic
+
+The formula is:
+
+$$
+\chi^2=\sum\frac{(O-E)^2}{E}
+$$
+
+Substituting the values:
+
+$$
+\begin{aligned}
+\chi^2
+&=\frac{(18-21)^2}{21}
++\frac{(12-9)^2}{9}\\
+&=\frac{9}{21}+\frac{9}{9}\\
+&=0.4286+1\\
+&=\boxed{1.429}
+\end{aligned}
+$$
+
+Degrees of freedom:
+
+$$
+df=k-1=2-1=1
+$$
+
+### 4. Decision and conclusion
+
+Chi-square statistic
+
+## 1.429
+
+Degrees of freedom
+
+## 1
+
+p-value
+
+## 0.232
+
+Significance level
+
+## 0.05
+
+Since $p=0.232>0.05$, we fail to reject the null hypothesis.
+
+Conclusion: The survey does not provide sufficient statistical evidence to reject Flipkart's claim that 70% of users prefer the new product. This does not prove that the claim is true; a larger sample could provide more conclusive evidence.
+
+
